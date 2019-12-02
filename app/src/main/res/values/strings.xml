@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Usage Logger</string>
+    <string name="context_data_collection">Status: Data is being collected about what you have installed on your device</string>
+    <string name="past_data_collection">Status: Data is being collected about what you have previously employed your phone for</string>
+    <string name="prospective_Data_collection">"Status: Phone usage monitoring ongoing"</string>
+</resources>
