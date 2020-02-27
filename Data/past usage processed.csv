@@ -1,0 +1,640 @@
+"","unix","app","event","rEvent","time","duration","rDuration"
+"1",1571151207619,"WhatsApp",2,"Move to background",2019-10-15 14:53:27,0.007,0S
+"2",1571151207626,"WhatsApp",1,"Move to foreground",2019-10-15 14:53:27,0.577,1S
+"3",1571151207760,"Google Play services",12,"Notifiation interuption",2019-10-15 14:53:27,0,0S
+"4",1571151208203,"Google Play services",10,"Notification seen",2019-10-15 14:53:28,3.944,4S
+"5",1571151212147,"WhatsApp",1,"Move to foreground",2019-10-15 14:53:32,4.24,4S
+"8",1571151216519,"WhatsApp",2,"Move to background",2019-10-15 14:53:36,0.43,0S
+"10",1571151216949,"WhatsApp",1,"Move to foreground",2019-10-15 14:53:36,0.01,0S
+"11",1571151216959,"WhatsApp",2,"Move to background",2019-10-15 14:53:36,699.202,11M 39S
+"18",1571151916531,"WhatsApp",2,"Move to background",2019-10-15 15:05:16,0.016,0S
+"19",1571151916547,"WhatsApp",1,"Move to foreground",2019-10-15 15:05:16,1.366,1S
+"21",1571152079368,"Google",11,"Standby bucket changed",2019-10-15 15:07:59,0,0S
+"24",1571152884396,"WhatsApp",2,"Move to background",2019-10-15 15:21:24,0.012,0S
+"25",1571152884408,"WhatsApp",1,"Move to foreground",2019-10-15 15:21:24,2.56,3S
+"26",1571152886968,"WhatsApp",1,"Move to foreground",2019-10-15 15:21:26,1.092,1S
+"28",1571152887034,"Google",11,"Standby bucket changed",2019-10-15 15:21:27,0,0S
+"30",1571152888060,"WhatsApp",2,"Move to background",2019-10-15 15:21:28,0.013,0S
+"31",1571152888073,"WhatsApp",1,"Move to foreground",2019-10-15 15:21:28,17.266,17S
+"37",1571152905472,"WhatsApp",2,"Move to background",2019-10-15 15:21:45,0.379,0S
+"38",1571152905851,"WhatsApp",1,"Move to foreground",2019-10-15 15:21:45,0.009,0S
+"39",1571152905860,"WhatsApp",2,"Move to background",2019-10-15 15:21:45,29.421,29S
+"41",1571152924118,"WhatsApp",12,"Notifiation interuption",2019-10-15 15:22:04,0,0S
+"42",1571152924132,"WhatsApp",12,"Notifiation interuption",2019-10-15 15:22:04,0,0S
+"43",1571152931295,"WhatsApp",12,"Notifiation interuption",2019-10-15 15:22:11,0,0S
+"44",1571152931313,"WhatsApp",12,"Notifiation interuption",2019-10-15 15:22:11,0,0S
+"46",1571152935620,"WhatsApp",2,"Move to background",2019-10-15 15:22:15,0.009,0S
+"47",1571152935629,"WhatsApp",1,"Move to foreground",2019-10-15 15:22:15,2.432,2S
+"48",1571152938061,"WhatsApp",1,"Move to foreground",2019-10-15 15:22:18,12.721,13S
+"50",1571152950782,"WhatsApp",2,"Move to background",2019-10-15 15:22:30,0.018,0S
+"51",1571152950800,"WhatsApp",1,"Move to foreground",2019-10-15 15:22:30,1.762,2S
+"53",1571152952663,"WhatsApp",2,"Move to background",2019-10-15 15:22:32,0.424,0S
+"54",1571152953087,"WhatsApp",1,"Move to foreground",2019-10-15 15:22:33,0.011,0S
+"55",1571152953098,"WhatsApp",2,"Move to background",2019-10-15 15:22:33,109.146,1M 49S
+"57",1571152969870,"WhatsApp",12,"Notifiation interuption",2019-10-15 15:22:49,0,0S
+"58",1571152969877,"WhatsApp",12,"Notifiation interuption",2019-10-15 15:22:49,0,0S
+"60",1571153062507,"WhatsApp",2,"Move to background",2019-10-15 15:24:22,0.006,0S
+"61",1571153062513,"WhatsApp",1,"Move to foreground",2019-10-15 15:24:22,0.599,1S
+"62",1571153063112,"WhatsApp",10,"Notification seen",2019-10-15 15:24:23,9.125,9S
+"65",1571153075672,"WhatsApp",2,"Move to background",2019-10-15 15:24:35,0.007,0S
+"66",1571153075679,"WhatsApp",1,"Move to foreground",2019-10-15 15:24:35,4.848,5S
+"67",1571153080527,"WhatsApp",1,"Move to foreground",2019-10-15 15:24:40,0.001,0S
+"68",1571153080528,"WhatsApp",2,"Move to background",2019-10-15 15:24:40,0.003,0S
+"69",1571153080531,"WhatsApp",7,"User interaction",2019-10-15 15:24:40,0.446,0S
+"70",1571153080977,"WhatsApp",1,"Move to foreground",2019-10-15 15:24:40,25.267,25S
+"73",1571153106361,"WhatsApp",2,"Move to background",2019-10-15 15:25:06,0.405,0S
+"74",1571153106766,"WhatsApp",1,"Move to foreground",2019-10-15 15:25:06,0.01,0S
+"75",1571153106776,"WhatsApp",2,"Move to background",2019-10-15 15:25:06,1170.403,19M 30S
+"80",1571153291204,"System UI",11,"Standby bucket changed",2019-10-15 15:28:11,0,0S
+"82",1571153974095,"Google",11,"Standby bucket changed",2019-10-15 15:39:34,0,0S
+"88",1571154277644,"WhatsApp",2,"Move to background",2019-10-15 15:44:37,0.006,0S
+"89",1571154277650,"WhatsApp",1,"Move to foreground",2019-10-15 15:44:37,2.806,3S
+"90",1571154280456,"WhatsApp",1,"Move to foreground",2019-10-15 15:44:40,1.71,2S
+"92",1571154280520,"Google",11,"Standby bucket changed",2019-10-15 15:44:40,0,0S
+"93",1571154282166,"WhatsApp",2,"Move to background",2019-10-15 15:44:42,0.017,0S
+"94",1571154282183,"WhatsApp",1,"Move to foreground",2019-10-15 15:44:42,2.116,2S
+"95",1571154284299,"WhatsApp",2,"Move to background",2019-10-15 15:44:44,0.017,0S
+"112",1571154422569,"System UI",11,"Standby bucket changed",2019-10-15 15:47:02,0,0S
+"123",1571156865593,"Google",11,"Standby bucket changed",2019-10-15 16:27:45,0,0S
+"139",1571157094661,"Google",11,"Standby bucket changed",2019-10-15 16:31:34,0,0S
+"149",1571160901625,"System UI",11,"Standby bucket changed",2019-10-15 17:35:01,0,0S
+"202",1571163540150,"System UI",11,"Standby bucket changed",2019-10-15 18:19:00,0,0S
+"210",1571164137539,"Google",11,"Standby bucket changed",2019-10-15 18:28:57,0,0S
+"211",1571164175236,"Google",11,"Standby bucket changed",2019-10-15 18:29:35,0,0S
+"222",1571167345859,"Google",11,"Standby bucket changed",2019-10-15 19:22:25,0,0S
+"229",1571168040487,"Google",11,"Standby bucket changed",2019-10-15 19:34:00,0,0S
+"248",1571168118755,"System UI",11,"Standby bucket changed",2019-10-15 19:35:18,0,0S
+"249",1571170984655,"WhatsApp",11,"Standby bucket changed",2019-10-15 20:23:04,0,0S
+"259",1571179424876,"Google",11,"Standby bucket changed",2019-10-15 22:43:44,0,0S
+"268",1571179524238,"Google",11,"Standby bucket changed",2019-10-15 22:45:24,0,0S
+"279",1571179530080,"System UI",11,"Standby bucket changed",2019-10-15 22:45:30,0,0S
+"312",1571182031371,"Google",11,"Standby bucket changed",2019-10-15 23:27:11,0,0S
+"317",1571182955165,"System UI",11,"Standby bucket changed",2019-10-15 23:42:35,0,0S
+"322",1571188811962,"Google",11,"Standby bucket changed",2019-10-16 01:20:11,0,0S
+"325",1571207262509,"Google Play services",12,"Notifiation interuption",2019-10-16 06:27:42,0,0S
+"326",1571207264188,"Google",11,"Standby bucket changed",2019-10-16 06:27:44,0,0S
+"334",1571207370651,"Google",11,"Standby bucket changed",2019-10-16 06:29:30,0,0S
+"335",1571207371201,"Google Play services",10,"Notification seen",2019-10-16 06:29:31,1.635,2S
+"361",1571207573031,"Chrome",1,"Move to foreground",2019-10-16 06:32:53,9.767,10S
+"363",1571207580227,"WhatsApp",12,"Notifiation interuption",2019-10-16 06:33:00,0,0S
+"364",1571207580786,"WhatsApp",12,"Notifiation interuption",2019-10-16 06:33:00,0,0S
+"365",1571207580867,"WhatsApp",12,"Notifiation interuption",2019-10-16 06:33:00,0,0S
+"366",1571207580934,"WhatsApp",12,"Notifiation interuption",2019-10-16 06:33:00,0,0S
+"367",1571207582798,"WhatsApp",10,"Notification seen",2019-10-16 06:33:02,1.972,2S
+"370",1571207586895,"Chrome",2,"Move to background",2019-10-16 06:33:06,0.017,0S
+"371",1571207586912,"WhatsApp",7,"User interaction",2019-10-16 06:33:06,0.063,0S
+"372",1571207586913,"WhatsApp",11,"Standby bucket changed",2019-10-16 06:33:06,0,0S
+"373",1571207586975,"WhatsApp",1,"Move to foreground",2019-10-16 06:33:06,5.652,6S
+"374",1571207592627,"WhatsApp",2,"Move to background",2019-10-16 06:33:12,0.021,0S
+"377",1571207592856,"Chrome",1,"Move to foreground",2019-10-16 06:33:12,20.555,21S
+"379",1571207613411,"Chrome",2,"Move to background",2019-10-16 06:33:33,0.035,0S
+"405",1571207824209,"System UI",11,"Standby bucket changed",2019-10-16 06:37:04,0,0S
+"424",1571209583669,"System UI",11,"Standby bucket changed",2019-10-16 07:06:23,0,0S
+"434",1571209584521,"com.quicinc.cne.CNEService.CNEServiceApp",11,"Standby bucket changed",2019-10-16 07:06:24,0,0S
+"470",1571209584531,"FQC",11,"Standby bucket changed",2019-10-16 07:06:24,0,0S
+"478",1571209584535,"AutoRegistration",11,"Standby bucket changed",2019-10-16 07:06:24,0,0S
+"490",1571209584536,"DbgCfgTool",11,"Standby bucket changed",2019-10-16 07:06:24,0,0S
+"493",1571209584537,"Maps",11,"Standby bucket changed",2019-10-16 07:06:24,0,0S
+"503",1571209584541,"Google Play services",11,"Standby bucket changed",2019-10-16 07:06:24,0,0S
+"504",1571209584542,"Carrier Services",11,"Standby bucket changed",2019-10-16 07:06:24,0,0S
+"522",1571209584548,"CustManager",11,"Standby bucket changed",2019-10-16 07:06:24,0,0S
+"523",1571209584548,"Settings",11,"Standby bucket changed",2019-10-16 07:06:24,0,0S
+"530",1571209584549,"LocationServices",11,"Standby bucket changed",2019-10-16 07:06:24,0,0S
+"535",1571209584549,"Phone Services",11,"Standby bucket changed",2019-10-16 07:06:24,0,0S
+"536",1571209584549,"Shell",11,"Standby bucket changed",2019-10-16 07:06:24,0,0S
+"542",1571209584549,"QMMI",11,"Standby bucket changed",2019-10-16 07:06:24,0,0S
+"543",1571209584549,"Fused Location",11,"Standby bucket changed",2019-10-16 07:06:24,0,0S
+"544",1571209584549,"ConfDialer",11,"Standby bucket changed",2019-10-16 07:06:24,0,0S
+"547",1571209584549,"RetailDemoApp",11,"Standby bucket changed",2019-10-16 07:06:24,0,0S
+"551",1571209584550,"Bluetooth",11,"Standby bucket changed",2019-10-16 07:06:24,0,0S
+"556",1571209584554,"Android Setup",11,"Standby bucket changed",2019-10-16 07:06:24,0,0S
+"557",1571209584609,"Settings",1,"Move to foreground",2019-10-16 07:06:24,0.056,0S
+"559",1571209584665,"Settings",2,"Move to background",2019-10-16 07:06:24,14.228,14S
+"563",1571209598893,"Settings",1,"Move to foreground",2019-10-16 07:06:38,1.418,1S
+"565",1571209599658,"System UI",12,"Notifiation interuption",2019-10-16 07:06:39,0,0S
+"566",1571209600311,"Settings",2,"Move to background",2019-10-16 07:06:40,0.22,0S
+"568",1571209601130,"Google",11,"Standby bucket changed",2019-10-16 07:06:41,0,0S
+"572",1571209601145,"Print Spooler",11,"Standby bucket changed",2019-10-16 07:06:41,0,0S
+"590",1571209747834,"WhatsApp",11,"Standby bucket changed",2019-10-16 07:09:07,0,0S
+"608",1571210183691,"System UI",11,"Standby bucket changed",2019-10-16 07:16:23,0,0S
+"614",1571210206292,"Google",11,"Standby bucket changed",2019-10-16 07:16:46,0,0S
+"617",1571210206299,"Print Spooler",11,"Standby bucket changed",2019-10-16 07:16:46,0,0S
+"635",1571212725159,"Google",11,"Standby bucket changed",2019-10-16 07:58:45,0,0S
+"673",1571213109598,"Chrome",11,"Standby bucket changed",2019-10-16 08:05:09,0,0S
+"674",1571213109600,"Chrome",1,"Move to foreground",2019-10-16 08:05:09,39.762,40S
+"677",1571213149473,"Chrome",2,"Move to background",2019-10-16 08:05:49,0.496,0S
+"678",1571213149969,"Chrome",1,"Move to foreground",2019-10-16 08:05:49,0.005,0S
+"679",1571213149974,"Chrome",2,"Move to background",2019-10-16 08:05:49,150.897,2M 31S
+"682",1571213303780,"Chrome",1,"Move to foreground",2019-10-16 08:08:23,12.709,13S
+"684",1571213316489,"Chrome",2,"Move to background",2019-10-16 08:08:36,0.034,0S
+"718",1571214449453,"Google",11,"Standby bucket changed",2019-10-16 08:27:29,0,0S
+"751",1571215349408,"Google",11,"Standby bucket changed",2019-10-16 08:42:29,0,0S
+"765",1571215365977,"Settings",1,"Move to foreground",2019-10-16 08:42:45,0.004,0S
+"766",1571215365981,"Settings",2,"Move to background",2019-10-16 08:42:45,0.386,0S
+"767",1571215366367,"Settings",1,"Move to foreground",2019-10-16 08:42:46,1.094,1S
+"769",1571215367461,"Settings",2,"Move to background",2019-10-16 08:42:47,0.019,0S
+"774",1571215370444,"WhatsApp",1,"Move to foreground",2019-10-16 08:42:50,0.121,0S
+"775",1571215370565,"WhatsApp",2,"Move to background",2019-10-16 08:42:50,0.031,0S
+"776",1571215370596,"WhatsApp",1,"Move to foreground",2019-10-16 08:42:50,4.197,4S
+"777",1571215374793,"WhatsApp",2,"Move to background",2019-10-16 08:42:54,0.051,0S
+"778",1571215374844,"WhatsApp",1,"Move to foreground",2019-10-16 08:42:54,14.454,14S
+"780",1571215389298,"WhatsApp",2,"Move to background",2019-10-16 08:43:09,0.021,0S
+"781",1571215389319,"WhatsApp",1,"Move to foreground",2019-10-16 08:43:09,1.167,1S
+"782",1571215390486,"WhatsApp",2,"Move to background",2019-10-16 08:43:10,0.023,0S
+"786",1571215744431,"WhatsApp",12,"Notifiation interuption",2019-10-16 08:49:04,0,0S
+"787",1571215744438,"WhatsApp",12,"Notifiation interuption",2019-10-16 08:49:04,0,0S
+"788",1571215744731,"WhatsApp",10,"Notification seen",2019-10-16 08:49:04,0.818,1S
+"789",1571215745549,"WhatsApp",10,"Notification seen",2019-10-16 08:49:05,624.156,10M 24S
+"791",1571215990596,"Google",11,"Standby bucket changed",2019-10-16 08:53:10,0,0S
+"796",1571216369772,"Google",11,"Standby bucket changed",2019-10-16 08:59:29,0,0S
+"809",1571216377820,"WhatsApp",1,"Move to foreground",2019-10-16 08:59:37,0.038,0S
+"810",1571216377858,"WhatsApp",2,"Move to background",2019-10-16 08:59:37,0.016,0S
+"811",1571216377874,"WhatsApp",1,"Move to foreground",2019-10-16 08:59:37,0.906,1S
+"812",1571216378780,"WhatsApp",2,"Move to background",2019-10-16 08:59:38,0.006,0S
+"813",1571216378786,"WhatsApp",1,"Move to foreground",2019-10-16 08:59:38,14.509,15S
+"819",1571216394869,"WhatsApp",2,"Move to background",2019-10-16 08:59:54,0.397,0S
+"820",1571216395266,"WhatsApp",1,"Move to foreground",2019-10-16 08:59:55,0.009,0S
+"821",1571216395275,"WhatsApp",2,"Move to background",2019-10-16 08:59:55,66.488,1M 6S
+"824",1571216462250,"WhatsApp",2,"Move to background",2019-10-16 09:01:02,0.006,0S
+"825",1571216462256,"WhatsApp",1,"Move to foreground",2019-10-16 09:01:02,5.009,5S
+"826",1571216467265,"WhatsApp",1,"Move to foreground",2019-10-16 09:01:07,1.601,2S
+"828",1571216468866,"WhatsApp",2,"Move to background",2019-10-16 09:01:08,0.015,0S
+"831",1571216469063,"Chrome",1,"Move to foreground",2019-10-16 09:01:09,0.827,1S
+"832",1571216469890,"Chrome",2,"Move to background",2019-10-16 09:01:09,0.04,0S
+"840",1571216482870,"Settings",1,"Move to foreground",2019-10-16 09:01:22,2.077,2S
+"841",1571216484947,"Settings",2,"Move to background",2019-10-16 09:01:24,0.019,0S
+"844",1571216785164,"System UI",11,"Standby bucket changed",2019-10-16 09:06:25,0,0S
+"911",1571217385168,"System UI",11,"Standby bucket changed",2019-10-16 09:16:25,0,0S
+"920",1571217752715,"Google",11,"Standby bucket changed",2019-10-16 09:22:32,0,0S
+"922",1571217829045,"WhatsApp",12,"Notifiation interuption",2019-10-16 09:23:49,0,0S
+"923",1571217829716,"WhatsApp",12,"Notifiation interuption",2019-10-16 09:23:49,0,0S
+"924",1571217829725,"WhatsApp",12,"Notifiation interuption",2019-10-16 09:23:49,0,0S
+"930",1571217832719,"WhatsApp",10,"Notification seen",2019-10-16 09:23:52,0,0S
+"974",1571219523039,"Google",11,"Standby bucket changed",2019-10-16 09:52:03,0,0S
+"980",1571219540769,"Settings",1,"Move to foreground",2019-10-16 09:52:20,3.195,3S
+"981",1571219543964,"Settings",2,"Move to background",2019-10-16 09:52:23,0.014,0S
+"984",1571219545109,"Settings",1,"Move to foreground",2019-10-16 09:52:25,3.435,3S
+"985",1571219548544,"Settings",2,"Move to background",2019-10-16 09:52:28,0.012,0S
+"986",1571219548556,"Settings",1,"Move to foreground",2019-10-16 09:52:28,1.508,2S
+"987",1571219550064,"Settings",2,"Move to background",2019-10-16 09:52:30,0.011,0S
+"988",1571219550075,"Settings",1,"Move to foreground",2019-10-16 09:52:30,0.782,1S
+"989",1571219550857,"Settings",2,"Move to background",2019-10-16 09:52:30,0.014,0S
+"1018",1571220048071,"Settings",1,"Move to foreground",2019-10-16 10:00:48,2.894,3S
+"1019",1571220050965,"Settings",2,"Move to background",2019-10-16 10:00:50,0.014,0S
+"1022",1571220052191,"Settings",1,"Move to foreground",2019-10-16 10:00:52,2.798,3S
+"1023",1571220054989,"Settings",2,"Move to background",2019-10-16 10:00:54,0.014,0S
+"1024",1571220055003,"Settings",1,"Move to foreground",2019-10-16 10:00:55,1.396,1S
+"1025",1571220056399,"Settings",2,"Move to background",2019-10-16 10:00:56,0.019,0S
+"1026",1571220056418,"Settings",1,"Move to foreground",2019-10-16 10:00:56,0.722,1S
+"1027",1571220057140,"Settings",2,"Move to background",2019-10-16 10:00:57,0.011,0S
+"1049",1571220185917,"Settings",1,"Move to foreground",2019-10-16 10:03:05,2.585,3S
+"1050",1571220188502,"Settings",2,"Move to background",2019-10-16 10:03:08,0.014,0S
+"1053",1571220189526,"Settings",1,"Move to foreground",2019-10-16 10:03:09,2.058,2S
+"1054",1571220191584,"Settings",2,"Move to background",2019-10-16 10:03:11,0.011,0S
+"1055",1571220191595,"Settings",1,"Move to foreground",2019-10-16 10:03:11,1.306,1S
+"1056",1571220192901,"Settings",2,"Move to background",2019-10-16 10:03:12,0.01,0S
+"1057",1571220192911,"Settings",1,"Move to foreground",2019-10-16 10:03:12,0.773,1S
+"1058",1571220193684,"Settings",2,"Move to background",2019-10-16 10:03:13,0.014,0S
+"1080",1571220404121,"Settings",1,"Move to foreground",2019-10-16 10:06:44,3.548,4S
+"1081",1571220407669,"Settings",2,"Move to background",2019-10-16 10:06:47,0.018,0S
+"1084",1571220408986,"Settings",1,"Move to foreground",2019-10-16 10:06:48,1.651,2S
+"1085",1571220410637,"Settings",2,"Move to background",2019-10-16 10:06:50,0.024,0S
+"1086",1571220410661,"Settings",1,"Move to foreground",2019-10-16 10:06:50,1.547,2S
+"1087",1571220412208,"Settings",2,"Move to background",2019-10-16 10:06:52,0.011,0S
+"1088",1571220412219,"Settings",1,"Move to foreground",2019-10-16 10:06:52,0.962,1S
+"1089",1571220413181,"Settings",2,"Move to background",2019-10-16 10:06:53,0.012,0S
+"1114",1571220647398,"Settings",1,"Move to foreground",2019-10-16 10:10:47,2.351,2S
+"1115",1571220649749,"Settings",2,"Move to background",2019-10-16 10:10:49,0.017,0S
+"1118",1571220650925,"Settings",1,"Move to foreground",2019-10-16 10:10:50,2.092,2S
+"1119",1571220653017,"Settings",2,"Move to background",2019-10-16 10:10:53,0.012,0S
+"1120",1571220653029,"Settings",1,"Move to foreground",2019-10-16 10:10:53,2.157,2S
+"1121",1571220655186,"Settings",2,"Move to background",2019-10-16 10:10:55,0.01,0S
+"1122",1571220655196,"Settings",1,"Move to foreground",2019-10-16 10:10:55,1.049,1S
+"1123",1571220656245,"Settings",2,"Move to background",2019-10-16 10:10:56,0.014,0S
+"1147",1571221233360,"Settings",1,"Move to foreground",2019-10-16 10:20:33,2.42,2S
+"1148",1571221235780,"Settings",2,"Move to background",2019-10-16 10:20:35,0.013,0S
+"1151",1571221236889,"Settings",1,"Move to foreground",2019-10-16 10:20:36,2.273,2S
+"1152",1571221239162,"Settings",2,"Move to background",2019-10-16 10:20:39,0.031,0S
+"1153",1571221239193,"Settings",1,"Move to foreground",2019-10-16 10:20:39,1.414,1S
+"1154",1571221240607,"Settings",2,"Move to background",2019-10-16 10:20:40,0.014,0S
+"1155",1571221240621,"Settings",1,"Move to foreground",2019-10-16 10:20:40,0.905,1S
+"1156",1571221241526,"Settings",2,"Move to background",2019-10-16 10:20:41,0.011,0S
+"1202",1571221648357,"Chrome",1,"Move to foreground",2019-10-16 10:27:28,22.244,22S
+"1203",1571221670601,"Chrome",2,"Move to background",2019-10-16 10:27:50,0.048,0S
+"1206",1571221671406,"Chrome",1,"Move to foreground",2019-10-16 10:27:51,22.909,23S
+"1209",1571221796363,"Chrome",2,"Move to background",2019-10-16 10:29:56,0.044,0S
+"1258",1571222572730,"Google",11,"Standby bucket changed",2019-10-16 10:42:52,0,0S
+"1270",1571223212947,"Google",11,"Standby bucket changed",2019-10-16 10:53:32,0,0S
+"1281",1571223221867,"Settings",1,"Move to foreground",2019-10-16 10:53:41,0.729,1S
+"1282",1571223222596,"Settings",2,"Move to background",2019-10-16 10:53:42,0.01,0S
+"1302",1571223332412,"Settings",1,"Move to foreground",2019-10-16 10:55:32,2.754,3S
+"1303",1571223335166,"Settings",2,"Move to background",2019-10-16 10:55:35,0.016,0S
+"1306",1571223336275,"Settings",1,"Move to foreground",2019-10-16 10:55:36,3.571,4S
+"1307",1571223339846,"Settings",2,"Move to background",2019-10-16 10:55:39,0.034,0S
+"1308",1571223339880,"Settings",1,"Move to foreground",2019-10-16 10:55:39,1.565,2S
+"1309",1571223341445,"Settings",2,"Move to background",2019-10-16 10:55:41,0.012,0S
+"1310",1571223341457,"Settings",1,"Move to foreground",2019-10-16 10:55:41,0.939,1S
+"1311",1571223342396,"Settings",2,"Move to background",2019-10-16 10:55:42,0.029,0S
+"1323",1571223376378,"System UI",11,"Standby bucket changed",2019-10-16 10:56:16,0,0S
+"1333",1571223376707,"com.quicinc.cne.CNEService.CNEServiceApp",11,"Standby bucket changed",2019-10-16 10:56:16,0,0S
+"1366",1571223376712,"FQC",11,"Standby bucket changed",2019-10-16 10:56:16,0,0S
+"1373",1571223376712,"AutoRegistration",11,"Standby bucket changed",2019-10-16 10:56:16,0,0S
+"1385",1571223376712,"DbgCfgTool",11,"Standby bucket changed",2019-10-16 10:56:16,0,0S
+"1388",1571223376712,"Maps",11,"Standby bucket changed",2019-10-16 10:56:16,0,0S
+"1397",1571223376713,"Google Play services",11,"Standby bucket changed",2019-10-16 10:56:16,0,0S
+"1398",1571223376713,"Carrier Services",11,"Standby bucket changed",2019-10-16 10:56:16,0,0S
+"1416",1571223376713,"CustManager",11,"Standby bucket changed",2019-10-16 10:56:16,0,0S
+"1417",1571223376713,"Settings",11,"Standby bucket changed",2019-10-16 10:56:16,0,0S
+"1424",1571223376713,"LocationServices",11,"Standby bucket changed",2019-10-16 10:56:16,0,0S
+"1429",1571223376714,"Phone Services",11,"Standby bucket changed",2019-10-16 10:56:16,0,0S
+"1430",1571223376714,"Shell",11,"Standby bucket changed",2019-10-16 10:56:16,0,0S
+"1436",1571223376714,"QMMI",11,"Standby bucket changed",2019-10-16 10:56:16,0,0S
+"1437",1571223376714,"Fused Location",11,"Standby bucket changed",2019-10-16 10:56:16,0,0S
+"1438",1571223376714,"ConfDialer",11,"Standby bucket changed",2019-10-16 10:56:16,0,0S
+"1441",1571223376714,"RetailDemoApp",11,"Standby bucket changed",2019-10-16 10:56:16,0,0S
+"1445",1571223376714,"Bluetooth",11,"Standby bucket changed",2019-10-16 10:56:16,0,0S
+"1450",1571223376715,"Android Setup",11,"Standby bucket changed",2019-10-16 10:56:16,0,0S
+"1451",1571223376827,"Settings",1,"Move to foreground",2019-10-16 10:56:16,0.321,0S
+"1454",1571223377148,"Settings",2,"Move to background",2019-10-16 10:56:17,2.093,2S
+"1460",1571223385058,"Settings",1,"Move to foreground",2019-10-16 10:56:25,0.002,0S
+"1461",1571223385060,"Settings",2,"Move to background",2019-10-16 10:56:25,9.803,10S
+"1463",1571223395439,"Settings",1,"Move to foreground",2019-10-16 10:56:35,1.452,1S
+"1465",1571223397282,"Settings",2,"Move to background",2019-10-16 10:56:37,0.008,0S
+"1466",1571223397290,"Settings",1,"Move to foreground",2019-10-16 10:56:37,2.581,3S
+"1467",1571223399871,"Settings",1,"Move to foreground",2019-10-16 10:56:39,1.459,1S
+"1469",1571223400576,"System UI",12,"Notifiation interuption",2019-10-16 10:56:40,0,0S
+"1470",1571223401330,"Settings",2,"Move to background",2019-10-16 10:56:41,0.338,0S
+"1472",1571223402680,"Google",11,"Standby bucket changed",2019-10-16 10:56:42,0,0S
+"1476",1571223402721,"Print Spooler",11,"Standby bucket changed",2019-10-16 10:56:42,0,0S
+"1495",1571223542973,"WhatsApp",11,"Standby bucket changed",2019-10-16 10:59:02,0,0S
+"1531",1571223593643,"Settings",1,"Move to foreground",2019-10-16 10:59:53,3.054,3S
+"1532",1571223596697,"Settings",2,"Move to background",2019-10-16 10:59:56,0.014,0S
+"1533",1571223596711,"Settings",1,"Move to foreground",2019-10-16 10:59:56,1.501,2S
+"1534",1571223598212,"Settings",2,"Move to background",2019-10-16 10:59:58,0.01,0S
+"1535",1571223598222,"Settings",1,"Move to foreground",2019-10-16 10:59:58,0.987,1S
+"1536",1571223599209,"Settings",2,"Move to background",2019-10-16 10:59:59,0.016,0S
+"1562",1571223654605,"System UI",11,"Standby bucket changed",2019-10-16 11:00:54,0,0S
+"1572",1571223654940,"com.quicinc.cne.CNEService.CNEServiceApp",11,"Standby bucket changed",2019-10-16 11:00:54,0,0S
+"1604",1571223654942,"FQC",11,"Standby bucket changed",2019-10-16 11:00:54,0,0S
+"1611",1571223654942,"AutoRegistration",11,"Standby bucket changed",2019-10-16 11:00:54,0,0S
+"1623",1571223654943,"DbgCfgTool",11,"Standby bucket changed",2019-10-16 11:00:54,0,0S
+"1626",1571223654943,"Maps",11,"Standby bucket changed",2019-10-16 11:00:54,0,0S
+"1635",1571223654943,"Google Play services",11,"Standby bucket changed",2019-10-16 11:00:54,0,0S
+"1636",1571223654943,"Carrier Services",11,"Standby bucket changed",2019-10-16 11:00:54,0,0S
+"1654",1571223654951,"CustManager",11,"Standby bucket changed",2019-10-16 11:00:54,0,0S
+"1655",1571223654951,"Settings",11,"Standby bucket changed",2019-10-16 11:00:54,0,0S
+"1662",1571223654951,"LocationServices",11,"Standby bucket changed",2019-10-16 11:00:54,0,0S
+"1667",1571223654961,"Phone Services",11,"Standby bucket changed",2019-10-16 11:00:54,0,0S
+"1668",1571223654961,"Shell",11,"Standby bucket changed",2019-10-16 11:00:54,0,0S
+"1674",1571223654962,"QMMI",11,"Standby bucket changed",2019-10-16 11:00:54,0,0S
+"1675",1571223654962,"Fused Location",11,"Standby bucket changed",2019-10-16 11:00:54,0,0S
+"1676",1571223654962,"ConfDialer",11,"Standby bucket changed",2019-10-16 11:00:54,0,0S
+"1679",1571223654962,"RetailDemoApp",11,"Standby bucket changed",2019-10-16 11:00:54,0,0S
+"1683",1571223654962,"Bluetooth",11,"Standby bucket changed",2019-10-16 11:00:54,0,0S
+"1688",1571223654962,"Android Setup",11,"Standby bucket changed",2019-10-16 11:00:54,0,0S
+"1689",1571223655065,"Settings",1,"Move to foreground",2019-10-16 11:00:55,0.339,0S
+"1692",1571223655404,"Settings",2,"Move to background",2019-10-16 11:00:55,2.056,2S
+"1698",1571223663263,"Settings",1,"Move to foreground",2019-10-16 11:01:03,0.002,0S
+"1699",1571223663265,"Settings",2,"Move to background",2019-10-16 11:01:03,10.956,11S
+"1700",1571223674221,"Settings",1,"Move to foreground",2019-10-16 11:01:14,31.448,31S
+"1702",1571223674910,"System UI",12,"Notifiation interuption",2019-10-16 11:01:14,0,0S
+"1703",1571223676221,"Google",11,"Standby bucket changed",2019-10-16 11:01:16,0,0S
+"1707",1571223676222,"Print Spooler",11,"Standby bucket changed",2019-10-16 11:01:16,0,0S
+"1711",1571223679413,"Chrome",11,"Standby bucket changed",2019-10-16 11:01:19,0,0S
+"1718",1571223705669,"Settings",2,"Move to background",2019-10-16 11:01:45,0.025,0S
+"1756",1571223813132,"WhatsApp",11,"Standby bucket changed",2019-10-16 11:03:33,0,0S
+"1784",1571224254615,"System UI",11,"Standby bucket changed",2019-10-16 11:10:54,0,0S
+"1786",1571224276231,"Print Spooler",11,"Standby bucket changed",2019-10-16 11:11:16,0,0S
+"1796",1571224506262,"Google",11,"Standby bucket changed",2019-10-16 11:15:06,0,0S
+"1816",1571224655958,"Settings",1,"Move to foreground",2019-10-16 11:17:35,4.333,4S
+"1817",1571224660291,"Settings",2,"Move to background",2019-10-16 11:17:40,0.016,0S
+"1818",1571224660307,"Settings",1,"Move to foreground",2019-10-16 11:17:40,1.229,1S
+"1819",1571224661536,"Settings",2,"Move to background",2019-10-16 11:17:41,0.01,0S
+"1820",1571224661546,"Settings",1,"Move to foreground",2019-10-16 11:17:41,0.919,1S
+"1821",1571224662465,"Settings",2,"Move to background",2019-10-16 11:17:42,0.014,0S
+"1822",1571224662479,"Settings",1,"Move to foreground",2019-10-16 11:17:42,1.345,1S
+"1823",1571224663824,"Settings",2,"Move to background",2019-10-16 11:17:43,0.015,0S
+"1824",1571224663839,"Settings",1,"Move to foreground",2019-10-16 11:17:43,0.694,1S
+"1825",1571224664533,"Settings",2,"Move to background",2019-10-16 11:17:44,0.014,0S
+"1838",1571224690767,"Google",11,"Standby bucket changed",2019-10-16 11:18:10,0,0S
+"1848",1571224719571,"System UI",11,"Standby bucket changed",2019-10-16 11:18:39,0,0S
+"1858",1571224719893,"com.quicinc.cne.CNEService.CNEServiceApp",11,"Standby bucket changed",2019-10-16 11:18:39,0,0S
+"1891",1571224719897,"FQC",11,"Standby bucket changed",2019-10-16 11:18:39,0,0S
+"1899",1571224719900,"AutoRegistration",11,"Standby bucket changed",2019-10-16 11:18:39,0,0S
+"1911",1571224719900,"DbgCfgTool",11,"Standby bucket changed",2019-10-16 11:18:39,0,0S
+"1914",1571224719900,"Maps",11,"Standby bucket changed",2019-10-16 11:18:39,0,0S
+"1924",1571224719904,"Google Play services",11,"Standby bucket changed",2019-10-16 11:18:39,0,0S
+"1925",1571224719904,"Carrier Services",11,"Standby bucket changed",2019-10-16 11:18:39,0,0S
+"1944",1571224719914,"CustManager",11,"Standby bucket changed",2019-10-16 11:18:39,0,0S
+"1945",1571224719914,"Settings",11,"Standby bucket changed",2019-10-16 11:18:39,0,0S
+"1952",1571224719916,"LocationServices",11,"Standby bucket changed",2019-10-16 11:18:39,0,0S
+"1956",1571224719922,"Phone Services",11,"Standby bucket changed",2019-10-16 11:18:39,0,0S
+"1957",1571224719922,"Shell",11,"Standby bucket changed",2019-10-16 11:18:39,0,0S
+"1963",1571224719923,"QMMI",11,"Standby bucket changed",2019-10-16 11:18:39,0,0S
+"1964",1571224719923,"Fused Location",11,"Standby bucket changed",2019-10-16 11:18:39,0,0S
+"1965",1571224719923,"ConfDialer",11,"Standby bucket changed",2019-10-16 11:18:39,0,0S
+"1968",1571224719923,"RetailDemoApp",11,"Standby bucket changed",2019-10-16 11:18:39,0,0S
+"1972",1571224719923,"Bluetooth",11,"Standby bucket changed",2019-10-16 11:18:39,0,0S
+"1977",1571224719924,"Android Setup",11,"Standby bucket changed",2019-10-16 11:18:39,0,0S
+"1978",1571224720006,"Settings",1,"Move to foreground",2019-10-16 11:18:40,0.33,0S
+"1981",1571224720336,"Settings",2,"Move to background",2019-10-16 11:18:40,2.097,2S
+"1987",1571224728026,"Settings",1,"Move to foreground",2019-10-16 11:18:48,0.002,0S
+"1988",1571224728028,"Settings",2,"Move to background",2019-10-16 11:18:48,6.842,7S
+"1989",1571224734870,"Settings",1,"Move to foreground",2019-10-16 11:18:54,11.772,12S
+"1991",1571224735625,"System UI",12,"Notifiation interuption",2019-10-16 11:18:55,0,0S
+"1992",1571224736872,"Google",11,"Standby bucket changed",2019-10-16 11:18:56,0,0S
+"1996",1571224736876,"Print Spooler",11,"Standby bucket changed",2019-10-16 11:18:56,0,0S
+"2006",1571224746642,"Settings",2,"Move to background",2019-10-16 11:19:06,0.031,0S
+"2057",1571224873618,"WhatsApp",11,"Standby bucket changed",2019-10-16 11:21:13,0,0S
+"2091",1571225355968,"System UI",11,"Standby bucket changed",2019-10-16 11:29:15,0,0S
+"2094",1571225373414,"Print Spooler",11,"Standby bucket changed",2019-10-16 11:29:33,0,0S
+"2103",1571226667577,"WhatsApp",12,"Notifiation interuption",2019-10-16 11:51:07,0,0S
+"2104",1571226668375,"WhatsApp",12,"Notifiation interuption",2019-10-16 11:51:08,0,0S
+"2105",1571226668408,"WhatsApp",12,"Notifiation interuption",2019-10-16 11:51:08,0,0S
+"2106",1571226668419,"WhatsApp",12,"Notifiation interuption",2019-10-16 11:51:08,0,0S
+"2110",1571226774168,"WhatsApp",10,"Notification seen",2019-10-16 11:52:54,0,0S
+"2111",1571226774168,"WhatsApp",10,"Notification seen",2019-10-16 11:52:54,0,0S
+"2112",1571226774168,"WhatsApp",10,"Notification seen",2019-10-16 11:52:54,1.268,1S
+"2122",1571227778853,"Chrome",11,"Standby bucket changed",2019-10-16 12:09:38,0,0S
+"2123",1571227778858,"Chrome",1,"Move to foreground",2019-10-16 12:09:38,15.544,16S
+"2125",1571227794533,"Chrome",2,"Move to background",2019-10-16 12:09:54,0.469,0S
+"2126",1571227795002,"Chrome",1,"Move to foreground",2019-10-16 12:09:55,0.016,0S
+"2127",1571227795018,"Chrome",2,"Move to background",2019-10-16 12:09:55,2007.426,33M 27S
+"2136",1571229802812,"Chrome",2,"Move to background",2019-10-16 12:43:22,0.011,0S
+"2137",1571229802823,"Chrome",1,"Move to foreground",2019-10-16 12:43:22,3.628,4S
+"2148",1571231053720,"Chrome",2,"Move to background",2019-10-16 13:04:13,0.01,0S
+"2149",1571231053730,"Chrome",1,"Move to foreground",2019-10-16 13:04:13,3.114,3S
+"2150",1571231056844,"WhatsApp",7,"User interaction",2019-10-16 13:04:16,0.027,0S
+"2151",1571231056871,"WhatsApp",1,"Move to foreground",2019-10-16 13:04:16,0.001,0S
+"2152",1571231056872,"WhatsApp",2,"Move to background",2019-10-16 13:04:16,0.376,0S
+"2153",1571231057248,"WhatsApp",1,"Move to foreground",2019-10-16 13:04:17,1.191,1S
+"2155",1571231058439,"WhatsApp",2,"Move to background",2019-10-16 13:04:18,0.006,0S
+"2156",1571231058445,"WhatsApp",1,"Move to foreground",2019-10-16 13:04:18,64.666,1M 5S
+"2161",1571231211823,"WhatsApp",2,"Move to background",2019-10-16 13:06:51,0.406,0S
+"2162",1571231212229,"WhatsApp",1,"Move to foreground",2019-10-16 13:06:52,0.012,0S
+"2163",1571231212241,"WhatsApp",2,"Move to background",2019-10-16 13:06:52,35.073,35S
+"2165",1571231240877,"WhatsApp",12,"Notifiation interuption",2019-10-16 13:07:20,0,0S
+"2166",1571231240907,"WhatsApp",12,"Notifiation interuption",2019-10-16 13:07:20,0,0S
+"2167",1571231240915,"WhatsApp",12,"Notifiation interuption",2019-10-16 13:07:20,0,0S
+"2168",1571231245339,"WhatsApp",12,"Notifiation interuption",2019-10-16 13:07:25,0,0S
+"2169",1571231245377,"WhatsApp",12,"Notifiation interuption",2019-10-16 13:07:25,0,0S
+"2170",1571231245384,"WhatsApp",12,"Notifiation interuption",2019-10-16 13:07:25,0,0S
+"2172",1571231247683,"WhatsApp",2,"Move to background",2019-10-16 13:07:27,0.006,0S
+"2173",1571231247689,"WhatsApp",1,"Move to foreground",2019-10-16 13:07:27,2.505,3S
+"2174",1571231250194,"WhatsApp",1,"Move to foreground",2019-10-16 13:07:30,121.092,2M 1S
+"2177",1571231371431,"WhatsApp",2,"Move to background",2019-10-16 13:09:31,0.38,0S
+"2178",1571231371811,"WhatsApp",1,"Move to foreground",2019-10-16 13:09:31,0.008,0S
+"2179",1571231371819,"WhatsApp",2,"Move to background",2019-10-16 13:09:31,37.573,38S
+"2181",1571231377056,"WhatsApp",12,"Notifiation interuption",2019-10-16 13:09:37,0,0S
+"2182",1571231377086,"WhatsApp",12,"Notifiation interuption",2019-10-16 13:09:37,0,0S
+"2183",1571231377094,"WhatsApp",12,"Notifiation interuption",2019-10-16 13:09:37,0,0S
+"2184",1571231387662,"WhatsApp",12,"Notifiation interuption",2019-10-16 13:09:47,0,0S
+"2185",1571231387703,"WhatsApp",12,"Notifiation interuption",2019-10-16 13:09:47,0,0S
+"2186",1571231387712,"WhatsApp",12,"Notifiation interuption",2019-10-16 13:09:47,0,0S
+"2188",1571231410074,"WhatsApp",2,"Move to background",2019-10-16 13:10:10,0.007,0S
+"2189",1571231410081,"WhatsApp",1,"Move to foreground",2019-10-16 13:10:10,2.224,2S
+"2190",1571231412305,"WhatsApp",1,"Move to foreground",2019-10-16 13:10:12,39.329,39S
+"2192",1571231451634,"WhatsApp",2,"Move to background",2019-10-16 13:10:51,0.019,0S
+"2195",1571231451819,"Chrome",1,"Move to foreground",2019-10-16 13:10:51,1.452,1S
+"2196",1571231453271,"Chrome",2,"Move to background",2019-10-16 13:10:53,0.032,0S
+"2201",1571231548837,"WhatsApp",12,"Notifiation interuption",2019-10-16 13:12:28,0,0S
+"2202",1571231548885,"WhatsApp",12,"Notifiation interuption",2019-10-16 13:12:28,0,0S
+"2203",1571231548897,"WhatsApp",12,"Notifiation interuption",2019-10-16 13:12:28,0,0S
+"2204",1571231549158,"WhatsApp",10,"Notification seen",2019-10-16 13:12:29,0.705,1S
+"2205",1571231549863,"WhatsApp",10,"Notification seen",2019-10-16 13:12:29,0,0S
+"2206",1571231549863,"WhatsApp",10,"Notification seen",2019-10-16 13:12:29,1.294,1S
+"2208",1571231551193,"WhatsApp",1,"Move to foreground",2019-10-16 13:12:31,0.01,0S
+"2209",1571231551203,"WhatsApp",7,"User interaction",2019-10-16 13:12:31,0.903,1S
+"2210",1571231552106,"WhatsApp",2,"Move to background",2019-10-16 13:12:32,0.015,0S
+"2211",1571231552121,"WhatsApp",1,"Move to foreground",2019-10-16 13:12:32,1.132,1S
+"2212",1571231553253,"WhatsApp",2,"Move to background",2019-10-16 13:12:33,0.013,0S
+"2213",1571231553266,"WhatsApp",1,"Move to foreground",2019-10-16 13:12:33,1.085,1S
+"2214",1571231554351,"WhatsApp",2,"Move to background",2019-10-16 13:12:34,0.013,0S
+"2215",1571231554364,"WhatsApp",1,"Move to foreground",2019-10-16 13:12:34,1.011,1S
+"2216",1571231555375,"WhatsApp",2,"Move to background",2019-10-16 13:12:35,0.017,0S
+"2245",1571231819694,"Settings",1,"Move to foreground",2019-10-16 13:16:59,0.567,1S
+"2246",1571231820261,"Settings",2,"Move to background",2019-10-16 13:17:00,0.009,0S
+"2261",1571231880395,"Settings",1,"Move to foreground",2019-10-16 13:18:00,3.461,3S
+"2262",1571231883856,"Settings",2,"Move to background",2019-10-16 13:18:03,0.027,0S
+"2263",1571231883883,"Settings",1,"Move to foreground",2019-10-16 13:18:03,1.314,1S
+"2264",1571231885197,"Settings",2,"Move to background",2019-10-16 13:18:05,0.013,0S
+"2265",1571231885210,"Settings",1,"Move to foreground",2019-10-16 13:18:05,0.426,0S
+"2266",1571231885636,"Settings",2,"Move to background",2019-10-16 13:18:05,0.018,0S
+"2280",1571231922578,"System UI",11,"Standby bucket changed",2019-10-16 13:18:42,0,0S
+"2290",1571231980487,"System UI",11,"Standby bucket changed",2019-10-16 13:19:40,0,0S
+"2300",1571231980780,"com.quicinc.cne.CNEService.CNEServiceApp",11,"Standby bucket changed",2019-10-16 13:19:40,0,0S
+"2333",1571231980789,"FQC",11,"Standby bucket changed",2019-10-16 13:19:40,0,0S
+"2340",1571231980789,"AutoRegistration",11,"Standby bucket changed",2019-10-16 13:19:40,0,0S
+"2352",1571231980789,"DbgCfgTool",11,"Standby bucket changed",2019-10-16 13:19:40,0,0S
+"2355",1571231980789,"Maps",11,"Standby bucket changed",2019-10-16 13:19:40,0,0S
+"2364",1571231980790,"Google Play services",11,"Standby bucket changed",2019-10-16 13:19:40,0,0S
+"2365",1571231980790,"Carrier Services",11,"Standby bucket changed",2019-10-16 13:19:40,0,0S
+"2383",1571231980792,"CustManager",11,"Standby bucket changed",2019-10-16 13:19:40,0,0S
+"2384",1571231980792,"Settings",11,"Standby bucket changed",2019-10-16 13:19:40,0,0S
+"2391",1571231980793,"LocationServices",11,"Standby bucket changed",2019-10-16 13:19:40,0,0S
+"2395",1571231980793,"Phone Services",11,"Standby bucket changed",2019-10-16 13:19:40,0,0S
+"2396",1571231980793,"Shell",11,"Standby bucket changed",2019-10-16 13:19:40,0,0S
+"2402",1571231980793,"QMMI",11,"Standby bucket changed",2019-10-16 13:19:40,0,0S
+"2403",1571231980793,"Fused Location",11,"Standby bucket changed",2019-10-16 13:19:40,0,0S
+"2404",1571231980793,"ConfDialer",11,"Standby bucket changed",2019-10-16 13:19:40,0,0S
+"2407",1571231980793,"RetailDemoApp",11,"Standby bucket changed",2019-10-16 13:19:40,0,0S
+"2411",1571231980793,"Bluetooth",11,"Standby bucket changed",2019-10-16 13:19:40,0,0S
+"2416",1571231980793,"Android Setup",11,"Standby bucket changed",2019-10-16 13:19:40,0,0S
+"2417",1571231980919,"Settings",1,"Move to foreground",2019-10-16 13:19:40,0.303,0S
+"2420",1571231981222,"Settings",2,"Move to background",2019-10-16 13:19:41,2.186,2S
+"2426",1571231988951,"Settings",1,"Move to foreground",2019-10-16 13:19:48,0.001,0S
+"2427",1571231988952,"Settings",2,"Move to background",2019-10-16 13:19:48,9.868,10S
+"2430",1571232014091,"Settings",2,"Move to background",2019-10-16 13:20:14,0.007,0S
+"2431",1571232014098,"Settings",1,"Move to foreground",2019-10-16 13:20:14,2.434,2S
+"2432",1571232016532,"Settings",1,"Move to foreground",2019-10-16 13:20:16,1.213,1S
+"2434",1571232017342,"System UI",12,"Notifiation interuption",2019-10-16 13:20:17,0,0S
+"2435",1571232017745,"Settings",2,"Move to background",2019-10-16 13:20:17,0.012,0S
+"2436",1571232017757,"Settings",1,"Move to foreground",2019-10-16 13:20:17,0.212,0S
+"2437",1571232017969,"Settings",2,"Move to background",2019-10-16 13:20:17,0.203,0S
+"2439",1571232018718,"Google",11,"Standby bucket changed",2019-10-16 13:20:18,0,0S
+"2443",1571232018759,"Print Spooler",11,"Standby bucket changed",2019-10-16 13:20:18,0,0S
+"2464",1571232156884,"WhatsApp",11,"Standby bucket changed",2019-10-16 13:22:36,0,0S
+"2493",1571232183708,"Settings",1,"Move to foreground",2019-10-16 13:23:03,2.811,3S
+"2494",1571232186519,"Settings",2,"Move to background",2019-10-16 13:23:06,0.028,0S
+"2495",1571232186547,"Settings",1,"Move to foreground",2019-10-16 13:23:06,1.313,1S
+"2496",1571232187860,"Settings",2,"Move to background",2019-10-16 13:23:07,0.016,0S
+"2497",1571232187876,"Settings",1,"Move to foreground",2019-10-16 13:23:07,0.585,1S
+"2498",1571232188461,"Settings",2,"Move to background",2019-10-16 13:23:08,0.019,0S
+"2508",1571232249505,"System UI",11,"Standby bucket changed",2019-10-16 13:24:09,0,0S
+"2518",1571232249821,"com.quicinc.cne.CNEService.CNEServiceApp",11,"Standby bucket changed",2019-10-16 13:24:09,0,0S
+"2550",1571232249824,"FQC",11,"Standby bucket changed",2019-10-16 13:24:09,0,0S
+"2557",1571232249824,"AutoRegistration",11,"Standby bucket changed",2019-10-16 13:24:09,0,0S
+"2569",1571232249828,"DbgCfgTool",11,"Standby bucket changed",2019-10-16 13:24:09,0,0S
+"2572",1571232249828,"Maps",11,"Standby bucket changed",2019-10-16 13:24:09,0,0S
+"2581",1571232249828,"Google Play services",11,"Standby bucket changed",2019-10-16 13:24:09,0,0S
+"2582",1571232249828,"Carrier Services",11,"Standby bucket changed",2019-10-16 13:24:09,0,0S
+"2600",1571232249829,"CustManager",11,"Standby bucket changed",2019-10-16 13:24:09,0,0S
+"2601",1571232249829,"Settings",11,"Standby bucket changed",2019-10-16 13:24:09,0,0S
+"2608",1571232249829,"LocationServices",11,"Standby bucket changed",2019-10-16 13:24:09,0,0S
+"2612",1571232249829,"Phone Services",11,"Standby bucket changed",2019-10-16 13:24:09,0,0S
+"2613",1571232249829,"Shell",11,"Standby bucket changed",2019-10-16 13:24:09,0,0S
+"2619",1571232249829,"QMMI",11,"Standby bucket changed",2019-10-16 13:24:09,0,0S
+"2620",1571232249829,"Fused Location",11,"Standby bucket changed",2019-10-16 13:24:09,0,0S
+"2621",1571232249830,"ConfDialer",11,"Standby bucket changed",2019-10-16 13:24:09,0,0S
+"2624",1571232249830,"RetailDemoApp",11,"Standby bucket changed",2019-10-16 13:24:09,0,0S
+"2628",1571232249830,"Bluetooth",11,"Standby bucket changed",2019-10-16 13:24:09,0,0S
+"2633",1571232249833,"Android Setup",11,"Standby bucket changed",2019-10-16 13:24:09,0,0S
+"2634",1571232249931,"Settings",1,"Move to foreground",2019-10-16 13:24:09,0.317,0S
+"2639",1571232250248,"Settings",2,"Move to background",2019-10-16 13:24:10,2.184,2S
+"2643",1571232258023,"Settings",1,"Move to foreground",2019-10-16 13:24:18,0.002,0S
+"2644",1571232258025,"Settings",2,"Move to background",2019-10-16 13:24:18,7.879,8S
+"2645",1571232265904,"Settings",1,"Move to foreground",2019-10-16 13:24:25,0.984,1S
+"2647",1571232266642,"System UI",12,"Notifiation interuption",2019-10-16 13:24:26,0,0S
+"2648",1571232266888,"Settings",2,"Move to background",2019-10-16 13:24:26,0.013,0S
+"2649",1571232266901,"Settings",1,"Move to foreground",2019-10-16 13:24:26,0.412,0S
+"2650",1571232267313,"Settings",2,"Move to background",2019-10-16 13:24:27,0.283,0S
+"2652",1571232268029,"Google",11,"Standby bucket changed",2019-10-16 13:24:28,0,0S
+"2656",1571232268032,"Print Spooler",11,"Standby bucket changed",2019-10-16 13:24:28,0,0S
+"2685",1571232423632,"WhatsApp",11,"Standby bucket changed",2019-10-16 13:27:03,0,0S
+"2714",1571232514930,"Settings",1,"Move to foreground",2019-10-16 13:28:34,2.773,3S
+"2715",1571232517703,"Settings",2,"Move to background",2019-10-16 13:28:37,0.036,0S
+"2716",1571232517739,"Settings",1,"Move to foreground",2019-10-16 13:28:37,1.542,2S
+"2717",1571232519281,"Settings",2,"Move to background",2019-10-16 13:28:39,0.019,0S
+"2718",1571232519300,"Settings",1,"Move to foreground",2019-10-16 13:28:39,0.688,1S
+"2719",1571232519988,"Settings",2,"Move to background",2019-10-16 13:28:39,0.013,0S
+"2764",1571232656014,"Settings",1,"Move to foreground",2019-10-16 13:30:56,1.772,2S
+"2765",1571232657786,"Settings",2,"Move to background",2019-10-16 13:30:57,0.035,0S
+"2766",1571232657821,"Settings",1,"Move to foreground",2019-10-16 13:30:57,1.525,2S
+"2767",1571232659346,"Settings",2,"Move to background",2019-10-16 13:30:59,0.012,0S
+"2768",1571232659358,"Settings",1,"Move to foreground",2019-10-16 13:30:59,0.61,1S
+"2769",1571232659968,"Settings",2,"Move to background",2019-10-16 13:30:59,0.008,0S
+"2791",1571232706190,"System UI",11,"Standby bucket changed",2019-10-16 13:31:46,0,0S
+"2801",1571232706472,"com.quicinc.cne.CNEService.CNEServiceApp",11,"Standby bucket changed",2019-10-16 13:31:46,0,0S
+"2833",1571232706473,"FQC",11,"Standby bucket changed",2019-10-16 13:31:46,0,0S
+"2840",1571232706473,"AutoRegistration",11,"Standby bucket changed",2019-10-16 13:31:46,0,0S
+"2852",1571232706473,"DbgCfgTool",11,"Standby bucket changed",2019-10-16 13:31:46,0,0S
+"2855",1571232706474,"Maps",11,"Standby bucket changed",2019-10-16 13:31:46,0,0S
+"2864",1571232706474,"Google Play services",11,"Standby bucket changed",2019-10-16 13:31:46,0,0S
+"2865",1571232706474,"Carrier Services",11,"Standby bucket changed",2019-10-16 13:31:46,0,0S
+"2883",1571232706475,"CustManager",11,"Standby bucket changed",2019-10-16 13:31:46,0,0S
+"2884",1571232706475,"Settings",11,"Standby bucket changed",2019-10-16 13:31:46,0,0S
+"2891",1571232706475,"LocationServices",11,"Standby bucket changed",2019-10-16 13:31:46,0,0S
+"2895",1571232706475,"Phone Services",11,"Standby bucket changed",2019-10-16 13:31:46,0,0S
+"2896",1571232706475,"Shell",11,"Standby bucket changed",2019-10-16 13:31:46,0,0S
+"2902",1571232706475,"QMMI",11,"Standby bucket changed",2019-10-16 13:31:46,0,0S
+"2903",1571232706475,"Fused Location",11,"Standby bucket changed",2019-10-16 13:31:46,0,0S
+"2904",1571232706475,"ConfDialer",11,"Standby bucket changed",2019-10-16 13:31:46,0,0S
+"2907",1571232706476,"RetailDemoApp",11,"Standby bucket changed",2019-10-16 13:31:46,0,0S
+"2911",1571232706476,"Bluetooth",11,"Standby bucket changed",2019-10-16 13:31:46,0,0S
+"2916",1571232706476,"Android Setup",11,"Standby bucket changed",2019-10-16 13:31:46,0,0S
+"2917",1571232706621,"Settings",1,"Move to foreground",2019-10-16 13:31:46,0.311,0S
+"2920",1571232706932,"Settings",2,"Move to background",2019-10-16 13:31:46,2.125,2S
+"2926",1571232714723,"Settings",1,"Move to foreground",2019-10-16 13:31:54,0.002,0S
+"2927",1571232714725,"Settings",2,"Move to background",2019-10-16 13:31:54,9.801,10S
+"2929",1571232725126,"Settings",1,"Move to foreground",2019-10-16 13:32:05,0.01,0S
+"2930",1571232725136,"Settings",2,"Move to background",2019-10-16 13:32:05,31.289,31S
+"2932",1571232756728,"Settings",2,"Move to background",2019-10-16 13:32:36,0.009,0S
+"2933",1571232756737,"Settings",1,"Move to foreground",2019-10-16 13:32:36,2.518,3S
+"2934",1571232759255,"Settings",1,"Move to foreground",2019-10-16 13:32:39,0.912,1S
+"2936",1571232760112,"System UI",12,"Notifiation interuption",2019-10-16 13:32:40,0,0S
+"2937",1571232760167,"Settings",2,"Move to background",2019-10-16 13:32:40,0.033,0S
+"2940",1571232761079,"Google",11,"Standby bucket changed",2019-10-16 13:32:41,0,0S
+"2941",1571232761415,"Print Spooler",11,"Standby bucket changed",2019-10-16 13:32:41,0,0S
+"2979",1571232933035,"WhatsApp",11,"Standby bucket changed",2019-10-16 13:35:33,0,0S
+"3009",1571233306195,"System UI",11,"Standby bucket changed",2019-10-16 13:41:46,0,0S
+"3011",1571233361415,"Print Spooler",11,"Standby bucket changed",2019-10-16 13:42:41,0,0S
+"3037",1571233814731,"WhatsApp",12,"Notifiation interuption",2019-10-16 13:50:14,0,0S
+"3038",1571233815211,"WhatsApp",12,"Notifiation interuption",2019-10-16 13:50:15,0,0S
+"3039",1571233815218,"WhatsApp",12,"Notifiation interuption",2019-10-16 13:50:15,0,0S
+"3043",1571233825527,"WhatsApp",10,"Notification seen",2019-10-16 13:50:25,3.943,4S
+"3044",1571233829470,"WhatsApp",1,"Move to foreground",2019-10-16 13:50:29,0.001,0S
+"3045",1571233829471,"WhatsApp",2,"Move to background",2019-10-16 13:50:29,0.003,0S
+"3046",1571233829474,"WhatsApp",7,"User interaction",2019-10-16 13:50:29,0.463,0S
+"3047",1571233829937,"WhatsApp",1,"Move to foreground",2019-10-16 13:50:29,282.465,4M 42S
+"3053",1571234112402,"WhatsApp",2,"Move to background",2019-10-16 13:55:12,0.047,0S
+"3054",1571234112449,"WhatsApp",1,"Move to foreground",2019-10-16 13:55:12,1.016,1S
+"3055",1571234113465,"WhatsApp",2,"Move to background",2019-10-16 13:55:13,0.005,0S
+"3056",1571234113470,"WhatsApp",1,"Move to foreground",2019-10-16 13:55:13,20.841,21S
+"3057",1571234134028,"WhatsApp",12,"Notifiation interuption",2019-10-16 13:55:34,0,0S
+"3058",1571234134032,"WhatsApp",12,"Notifiation interuption",2019-10-16 13:55:34,0,0S
+"3059",1571234134311,"WhatsApp",10,"Notification seen",2019-10-16 13:55:34,0.757,1S
+"3060",1571234135068,"WhatsApp",10,"Notification seen",2019-10-16 13:55:35,15.751,16S
+"3061",1571234137988,"WhatsApp",12,"Notifiation interuption",2019-10-16 13:55:37,0,0S
+"3062",1571234137999,"WhatsApp",12,"Notifiation interuption",2019-10-16 13:55:37,0,0S
+"3063",1571234144163,"WhatsApp",12,"Notifiation interuption",2019-10-16 13:55:44,0,0S
+"3064",1571234144174,"WhatsApp",12,"Notifiation interuption",2019-10-16 13:55:44,0,0S
+"3065",1571234150819,"WhatsApp",2,"Move to background",2019-10-16 13:55:50,0.014,0S
+"3082",1571234928644,"Settings",1,"Move to foreground",2019-10-16 14:08:48,64.581,1M 5S
+"3087",1571234993225,"Settings",2,"Move to background",2019-10-16 14:09:53,0.018,0S
+"3090",1571234994901,"Settings",1,"Move to foreground",2019-10-16 14:09:54,4.261,4S
+"3091",1571234999162,"Settings",2,"Move to background",2019-10-16 14:09:59,0.021,0S
+"3092",1571234999183,"Settings",1,"Move to foreground",2019-10-16 14:09:59,1.636,2S
+"3093",1571235000819,"Settings",2,"Move to background",2019-10-16 14:10:00,0.013,0S
+"3094",1571235000832,"Settings",1,"Move to foreground",2019-10-16 14:10:00,0.831,1S
+"3095",1571235001663,"Settings",2,"Move to background",2019-10-16 14:10:01,0.014,0S
+"3098",1571235146622,"Google",11,"Standby bucket changed",2019-10-16 14:12:26,0,0S
+"3099",1571235171735,"Google",11,"Standby bucket changed",2019-10-16 14:12:51,0,0S
+"3103",1571235172108,"Settings",1,"Move to foreground",2019-10-16 14:12:52,1.505,2S
+"3104",1571235173613,"Settings",2,"Move to background",2019-10-16 14:12:53,0.006,0S
+"3114",1571235251317,"WhatsApp",1,"Move to foreground",2019-10-16 14:14:11,0.017,0S
+"3115",1571235251334,"WhatsApp",2,"Move to background",2019-10-16 14:14:11,0.013,0S
+"3116",1571235251347,"WhatsApp",1,"Move to foreground",2019-10-16 14:14:11,1.459,1S
+"3117",1571235252806,"WhatsApp",2,"Move to background",2019-10-16 14:14:12,0.005,0S
+"3118",1571235252811,"WhatsApp",1,"Move to foreground",2019-10-16 14:14:12,68.557,1M 9S
+"3122",1571235321368,"WhatsApp",2,"Move to background",2019-10-16 14:15:21,0.016,0S
+"3137",1571235429428,"Settings",1,"Move to foreground",2019-10-16 14:17:09,3.459,3S
+"3138",1571235432887,"Settings",2,"Move to background",2019-10-16 14:17:12,0.021,0S
+"3141",1571235433925,"Settings",1,"Move to foreground",2019-10-16 14:17:13,2.171,2S
+"3142",1571235436096,"Settings",2,"Move to background",2019-10-16 14:17:16,0.012,0S
+"3143",1571235436108,"Settings",1,"Move to foreground",2019-10-16 14:17:16,1.656,2S
+"3144",1571235437764,"Settings",2,"Move to background",2019-10-16 14:17:17,0.013,0S
+"3145",1571235437777,"Settings",1,"Move to foreground",2019-10-16 14:17:17,0.885,1S
+"3146",1571235438662,"Settings",2,"Move to background",2019-10-16 14:17:18,0.018,0S
+"3169",1571235617451,"System UI",11,"Standby bucket changed",2019-10-16 14:20:17,0,0S
+"3179",1571235617743,"com.quicinc.cne.CNEService.CNEServiceApp",11,"Standby bucket changed",2019-10-16 14:20:17,0,0S
+"3212",1571235617750,"FQC",11,"Standby bucket changed",2019-10-16 14:20:17,0,0S
+"3220",1571235617757,"AutoRegistration",11,"Standby bucket changed",2019-10-16 14:20:17,0,0S
+"3232",1571235617759,"DbgCfgTool",11,"Standby bucket changed",2019-10-16 14:20:17,0,0S
+"3235",1571235617759,"Maps",11,"Standby bucket changed",2019-10-16 14:20:17,0,0S
+"3245",1571235617770,"Google Play services",11,"Standby bucket changed",2019-10-16 14:20:17,0,0S
+"3246",1571235617770,"Carrier Services",11,"Standby bucket changed",2019-10-16 14:20:17,0,0S
+"3265",1571235617780,"CustManager",11,"Standby bucket changed",2019-10-16 14:20:17,0,0S
+"3266",1571235617780,"Settings",11,"Standby bucket changed",2019-10-16 14:20:17,0,0S
+"3273",1571235617781,"LocationServices",11,"Standby bucket changed",2019-10-16 14:20:17,0,0S
+"3277",1571235617781,"Phone Services",11,"Standby bucket changed",2019-10-16 14:20:17,0,0S
+"3278",1571235617781,"Shell",11,"Standby bucket changed",2019-10-16 14:20:17,0,0S
+"3284",1571235617782,"QMMI",11,"Standby bucket changed",2019-10-16 14:20:17,0,0S
+"3285",1571235617782,"Fused Location",11,"Standby bucket changed",2019-10-16 14:20:17,0,0S
+"3286",1571235617782,"ConfDialer",11,"Standby bucket changed",2019-10-16 14:20:17,0,0S
+"3289",1571235617782,"RetailDemoApp",11,"Standby bucket changed",2019-10-16 14:20:17,0,0S
+"3293",1571235617783,"Bluetooth",11,"Standby bucket changed",2019-10-16 14:20:17,0,0S
+"3298",1571235617783,"Android Setup",11,"Standby bucket changed",2019-10-16 14:20:17,0,0S
+"3299",1571235617852,"Settings",1,"Move to foreground",2019-10-16 14:20:17,0.351,0S
+"3302",1571235618203,"Settings",2,"Move to background",2019-10-16 14:20:18,2.536,3S
+"3308",1571235625990,"Settings",1,"Move to foreground",2019-10-16 14:20:25,0.002,0S
+"3309",1571235625992,"Settings",2,"Move to background",2019-10-16 14:20:25,8.785,9S
+"3310",1571235634777,"Settings",1,"Move to foreground",2019-10-16 14:20:34,0.991,1S
+"3312",1571235635576,"System UI",12,"Notifiation interuption",2019-10-16 14:20:35,0,0S
+"3313",1571235635768,"Settings",2,"Move to background",2019-10-16 14:20:35,0.009,0S
+"3314",1571235635777,"Settings",1,"Move to foreground",2019-10-16 14:20:35,0.442,0S
+"3315",1571235636219,"Settings",2,"Move to background",2019-10-16 14:20:36,0.287,0S
+"3317",1571235636963,"Google",11,"Standby bucket changed",2019-10-16 14:20:36,0,0S
+"3321",1571235636966,"Print Spooler",11,"Standby bucket changed",2019-10-16 14:20:36,0,0S
+"3356",1571235773479,"WhatsApp",11,"Standby bucket changed",2019-10-16 14:22:53,0,0S
+"3374",1571236217482,"System UI",11,"Standby bucket changed",2019-10-16 14:30:17,0,0S
+"3375",1571236218561,"WhatsApp",12,"Notifiation interuption",2019-10-16 14:30:18,0,0S
+"3376",1571236219055,"WhatsApp",12,"Notifiation interuption",2019-10-16 14:30:19,0,0S
+"3377",1571236219061,"WhatsApp",12,"Notifiation interuption",2019-10-16 14:30:19,0,0S
+"3378",1571236219263,"WhatsApp",10,"Notification seen",2019-10-16 14:30:19,0.752,1S
+"3379",1571236220015,"WhatsApp",10,"Notification seen",2019-10-16 14:30:20,5.902,6S
+"3380",1571236223113,"WhatsApp",12,"Notifiation interuption",2019-10-16 14:30:23,0,0S
+"3381",1571236223126,"WhatsApp",12,"Notifiation interuption",2019-10-16 14:30:23,0,0S
+"3383",1571236225921,"WhatsApp",7,"User interaction",2019-10-16 14:30:25,0.009,0S
+"3384",1571236225930,"WhatsApp",1,"Move to foreground",2019-10-16 14:30:25,27.313,27S
+"3386",1571236236972,"Print Spooler",11,"Standby bucket changed",2019-10-16 14:30:36,0,0S
+"3390",1571236253243,"WhatsApp",2,"Move to background",2019-10-16 14:30:53,0.017,0S
+"3400",1571236261982,"WhatsApp",1,"Move to foreground",2019-10-16 14:31:01,7.731,8S
+"3402",1571236269713,"WhatsApp",2,"Move to background",2019-10-16 14:31:09,0.112,0S
+"3415",1571236292228,"Settings",1,"Move to foreground",2019-10-16 14:31:32,2.627,3S
+"3416",1571236294855,"Settings",2,"Move to background",2019-10-16 14:31:34,0.015,0S
+"3419",1571236295876,"Settings",1,"Move to foreground",2019-10-16 14:31:35,3.687,4S
+"3420",1571236299563,"Settings",2,"Move to background",2019-10-16 14:31:39,0.017,0S
+"3421",1571236299580,"Settings",1,"Move to foreground",2019-10-16 14:31:39,1.489,1S
+"3422",1571236301069,"Settings",2,"Move to background",2019-10-16 14:31:41,0.015,0S
+"3423",1571236301084,"Settings",1,"Move to foreground",2019-10-16 14:31:41,0.772,1S
+"3424",1571236301856,"Settings",2,"Move to background",2019-10-16 14:31:41,0,0S
