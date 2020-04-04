@@ -1,0 +1,239 @@
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script
+  src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"
+  integrity="sha256-DI6NdAhhFRnO2k51mumYeDShet3I8AKCQf/tf7ARNhI="crossorigin="anonymous"></script>
+  <script src="logic.js"></script>
+  <script type="text/javascript" src="jquery.qrcode.js"></script>
+  <script type="text/javascript" src="qrcode.js"></script>
+  <script type="text/javascript" src="canvas2image.js"></script>
+</head>
+<body>
+
+  <div id="myModal" class="modal">
+
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h1>Instructions</h1>
+          <p>Please press outside the box or the 'x' in the left hand corner of the box to return to the program</p>
+          <p>This website was constructed to allow you to customise usage logger app. To do so, use the customise data collection to specify the type of data you wish to record and then customise the order in which the data collection is carried out in the Customise order selection. Further instruction is provided below.
+          <h1>Customise data collection: Specify the type of data should collect</h1>
+              <h2>Contextual data</h2>
+              <p>Contextual data is intended to provide the researcher with a better understanding of what the smartphone can be used for at a particular point. The data collected can include three difference sources of data. </p>
+              <ul>
+                <li>
+                Apps installed - What apps are installed on the device
+                </li>
+                <li>
+                Permissions requested  - What permissions have been requested by which apps. Permissions provide access to particular restricted data like phone call logs or location. See <a href="https://developer.android.com/guide/topics/permissions/overview" target="_blank">here</a> for more informaiton.
+                </li>
+                <li>
+                Response to permission request - Has the user provided the permission or not.
+                </li>
+              </ul>
+              <h2>Past usage</h2>
+                <p>
+                The will provide a database of what the person has used their phone for during the last couple of days (max 5 days ago). As this database is maintained by Android, it is difficult to provide much filtering at this stage.
+              </p>
+              <h2>Prospective logging</h2>
+              <p>Prospective logging will record how the participants use their smartphones in the future. There are a number of features which can be included in the data recording.</p>
+              <ul>
+                <li>
+                Phone usage - record when the phone was on/off.
+                </li>
+                <li>
+                Screen usage - record when the screen was on/off.
+                </li>
+                <li>
+                app usage - record at what point apps were used and store the identity of the apps.
+                </li>
+                <li>
+                Notifications - record which apps have sent notifications.
+                </li>
+                <li>
+                Chanes in installed apps - Record if any apps were installed/uninstalled.
+                </li>
+              </ul>
+
+            <h1>Customise order</h1>
+
+            <p>Customise the order in which the data is collected by dragging and dropping the text on the right hand of the screen that appears after you have demonstrated that you want a piece of data collected.
+
+            </p>
+
+            <h1>When you're finished</h1>
+            <p>When you're done please press on the 'finished' button. This will generate a QR code, this is necessary so that we can efficently relay how you customised the app to the participants in the study. You participants will have to scan the QR code using usage logger in order to collect any data, data collection will not start if you do not scan via the usage logger app. Additionally, you can save the QR code by pressing the 'save QR' button. </p>
+
+        </div>
+
+      </div>
+
+      <div id="qrModal" class="modal">
+
+            <div class="modal-content">
+              <span id="closeQR">&times;</span>
+              <h1>QR</h1>
+              <div id="QRtarget"></div>
+              <button id="saveQR">Save QR</button>
+            </div>
+
+          </div>
+
+<div class="centered">
+  <h1>Usage Logger customisation website</h1>
+<button id="showInstructions" >Show instructions</button>
+</div>
+
+<div id="customizeLeft">
+  <h2 id="customizeLeftTitle">Customise data collection</h2>
+  <p>Contextual data <input type="checkbox" id="contextual" name="" value=""/></p>
+  <div id="contextualOptions">
+    <p>Installed apps <input type="checkbox" id="cInstalledApps" class="optionCheckBox" name="" value=""/></p>
+    <p>Permissions requested <input type="checkbox" id="cPermsissions" name="" value=""/></p>
+    <p>Response to permission request <input type="checkbox" id="cResponses" name="" value=""/></p>
+  </div>
+  <br/>
+
+  <p>Past usage <input type="checkbox" id="pastUsage" name="" value=""/></p>
+  <div id="pastUsageOptions">
+    <p>Start logging from (max 5 days ago)
+      <select id="daysToMonitor">
+        <option value="one">One</option>
+        <option value="two">Two</option>
+        <option value="three">Three</option>
+        <option value="four">Four</option>
+        <option value="five">Five</option>
+      </select>
+    </p>
+  </div>
+
+  <br/>
+  <p>Prospective logging<input type="checkbox" id="prospectiveLogging" name="" value=""/></p>
+  <div id="prospectiveLoggingOptions">
+    <p>Screen usage <input type="checkbox" id="screenUsage" name="" value=""/></p>
+    <p>App usage <input type="checkbox" id="appUsage" name="" value=""/></p>
+    <p>Notifications <input type="checkbox" id="notification" name="" value=""/></p>
+    <p>Changes in installed apps <input type="checkbox" id="installedApps" name="" value=""/></p>
+  </div>
+</div>
+
+<div id="customizeRight">
+  <h2 id="customizeRightTitle">Customise order (drag and drop)</h2>
+  <ul id="sortable">
+
+  </ul>
+</div>
+
+<div class="centered">
+  <button id="finished">Finished</button>
+</div>
+<div id="qrcodeTable"></div>
+
+<style>
+
+#qrcodeTable{
+  float:right;
+}
+
+.modal {
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
+}
+.modal-content {
+  text-align: left;
+  color:black;
+    background-color: #06585c;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+#qrModal{
+  display: none;
+}
+
+#myModal{
+  display: none;
+}
+
+p{
+  font-size:20px;
+  color: #fff;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+h1,h2, button, ul, ol, p {
+    color: #fff;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+li{
+font-size:20px;
+  margin-top:2.5px;
+  margin-bottom:20.5px;
+}
+
+.draggable{
+   cursor: move;
+}
+
+.centered{
+  text-align:center;
+}
+
+#customizeLeft{
+  float: left;
+  width: 50%;
+  height:50%;
+}
+
+#customizeRight{
+  float: right;
+  width: 50%;
+  height:50%;
+}
+
+#customizeLeftTitle{
+margin-left:20%;
+}
+
+
+#customizeRightTitle{
+  text-align:right;
+  margin-right:20%;
+}
+
+ul {
+ list-style-type: none;
+ font-size:20px;
+}
+
+#contextualOptions, #prospectiveLoggingOptions, #pastUsageOptions {
+  display: none;
+  margin-left:10%;
+}
+
+body{
+  background-color: #06585c;
+}
+
+button{
+  background-color: #b05307;
+  color: black;
+  border-color: black;
+  font-size:20px;
+  width:15%;
+  height:10%;
+  border-radius:20px
+}
+
+</style>
+</body>
