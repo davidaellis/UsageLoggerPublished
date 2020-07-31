@@ -46,7 +46,7 @@ You don’t need the decrypting website. You can open the encrypted pdf files wi
 
 2. You've previously talked about doze mode, is this still a problem?
 
-In a previous [app](https://github.com/kris-geyer/pegLog) we’ve flagged issues with doze mode. This is where the Android operating system attempts to restrict activity on a device after certain periods of inactivity, which can adversly impact on background data collection processes. However, this issue is not an issue for Usage Logger because all activity recorded occurs while the phone is active. 
+In a previous [app](https://github.com/kris-geyer/pegLog) we flagged issues with 'doze mode'. This is where the Android operating system attempt to restrict activity on a device after certain periods of inactivity, which can adversly impact background data collection processes. However, this is not an issue for Usage Logger because all activity recorded occurs while the phone is active. 
 
 ## bugs/known issues
 
