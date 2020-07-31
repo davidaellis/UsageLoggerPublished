@@ -1,50 +1,52 @@
 # Usage Logger
 
-Usage logger is an app that records aspects of how a person uses their phone. Primarily developed to assist with psychological research and behavioural science more generally. The app can be customised to perform a number of different functions: record what a person has previously used their phone for (up to five days), get context for how the app works &/or log how people use their device in the future. 
+Usage logger is an Android app that records or extracts data about how a person uses their smartphonephone. Primarily developed to assist with psychological research and behavioural science more generally, the app can be customised to perform a number of different functions. This includes an ability to extract historical data about previous (retrospective) usage form the previous 5 days. 
+
+Pre-Print:
+
+Geyer, K., Ellis, D. A., Shaw, H. and Davidson, B. I. (2020). Open source smartphone apps and tools for measuring, quantifying, and visualizing screen time. PsyArXiv, [LINK] (https://psyarxiv.com/eqhfa)
+
+Download a working version from the [Google play store](https://play.google.com/store/apps/details?id=geyerk.sensorlab.uractivity&hl=en_GB). 
+
+A Terms of Service and Privacy Policy is available [here] (https://usage-logger-privacy.netlify.com/)
+
+Sample data and supplementary R-code for analysis are available in the folder 'Data' above. 
+
+Decrypt data [here](https://usage-logger-decrypt.netlify.com/ )
 
 See how the app works in our [YouTube video](https://www.youtube.com/watch?v=VET3PkaNayo&feature=youtu.be)
 
-A report on the app has been submitted for publication and is awaiting peer review. 
-
-Download the app from the [Google play store](https://play.google.com/store/apps/details?id=geyerk.sensorlab.uractivity&hl=en_GB). 
-
 Customise how the app works [here](https://usage-logger-custom.netlify.com/ )
-
-Decrypt the data [here](https://usage-logger-decrypt.netlify.com/ )
-
-A Terms of Service and [Privacy Policy](https://usage-logger-privacy.netlify.com/) is available.
 
 ## Customisation
 
-This is also explained in the customisation website (see above for link). The prospective logging can record a lot of different types of data: 
+This is also discussed in the customisation website (see above link). Prospective logging can record a number of different behaviours following installation including: 
 
 * When the screen is on/off
-* When apps are used
-* When notifications are sent & which apps send the apps
-* When apps are un/installed
-* etc. 
+* When/what apps are used
+* When notifications are sent & which apps send these
+* When apps are added (installed) or removed (uninstalled)
 
-Retrospective logging provides by default:
+Retrospective extraction includes data prior to installation including:
 
 * When the screen is on/off
-* When apps are employed
-* etc. 
+* When apps are opened
 
-The data to understand the context includes: 
+Contextual data includes: 
 
 * What apps are installed
-* What permissions the apps request
-* What permissions requests are accepted/rejected by users
+* What permissions apps request
+* What permissions requests are accepted/rejected by participants
 
 ## FAQ
 
 1. Why do I need a decrypting website
 
-You don’t need the decrypting website. You can open the encrypted pdf files yourself but they will be in a pdf format which is difficult to convert into a csv or easy to use format. For that reason we have supplied a website that automatically converts the pdf files in csv files. 
+You don’t need the decrypting website. You can open the encrypted pdf files with the correct password. However, we have supplied a website that automatically decrypts and converts pdf files into csv files. PDF files are used as this allows participants to view their own data on their device at any time. 
 
-2. From your other app you’ve talked about doze mode, is this still a problem?
+2. You've previously talked about doze mode, is this still a problem?
 
-In our other [app](https://github.com/kris-geyer/pegLog) we’ve talked about doze mode. This is when the android device halts all background operations because the participant has not used their phone for a lengthy duration. This isn’t an issue for usage logger because we are only interested in monitoring the usage when the phone is in use. So it seems really unlikely that we lose data due to doze mode. 
+In a previous [app](https://github.com/kris-geyer/pegLog) we’ve flagged issues with doze mode. This is where the Android operating system attempts to restrict activity on a device after certain periods of inactivity, which can adversly impact on background data collection processes. However, this issue is not an issue for Usage Logger because all activity recorded occurs while the phone is active. 
 
 ## bugs/known issues
 
