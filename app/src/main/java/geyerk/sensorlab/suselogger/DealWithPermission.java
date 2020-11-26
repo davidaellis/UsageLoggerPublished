@@ -1,4 +1,4 @@
-package geyerk.sensorlab.uractivity;
+package geyerk.sensorlab.suselogger;
 
 import android.Manifest;
 import android.app.Activity;

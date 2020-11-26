@@ -1,4 +1,4 @@
-package geyerk.sensorlab.uractivity;
+package geyerk.sensorlab.suselogger;
 
 import java.util.Set;
 
@@ -68,6 +68,7 @@ class CONSTANTS {
             COLLECTING_PAST_USAGE = 2,
             COLLECTING_PROSPECTIVE_DATA = 3,
             READY_FOR_EMAIL = 4,
+            FILE_SENT = 5,
 
             NO_DATA_COLLECTED = 1,
             ONLY_RESPONSE = 2,

@@ -1,4 +1,4 @@
-package geyerk.sensorlab.uractivity;
+package geyerk.sensorlab.suselogger;
 
 import org.junit.Test;
 

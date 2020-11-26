@@ -1,10 +1,4 @@
-package geyerk.sensorlab.uractivity;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+package geyerk.sensorlab.suselogger;
 
 import android.Manifest;
 import android.app.Activity;
@@ -24,6 +18,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.gson.Gson;
 
@@ -83,6 +82,21 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
         progressBar = findViewById(R.id.pb);
         progressBar.setVisibility(View.INVISIBLE);
         reportScreen = findViewById(R.id.tvReport);
+        switch (sharedPreferences.getInt("data being collected", 0)){
+            case CONSTANTS.COLLECTING_CONTEXTUAL_DATA:
+                reportScreen.setText("Currently collecting context data");
+                break;
+            case CONSTANTS.COLLECTING_PAST_USAGE:
+                reportScreen.setText("Currently collecting past usage data");
+                break;
+            case CONSTANTS.COLLECTING_PROSPECTIVE_DATA:
+                reportScreen.setText("Collecting active phone usage data");
+                break;
+            case CONSTANTS.FILE_SENT:
+                reportScreen.setText("Study is complete");
+                break;
+
+        }
         findViewById(R.id.btnReadQR).setOnClickListener(this);
         findViewById(R.id.btnSeePassword).setOnClickListener(this);
         findViewById(R.id.btnEmail).setOnClickListener(this);
@@ -107,7 +121,12 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btnReadQR:
-                startActivityForResult(new Intent(this, QRScanner.class), CONSTANTS.QR_CODE_ACTIVITY);
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O_MR1){
+                    startActivityForResult(new Intent(this, QRScanner.class), CONSTANTS.QR_CODE_ACTIVITY);
+                }else{
+                    startActivityForResult(new Intent(this, GoogleQRScanner.class), CONSTANTS.QR_CODE_ACTIVITY);
+                }
+
                 break;
             case R.id.btnSeePassword:
                 informUserOnPassword("noWhere");
@@ -195,12 +214,17 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         String result;
+        resultCode = 0;
         if(data!=null){
             switch (resultCode){
                 case 0:
                     result = data.getStringExtra("result");
                     if(result!=null){
-                        commitKsonToFile(result);
+                        try {
+                            commitKsonToFile(result);
+                        } catch (Exception e) {
+                            sendMessage(5);
+                        }
                         updateUI();
                     }else{
                         Timber.i( "QR is Kson, but result returned is null");
@@ -224,7 +248,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
         }
     }
 
-    private void commitKsonToFile(String input) {
+    private void commitKsonToFile(String input) throws Exception {
         new QrInputHandler(input, this);
         final String messageToReport =  sharedPreferences.getString("instructions from QR", "instructions not initialized");
         if(!messageToReport.equals("instructions not initialized")){
@@ -245,7 +269,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
             case 2:
                 StringBuilder whatTheAppDoes = new StringBuilder();
 
-               
+
                 if(qrInput.dataSources.keySet().contains("contextual")){
                     if(qrInput.contextualDataSources.contains("installed")){
                         whatTheAppDoes.append("\n").append("- What apps are installed on your phone.");
@@ -295,6 +319,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
 
                 postAlert.customiseMessage(4, "NA", "Permissions required", "In order to participate you will have to provide the following permissions: " + permissionsToBeRequested, "alertDialogResponse");
                 break;
+            case 5:
+                postAlert.customiseMessage(5, "NA", "Issue Reading QR code", "There was a problem reading the QR code. Can you please scan the code again","");
         }
     }
 
@@ -610,21 +636,23 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
         //if target files are identified to exist then they are packages into the attachments of the email
         try {
             if(contextFile.exists()){
-                files.add(FileProvider.getUriForFile(this, "geyerk.sensorlab.uractivity.fileprovider", contextFile));
+                files.add(FileProvider.getUriForFile(this, "geyerk.sensorlab.suselogger.fileprovider", contextFile));
             }
 
             if(usageEvents.exists()){
-                files.add(FileProvider.getUriForFile(this, "geyerk.sensorlab.uractivity.fileprovider", usageEvents));
+                files.add(FileProvider.getUriForFile(this, "geyerk.sensorlab.suselogger.fileprovider", usageEvents));
             }
 
             if(prospective.exists()){
-                files.add(FileProvider.getUriForFile(this, "geyerk.sensorlab.uractivity.fileprovider", prospective));
+                files.add(FileProvider.getUriForFile(this, "geyerk.sensorlab.suselogger.fileprovider", prospective));
             }
 
             if(files.size()>0){
                 intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
                 intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                sharedPreferences.edit().putInt("data being collected", CONSTANTS.FILE_SENT).apply();
                 startActivity(intent);
+
             }else{
                 Timber.e("no files to upload");
             }

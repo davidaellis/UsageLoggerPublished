@@ -1,4 +1,4 @@
-package geyerk.sensorlab.uractivity;
+package geyerk.sensorlab.suselogger;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

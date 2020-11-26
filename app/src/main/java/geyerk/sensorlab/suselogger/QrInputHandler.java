@@ -1,4 +1,4 @@
-package geyerk.sensorlab.uractivity;
+package geyerk.sensorlab.suselogger;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,12 +9,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import timber.log.Timber;
+
 
 class QrInputHandler {
 
     private final String input;
 
-    QrInputHandler(String input, Context context){
+    QrInputHandler(String input, Context context) throws Exception {
         this.input = input;
         Gson gson = new Gson();
         String json  = gson.toJson(analyseInput());
@@ -22,12 +24,16 @@ class QrInputHandler {
         sharedPreferences.edit().putString("instructions from QR", json).apply();
     }
 
-    private QRInput analyseInput() {
-        String[] rows = input.split("\n");
+    private QRInput analyseInput() throws Exception {
+        Timber.i("The input: %s", this.input);
+        String[] rows = this.input.split("\n");
         HashMap<String, Integer> dataSources = new HashMap<>();
         Set<String> contextualDataSources = new HashSet<>();
         Set<String> prospectiveDataSources = new HashSet<>();
         int daysToMonitor = 0;
+        if (rows.length < 1){
+            throw new Exception("No data detected in QR");
+        }
         if(rows[1].charAt(3) == 'T'){
             dataSources.put("contextual", returnOrder(rows[1]));
             if(rows[1].charAt(8) == 'T'){
