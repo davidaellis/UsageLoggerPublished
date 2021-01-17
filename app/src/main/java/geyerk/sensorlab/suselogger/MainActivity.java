@@ -122,7 +122,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
         switch (view.getId()){
             case R.id.btnReadQR:
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O_MR1){
-                    startActivityForResult(new Intent(this, QRScanner.class), CONSTANTS.QR_CODE_ACTIVITY);
+                    startActivityForResult(new Intent(this, GoogleQRScanner.class), CONSTANTS.QR_CODE_ACTIVITY);
                 }else{
                     startActivityForResult(new Intent(this, GoogleQRScanner.class), CONSTANTS.QR_CODE_ACTIVITY);
                 }
