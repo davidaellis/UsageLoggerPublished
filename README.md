@@ -6,7 +6,7 @@ Pre-Print:
 
 Geyer, K., Ellis, D. A., Shaw, H. and Davidson, B. I. (2020). Open source smartphone apps and tools for measuring, quantifying, and visualizing screen time. PsyArXiv, [LINK](https://psyarxiv.com/eqhfa)
 
-Download a working version from the [Google play store](https://play.google.com/store/apps/details?id=geyerk.sensorlab.uractivity&hl=en_GB). 
+Download a working version from the [Google play store](https://play.google.com/store/apps/details?id=geyerk.sensorlab.suselogger). 
 
 A Terms of Service and Privacy Policy is available [here] (https://usage-logger-privacy.netlify.com/)
 
@@ -17,6 +17,8 @@ Decrypt data [here](https://usage-logger-decrypt.netlify.com/ )
 See how the app works in our [YouTube video](https://www.youtube.com/watch?v=VET3PkaNayo&feature=youtu.be)
 
 Customise how the app works [here](https://usage-logger-custom.netlify.com/ )
+
+An extensive walkthrough can be found [here](https://u-log-walk.netlify.app/)
 
 ## Customisation
 
