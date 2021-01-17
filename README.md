@@ -18,6 +18,8 @@ See how the app works in our [YouTube video](https://www.youtube.com/watch?v=VET
 
 Customise how the app works [here](https://usage-logger-custom.netlify.com/ )
 
+An extensive walkthrough can be found [here](https://u-log-walk.netlify.app/)
+
 ## Customisation
 
 This is also discussed in the customisation website (see above link). Prospective logging can record a number of different behaviours following installation including: 
