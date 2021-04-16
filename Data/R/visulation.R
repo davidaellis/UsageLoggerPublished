@@ -32,7 +32,7 @@ plotdata %>%
   geom_bar(stat = "identity", fill="steelblue") +
   xlab("App") +
   ylab("Average Duration of Each Usage (seconds)") +
-  theme_classic(base_size = 16)
+  theme_classic(base_size = 18)
 
 #plotting example total durations
 plotdata = subset(past_total, App == "TikTok" | App == "YouTube" |
@@ -44,5 +44,5 @@ plotdata %>%
   geom_bar(stat = "identity", fill="steelblue") +
   xlab("App") +
   ylab("Total Usage Time (minutes)") +
-  theme_classic(base_size = 16)
+  theme_classic(base_size = 18)
  
