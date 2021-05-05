@@ -8,7 +8,7 @@ Geyer, K., Ellis, D. A., Shaw, H. and Davidson, B. I. (in press). Open source sm
 
 Download a working version from the [Google play store](https://play.google.com/store/apps/details?id=geyerk.sensorlab.suselogger). 
 
-A Terms of Service and Privacy Policy is available [here](https://usage-logger-privacy.netlify.com/)
+A Terms of Service and Privacy Policy is available [here](https://psychsensorlab.com/privacy-agreement-for-apps/)
 
 Sample data and supplementary R-code for analysis are available in the folder 'Data' above. Note: the password to decrypt raw unprocessed data is L8l%Y%!b-4hW
 
