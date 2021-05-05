@@ -1,6 +1,6 @@
 # Usage Logger
 
-Usage logger is an Android app that records or extracts data about how a person uses their smartphonephone. Primarily developed to assist with psychological research and behavioural science more generally, the app can be customised to perform a number of different functions. This includes an ability to extract historical data about usage form the previous 5 days. 
+Usage logger is an Android app that records or extracts data about how a person uses their smartphone. Primarily developed to assist with psychological research and behavioural science more generally, the app can be customised to perform a number of different functions. This includes the ability to extract historical usage data from a smartphones internal memory.  
 
 Pre-Print:
 
@@ -20,23 +20,23 @@ An extensive walkthrough can be found [here](https://u-log-walk.netlify.app/)
 
 ## Customisation
 
-This is also discussed in the customisation website (see above link). Contextual data includes: 
+This is  discussed in detail as part of the academic paper above (see above link). Contextual data includes: 
 
-* What apps are installed
-* What permissions apps request
-* What permissions requests are accepted/rejected by participants
+* Installed apps
+* Permissions apps request
+* Permissions accepted/rejected by participants
 
 Continuous logging can record a number of different behaviours following installation including: 
 
-* When the screen is on/off
-* When/what apps are used
-* When notifications are sent & which apps send these
-* When apps are added (installed) or removed (uninstalled)
+* Screen on/off events
+* What apps are used and when
+* When apps send notifications
+* When apps are added or removed (installed or uninstalled)
 
-Past usage extraction includes data prior to installation including:
+Past usage includes data prior to installation including:
 
-* When the screen is on/off
-* When apps are opened
+* Screen on/off events
+* What apps are used and when
 
 ## FAQ
 
