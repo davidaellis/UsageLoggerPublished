@@ -24,7 +24,7 @@ function initializeButtonFunction(){
     }
   }
   $("#contextual").click(function(){updateSortableContent("contextual")})
-  $("#prospectiveLogging").click(function(){updateSortableContent("propsective")})
+  $("#continuousLogging").click(function(){updateSortableContent("continuous")})
   $("#pastUsage").click(function(){updateSortableContent("pastUsage")})
   $("#finished").click(function(){writeQR(getTextForQR());
     window.onclick = function(event) {
@@ -62,9 +62,9 @@ function updateSortableContent(elementToUpdate){
 function addElementToSortable(elementToAdd){
 
   switch (elementToAdd) {
-    case "propsective":
-      $("#prospectiveLoggingOptions").show();
-        $("#sortable").append('<li id='+elementToAdd+'li class="draggable">Prospective logging</li>')
+    case "continuous":
+      $("#continuousLoggingOptions").show();
+        $("#sortable").append('<li id='+elementToAdd+'li class="draggable">Continuous logging</li>')
       break;
     case "pastUsage":
       $("#pastUsageOptions").show();
@@ -72,7 +72,7 @@ function addElementToSortable(elementToAdd){
       break;
     case "contextual":
       $("#contextualOptions").show();
-      $("#sortable").append('<li id='+elementToAdd+'li class="draggable">Contextual</li>')
+      $("#sortable").append('<li id='+elementToAdd+'li class="draggable">Contextual Data</li>')
     break;
     default:
   }
@@ -81,8 +81,8 @@ function addElementToSortable(elementToAdd){
 function removeElementFromSortable (elementToRemove){
   $("#" + elementToRemove + "li").remove();
   switch (elementToRemove) {
-    case "propsective":
-      $("#prospectiveLoggingOptions").hide();
+    case "continuous":
+      $("#continuousLoggingOptions").hide();
       break;
     case "pastUsage":
       $("#pastUsageOptions").hide();
@@ -155,7 +155,7 @@ function getTextForQR(){
     toReturn+= "{U:F}";
     toReturn += "\n";
   }
-  if(document.getElementById("prospectiveLogging").checked){
+  if(document.getElementById("continuousLogging").checked){
     toReturn+= "{P:T,";
     if(document.getElementById("screenUsage").checked){
       toReturn += "{S:T,"
