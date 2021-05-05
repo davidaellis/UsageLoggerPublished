@@ -14,7 +14,7 @@ Sample data and supplementary R-code for analysis are available in the folder 'D
 
 Customise how the app works [here](https://usageloggersetup.netlify.app/ )
 
-Decrypt data [here](https://usage-logger-decrypt.netlify.com/ )
+Decrypt data [here](https://usageloggerdecryptwebsite.netlify.app/)
 
 An extensive walkthrough can be found [here](https://u-log-walk.netlify.app/)
 
