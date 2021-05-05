@@ -12,9 +12,9 @@ A Terms of Service and Privacy Policy is available [here](https://usage-logger-p
 
 Sample data and supplementary R-code for analysis are available in the folder 'Data' above. Note: the password to decrypt raw unprocessed data is L8l%Y%!b-4hW
 
-Decrypt data [here](https://usage-logger-decrypt.netlify.com/ )
-
 Customise how the app works [here](https://usage-logger-custom.netlify.com/ )
+
+Decrypt data [here](https://usage-logger-decrypt.netlify.com/ )
 
 An extensive walkthrough can be found [here](https://u-log-walk.netlify.app/)
 
