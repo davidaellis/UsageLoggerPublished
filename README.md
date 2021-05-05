@@ -20,7 +20,13 @@ An extensive walkthrough can be found [here](https://u-log-walk.netlify.app/)
 
 ## Customisation
 
-This is also discussed in the customisation website (see above link). Continuous logging can record a number of different behaviours following installation including: 
+This is also discussed in the customisation website (see above link). Contextual data includes: 
+
+* What apps are installed
+* What permissions apps request
+* What permissions requests are accepted/rejected by participants
+
+Continuous logging can record a number of different behaviours following installation including: 
 
 * When the screen is on/off
 * When/what apps are used
@@ -31,12 +37,6 @@ Past usage extraction includes data prior to installation including:
 
 * When the screen is on/off
 * When apps are opened
-
-Contextual data includes: 
-
-* What apps are installed
-* What permissions apps request
-* What permissions requests are accepted/rejected by participants
 
 ## FAQ
 
