@@ -12,7 +12,7 @@ A Terms of Service and Privacy Policy is available [here](https://psychsensorlab
 
 Sample data and supplementary R-code for analysis are available in the folder 'Data' above. Note: the password to decrypt raw unprocessed data is L8l%Y%!b-4hW
 
-Customise how the app works [here](https://usage-logger-custom.netlify.com/ )
+Customise how the app works [here](https://usageloggersetup.netlify.app/ )
 
 Decrypt data [here](https://usage-logger-decrypt.netlify.com/ )
 
