@@ -54,4 +54,4 @@ Report bugs or functionality issues to k.geyer2@lancaster.ac.uk
 
 ## Lab website
 
-You can read more about our work [here](www.psychsensorlab.com)
+You can read more about our work [here](https://psychsensorlab.com/)
