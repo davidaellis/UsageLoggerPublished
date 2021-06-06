@@ -2,6 +2,10 @@
 
 Usage logger is an Android app that records or extracts data about how a person uses their smartphone. Primarily developed to assist with psychological research and behavioural science more generally, the app can be customised to perform a number of different functions. This includes the ability to extract historical usage data from a smartphones internal memory.  
 
+Published-paper: 
+
+Geyer, K., Ellis, D.A., Shaw, H. et al. Open-source smartphone app and tools for measuring, quantifying, and visualizing technology use. Behav Res (2021). [LINK] (https://doi.org/10.3758/s13428-021-01585-7)
+
 Pre-Print:
 
 Geyer, K., Ellis, D. A., Shaw, H. and Davidson, B. I. (in press). Open source smartphone apps and tools for measuring, quantifying, and visualizing technology use. _Behavior Research Methods_, [LINK](https://psyarxiv.com/eqhfa)
