@@ -4,7 +4,7 @@ Usage logger is an Android app that records or extracts data about how a person 
 
 Published-paper: 
 
-Geyer, K., Ellis, D.A., Shaw, H. et al. Open-source smartphone app and tools for measuring, quantifying, and visualizing technology use. Behav Res (2021). [LINK] (https://doi.org/10.3758/s13428-021-01585-7)
+Geyer, K., Ellis, D.A., Shaw, H. et al. Open-source smartphone app and tools for measuring, quantifying, and visualizing technology use. Behav Res (2021). [LINK](https://doi.org/10.3758/s13428-021-01585-7)
 
 Pre-Print:
 
