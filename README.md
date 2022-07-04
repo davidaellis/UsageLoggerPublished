@@ -4,7 +4,7 @@ Usage logger is an Android app that records or extracts data about how a person 
 
 Published-paper: 
 
-Geyer, K., Ellis, D.A., Shaw, H. and Davidson, B. I. (in press) Open-source smartphone app and tools for measuring, quantifying, and visualizing technology use. <em>Behavior Research Methods</em> [LINK](https://doi.org/10.3758/s13428-021-01585-7) [post-print](https://psyarxiv.com/eqhfa)
+Geyer, K., Ellis, D.A., Shaw, H. and Davidson, B. I. (2022) Open-source smartphone app and tools for measuring, quantifying, and visualizing technology use. <em>Behavior Research Methods, 54</em>(1), 1-12 [LINK](https://doi.org/10.3758/s13428-021-01585-7) [post-print](https://psyarxiv.com/eqhfa)
 
 Download a working version from the [Google play store](https://play.google.com/store/apps/details?id=geyerk.sensorlab.suselogger). 
 
