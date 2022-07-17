@@ -11,7 +11,6 @@ import java.util.Set;
 
 import timber.log.Timber;
 
-
 class QrInputHandler {
 
     private final String input;
@@ -51,7 +50,7 @@ class QrInputHandler {
             dataSources.put("usage", returnOrder(rows[2]));
             String suspectDaysToMonitor = String.valueOf(rows[2].charAt(8));
             if(onlyDigits(suspectDaysToMonitor)){
-                daysToMonitor = Integer.valueOf(suspectDaysToMonitor);
+                daysToMonitor = Integer.parseInt(suspectDaysToMonitor);
             }
         }
         if(rows[3].charAt(3) == 'T'){
@@ -78,11 +77,10 @@ class QrInputHandler {
         int position = 4;
         final String characterOfInterest = String.valueOf(row.charAt(row.length()-2));
         if(onlyDigits(characterOfInterest)){
-            position = Integer.valueOf(characterOfInterest);
+            position = Integer.parseInt(characterOfInterest);
         }
         return position;
     }
-
 
     private boolean onlyDigits (final String toTest){
         return toTest.matches("[0-9]+");
