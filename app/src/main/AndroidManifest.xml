@@ -4,10 +4,18 @@
     package="geyerk.sensorlab.suselogger">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="true"/>
+
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+        </intent>
+    </queries>
 
     <application
         android:allowBackup="true"
@@ -17,7 +25,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="geyerk.sensorlab.suselogger.MainActivity"
-            android:screenOrientation="fullSensor">
+            android:screenOrientation="fullSensor"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,26 +34,19 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="geyerk.sensorlab.suselogger.QRScanner">
+        <activity android:name="geyerk.sensorlab.suselogger.GoogleQRScanner"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.QRScanner" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <activity android:name="geyerk.sensorlab.suselogger.GoogleQRScanner">
-            <intent-filter>
-                <action android:name="android.intent.action.QRScanner" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
 
         <service android:name="geyerk.sensorlab.suselogger.ProspectiveLoggerWithNotes"
             android:label="ProspectiveLoggerWithNotes"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
@@ -52,7 +54,8 @@
 
         <service android:name="geyerk.sensorlab.suselogger.ProspectiveLogger"/>
 
-        <receiver android:name="geyerk.sensorlab.suselogger.startServiceAtBoot">
+        <receiver android:name="geyerk.sensorlab.suselogger.startServiceAtBoot"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
