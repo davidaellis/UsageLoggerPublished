@@ -6,10 +6,6 @@ import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.SortedMap;
@@ -17,31 +13,27 @@ import java.util.TreeMap;
 
 class IdentifyAppInForeground {
 
-    private UsageStatsManager usageStatsManager;
-    private Context context;
-    private ActivityManager activityManager;
-
-    IdentifyAppInForeground(Context context, UsageStatsManager usageStatsManager){
-        this.usageStatsManager = usageStatsManager;
-        this.context = context;
-    }
+    final private ActivityManager activityManager;
 
     IdentifyAppInForeground(ActivityManager activityManager){
         this.activityManager = activityManager;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("WrongConstant")
-     String identifyForegroundTaskLollipop() {
+    String identifyForegroundTaskLollipop(Context context) {
 
         String currentApp = "THIS IS NOT A REAL APP";
-
         long time = System.currentTimeMillis();
-        List<UsageStats> appList;
+        final List<UsageStats> appList;
 
+        UsageStatsManager usm;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
+            usm = (UsageStatsManager)context.getSystemService(Context.USAGE_STATS_SERVICE);
+        } else {
+            usm = (UsageStatsManager)context.getSystemService("usagestats");
+        }
 
-        appList = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - 1000, time);
-
+        appList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - 1000, time);
 
         if (appList != null && appList.size() > 0) {
             SortedMap<Long, UsageStats> mySortedMap = new TreeMap<>();
@@ -50,11 +42,13 @@ class IdentifyAppInForeground {
             }
             if (!mySortedMap.isEmpty()) {
 
-                currentApp = Objects.requireNonNull(mySortedMap.get(mySortedMap.lastKey())).getPackageName();
+                currentApp = Objects.requireNonNull(mySortedMap.get(mySortedMap.lastKey())).
+                        getPackageName();
                 PackageManager packageManager = context.getPackageManager();
 
                 try {
-                    currentApp = (String) packageManager.getApplicationLabel(packageManager.getApplicationInfo(currentApp, PackageManager.GET_META_DATA));
+                    currentApp = (String) packageManager.getApplicationLabel(packageManager.
+                            getApplicationInfo(currentApp, PackageManager.GET_META_DATA));
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -64,12 +58,9 @@ class IdentifyAppInForeground {
         return currentApp;
     }
 
-
-     String identifyForegroundTaskUnderLollipop() {
+    String identifyForegroundTaskUnderLollipop() {
         List<ActivityManager.RunningAppProcessInfo> tasks;
-
         tasks = activityManager.getRunningAppProcesses();
-
         return tasks.get(0).processName;
     }
 }
