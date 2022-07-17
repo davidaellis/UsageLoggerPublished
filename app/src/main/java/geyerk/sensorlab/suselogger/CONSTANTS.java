@@ -4,45 +4,30 @@ import java.util.Set;
 
 class CONSTANTS {
 
-    static int RETURN_GENERAL_DATA_SOURCE(int specificData){
-        switch (specificData){
-            case INSTALLED_AND_PERMISSION_AND_RESPONSE:
-            case INSTALLED_AND_PERMISSION:
-            case INSTALLED_AND_RESPONSE:
-            case ONLY_INSTALLED:
-            case RESPONSE_AND_PERMISSION:
-            case ONLY_PERMISSION:
-            case ONLY_RESPONSE:
-                return CONSTANTS.COLLECTING_CONTEXTUAL_DATA;
-            default:
-                return CONSTANTS.NO_DATA_COLLECTED;
-        }
-    }
-
     static int RETURN_CONTEXT_TYPE(Set input){
         if(input.contains("installed")){
             if(input.contains("permission")){
                 if(input.contains("response")){
                     return CONSTANTS.INSTALLED_AND_PERMISSION_AND_RESPONSE;
-                }else{
+                } else {
                     return CONSTANTS.INSTALLED_AND_PERMISSION;
                 }
             }else{
                 if(input.contains("response")){
                     return CONSTANTS.INSTALLED_AND_RESPONSE;
-                }else{
+                } else {
                     return CONSTANTS.ONLY_INSTALLED;
                 }
             }
-        }else if(input.contains("permission")){
+        } else if(input.contains("permission")){
             if(input.contains("response")){
                 return CONSTANTS.RESPONSE_AND_PERMISSION;
-            }else{
+            } else {
                 return CONSTANTS.ONLY_PERMISSION;
             }
-        }else if(input.contains("response")){
+        } else if(input.contains("response")){
             return CONSTANTS.ONLY_RESPONSE;
-        }else{
+        } else {
             return CONSTANTS.NO_DATA_COLLECTED;
         }
     }
@@ -50,11 +35,9 @@ class CONSTANTS {
     static final String
     CONTEXT_FILE = "context.pdf",
     USAGE_FILE = "usage.pdf",
-    PROSPECTIVE_FILE = "prospective.pdf",
-    ADDITIONAL_FILE = "additional.pdf";
+    PROSPECTIVE_FILE = "continuous.pdf";
 
     static final int
-            NOT_ASSESSED = 0,
             QR_CODE_ACTIVITY = 1,
             ALERT_DIALOG_CAMERA_PERMISSION = 2,
             ALERT_DIALOG_USAGE_PERMISSION = 3,
