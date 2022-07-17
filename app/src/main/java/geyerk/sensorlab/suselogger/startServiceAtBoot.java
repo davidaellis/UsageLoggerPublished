@@ -21,7 +21,7 @@ public class startServiceAtBoot extends BroadcastReceiver {
             QRInput qrInput = gson.fromJson(sharedPreferences.getString("instructions from QR", "instructions not initialized"), QRInput.class);
             sharedPreferences.edit().putBoolean("restarted", true).apply();
             //check if anything needs to be restarted
-            if(qrInput.dataSources.keySet().contains("prospective")){
+            if(qrInput.dataSources.containsKey("prospective")){
                 Intent startServiceIntent;
 
                 Bundle bundle = new Bundle();
@@ -32,14 +32,14 @@ public class startServiceAtBoot extends BroadcastReceiver {
                 if (qrInput.prospectiveDataSource.contains("notification")){
                     //start service for notification listening
                     startServiceIntent = new Intent(context, ProspectiveLoggerWithNotes.class);
-                }else{
+                } else {
                     //start service without notification listening
                     startServiceIntent = new Intent(context, ProspectiveLogger.class);
                 }
                 startServiceIntent.putExtras(bundle);
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                     context.startService(startServiceIntent);
-                }else {
+                } else {
                     context.startForegroundService(startServiceIntent);
                 }
             }
