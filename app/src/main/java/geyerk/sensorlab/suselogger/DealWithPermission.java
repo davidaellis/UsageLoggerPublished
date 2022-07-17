@@ -12,18 +12,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
 import android.provider.Settings;
-
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
 import java.util.HashMap;
-
 import timber.log.Timber;
 
 class DealWithPermission {
 
-    private HashMap<String, Integer> essentialPermissions;
+    private final HashMap<String, Integer> essentialPermissions;
     private final Context context;
     private final PostAlert postAlert;
 
@@ -51,7 +48,8 @@ class DealWithPermission {
                 Timber.i("message was received");
             }
         };
-        LocalBroadcastManager.getInstance(context).registerReceiver(localReceiver, new IntentFilter("alertDialogPermissionResponse"));
+        LocalBroadcastManager.getInstance(context).registerReceiver(localReceiver,
+                new IntentFilter("alertDialogPermissionResponse"));
 
     }
 
@@ -71,24 +69,30 @@ class DealWithPermission {
             Timber.i("Permissions being assessed: %s, state: %d ", permission, stateOfPermission);
             if(stateOfPermission!=null && !permission.equals("NA")) {
                 if (stateOfPermission != PackageManager.PERMISSION_GRANTED) {
-                    postRationaleForRequestingPermission(permission);
+                    postRationaleForRequestingPermission(permission, context);
                     return;
                 }
             }
         }
-        confirmAllPermissionsGranted();
+        confirmAllPermissionsGranted(context);
     }
 
-    private void postRationaleForRequestingPermission(String permission){
+    private void postRationaleForRequestingPermission(String permission, Context context){
         switch (permission){
             case Manifest.permission.CAMERA:
-                postAlert.customiseMessage(CONSTANTS.ALERT_DIALOG_CAMERA_PERMISSION, permission, "Requesting camera permission", "To calibrate this app with the scientific study which you are participating in, this app will scan a QRcode. In order to do this, it requires you to allow for this app to access the camera. Please allow this permissions in a moment" , "alertDialogPermissionResponse");
+                postAlert.customiseMessage(CONSTANTS.ALERT_DIALOG_CAMERA_PERMISSION, permission,
+                        context.getString(R.string.title_cam_perm), context.getString(R.string.cam_perm),
+                        "alertDialogPermissionResponse");
                 break;
             case "usage":
-                postAlert.customiseMessage(CONSTANTS.ALERT_DIALOG_USAGE_PERMISSION, permission, "Requesting usage permission", "The experiment that you are involved in requires you to provide usage permission. Usage permission will allow the app to monitor what you have used your phone for (what apps you've used and when the screen has been on/off up to the last 5 days). This feature allows to see what apps you continue to use as well." , "alertDialogResponse");
+                postAlert.customiseMessage(CONSTANTS.ALERT_DIALOG_USAGE_PERMISSION, permission,
+                        context.getString(R.string.req_usage_perm), context.getString(R.string.usage_perm_info),
+                        "alertDialogResponse");
                 break;
             case "notification":
-                postAlert.customiseMessage(CONSTANTS.ALERT_DIALOG_NOTIFICATION_PERMISSION , permission, "Requesting notification permission", "The experiment that you are involved in requires you to provide Notification permission. Notification permission means that the app will know when you have received notifications and when you have deleted it." , "alertDialogResponse");
+                postAlert.customiseMessage(CONSTANTS.ALERT_DIALOG_NOTIFICATION_PERMISSION, permission,
+                        context.getString(R.string.title_req_note_perm), context.getString(R.string.note_perm_info),
+                        "alertDialogResponse");
                 break;
         }
     }
@@ -131,21 +135,18 @@ class DealWithPermission {
     }
 
     private Boolean establishStateOfUsageStatisticsPermission() {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            int mode = 2;
-            AppOpsManager appOpsManager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
-            if (appOpsManager != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    mode = appOpsManager.unsafeCheckOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), String.valueOf(context.getPackageName()));
-                } else {
-                    mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), String.valueOf(context.getPackageName()));
-                }
+        int mode = 2;
+        AppOpsManager appOpsManager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
+        if (appOpsManager != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                mode = appOpsManager.unsafeCheckOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
+                        Process.myUid(), String.valueOf(context.getPackageName()));
+            } else {
+                mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
+                        Process.myUid(), String.valueOf(context.getPackageName()));
             }
-            return (mode != AppOpsManager.MODE_ALLOWED);
-        } else {
-            return false;
         }
+        return (mode != AppOpsManager.MODE_ALLOWED);
     }
 
     private boolean establishStateOfNotificationListenerPermission() {
@@ -153,8 +154,10 @@ class DealWithPermission {
         return notificationListenerString != null && !notificationListenerString.contains(context.getPackageName());
     }
 
-    private void confirmAllPermissionsGranted() {
+    private void confirmAllPermissionsGranted(Context context) {
         Timber.i("confirming all permission is granted");
-        postAlert.customiseMessage(CONSTANTS.ALL_PERMISSIONS_GRANTED, "NA", "All permissions given", "All essential permissions needed", "alertDialogResponse");
+        postAlert.customiseMessage(CONSTANTS.ALL_PERMISSIONS_GRANTED, "NA",
+                context.getString(R.string.title_all_perms), context.getString(R.string.all_perms_given),
+                "alertDialogResponse");
     }
 }
