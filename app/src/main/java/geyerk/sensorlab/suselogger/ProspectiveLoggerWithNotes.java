@@ -5,7 +5,6 @@ import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.usage.UsageStatsManager;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -21,7 +20,7 @@ import android.os.Handler;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 
-import androidx.annotation.RequiresApi;
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import net.sqlcipher.database.SQLiteDatabase;
@@ -34,6 +33,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import at.favre.lib.armadillo.Armadillo;
+import at.favre.lib.armadillo.BuildConfig;
 import timber.log.Timber;
 
 public class ProspectiveLoggerWithNotes extends NotificationListenerService {
@@ -43,7 +43,9 @@ public class ProspectiveLoggerWithNotes extends NotificationListenerService {
         super.onNotificationPosted(sbn);
         try {
             if(sbn!= null && packageManager != null) {
-                storeData(packageManager.getApplicationLabel(packageManager.getApplicationInfo(sbn.getPackageName(), PackageManager.GET_META_DATA)) + " posted note");
+                storeData(packageManager.getApplicationLabel(packageManager.
+                        getApplicationInfo(sbn.getPackageName(), PackageManager.GET_META_DATA))
+                        + " posted note");
             }
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
@@ -55,7 +57,9 @@ public class ProspectiveLoggerWithNotes extends NotificationListenerService {
         super.onNotificationRemoved(sbn, rankingMap, reason);
         try {
             if(sbn!= null && packageManager != null) {
-                storeData(packageManager.getApplicationLabel(packageManager.getApplicationInfo(sbn.getPackageName(), PackageManager.GET_META_DATA)) + " note removed");
+                storeData(packageManager.getApplicationLabel(packageManager.
+                        getApplicationInfo(sbn.getPackageName(), PackageManager.GET_META_DATA))
+                        + " note removed");
             }
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
@@ -63,7 +67,7 @@ public class ProspectiveLoggerWithNotes extends NotificationListenerService {
     }
 
     //Classes
-    private class ProspectiveLoggingDirection {
+    private static class ProspectiveLoggingDirection {
         final boolean screenLog, appLog, appChanges;
         ProspectiveLoggingDirection(boolean screenLog, boolean appLog, boolean appChanges){
             this.screenLog = screenLog;
@@ -86,20 +90,23 @@ public class ProspectiveLoggerWithNotes extends NotificationListenerService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         startForeground(1087384, DeclareInForeground());
-        if(intent.getExtras()==null){
+
+        if(intent.getExtras() == null){
             return START_STICKY;
         }
+
         Bundle bundle  = intent.getExtras();
         try {
             initializeComponents(bundle);
-            if(prospectiveLoggingDirection.screenLog|| prospectiveLoggingDirection.appLog|| prospectiveLoggingDirection.appChanges){
+            if(prospectiveLoggingDirection.screenLog || prospectiveLoggingDirection.appLog || prospectiveLoggingDirection.appChanges){
                 initializeBroadcastReceivers();
                 onListenerConnected();
-                if(bundle.getBoolean("restart")){
+                if (bundle.getBoolean("restart")) {
                     Handler restartHandler = new Handler();
                     Runnable documentRestart = () -> storeData("Phone restarted");
                     restartHandler.postDelayed(documentRestart, 10*1000);
                     storeData("Phone restarted");
+                    Timber.v("--- restarting ---");
                 }
             }
         } catch (Exception e) {
@@ -114,7 +121,8 @@ public class ProspectiveLoggerWithNotes extends NotificationListenerService {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-            NotificationChannel channel = new NotificationChannel("usage logger", getString(R.string.app_name), NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channel = new NotificationChannel("usage logger", getString(R.string.app_name),
+                    NotificationManager.IMPORTANCE_DEFAULT);
             channel.enableLights(false);
             channel.enableVibration(false);
             channel.setSound(null,null);
@@ -126,7 +134,8 @@ public class ProspectiveLoggerWithNotes extends NotificationListenerService {
             }
         }
 
-        NotificationCompat.Builder nfc = new NotificationCompat.Builder(getApplicationContext(),"usage logger")
+        NotificationCompat.Builder nfc = new NotificationCompat.Builder(getApplicationContext(),
+                "usage logger")
                 .setSmallIcon(R.drawable.ic_prospective_logger)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_prospective_logger))
                 .setPriority(NotificationCompat.PRIORITY_MAX)
@@ -139,7 +148,8 @@ public class ProspectiveLoggerWithNotes extends NotificationListenerService {
 
         nfc.setContentTitle(this.getApplication().getPackageName());
         nfc.setContentText(contentText);
-        nfc.setStyle(new NotificationCompat.BigTextStyle().bigText(contentText).setBigContentTitle(this.getApplication().getPackageName()));
+        nfc.setStyle(new NotificationCompat.BigTextStyle().bigText(contentText).
+                setBigContentTitle(this.getApplication().getPackageName()));
         nfc.setWhen(System.currentTimeMillis());
 
         return nfc.build();
@@ -148,9 +158,11 @@ public class ProspectiveLoggerWithNotes extends NotificationListenerService {
     private void initializeError() {
         if(BuildConfig.DEBUG){
             Timber.plant(new Timber.DebugTree(){
+                @NonNull
                 @Override
-                protected @org.jetbrains.annotations.Nullable String createStackElementTag(@NotNull StackTraceElement element) {
-                    return String.format("C:%s:%s",super.createStackElementTag(element), element.getLineNumber());
+                protected String createStackElementTag(@NotNull StackTraceElement element) {
+                    return String.format("C:%s:%s",super.createStackElementTag(element),
+                            element.getLineNumber());
                 }
             });
         }
@@ -160,7 +172,8 @@ public class ProspectiveLoggerWithNotes extends NotificationListenerService {
         if(bundle==null){
             throw new Exception("Bundle is null");
         }
-        SharedPreferences securePreferences = Armadillo.create(this, "service without note")
+        SharedPreferences securePreferences = Armadillo.create(this,
+                        "service without note")
                 .enableKitKatSupport(true)
                 .encryptionFingerprint(this)
                 .build();
@@ -183,20 +196,16 @@ public class ProspectiveLoggerWithNotes extends NotificationListenerService {
                 bundle.getBoolean("appChanges")
         );
 
-        StoreInSQL storeInSQL = new StoreInSQL(this, "prospective.db",1, "prospective_table", "(time INTEGER, event TEXT)");
+        StoreInSQL storeInSQL = new StoreInSQL(this, "prospective.db",1,
+                "prospective_table", "(time INTEGER, event TEXT)");
         SQLiteDatabase.loadLibs(this);
         database = storeInSQL.getWritableDatabase(password);
         handler = new Handler();
         packageManager = this.getPackageManager();
         currentlyRunningApp = this.getPackageName();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            @SuppressLint("WrongConstant") UsageStatsManager usageStatsManager = (UsageStatsManager) this.getSystemService("usagestats");
-            identifyAppInForeground = new IdentifyAppInForeground( this, usageStatsManager);
-        }else {
-            ActivityManager activityManager = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
-            identifyAppInForeground = new IdentifyAppInForeground(activityManager);
-        }
+        ActivityManager activityManager = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
+        identifyAppInForeground = new IdentifyAppInForeground(activityManager);
     }
 
     /**
@@ -206,50 +215,27 @@ public class ProspectiveLoggerWithNotes extends NotificationListenerService {
     private void initializeBroadcastReceivers() {
         if(prospectiveLoggingDirection.screenLog || prospectiveLoggingDirection.appLog){
             if(prospectiveLoggingDirection.appLog) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    screenReceiver = new BroadcastReceiver() {
-                        @Override
-                        public void onReceive(Context context, Intent intent) {
-                            if (intent.getAction() != null) {
-                                switch (intent.getAction()) {
-                                    case Intent.ACTION_SCREEN_OFF:
-                                        storeData("screen off");
-                                        handler.removeCallbacks(callIdentifyAppInForegroundNew);
-                                        break;
-                                    case Intent.ACTION_SCREEN_ON:
-                                        storeData("screen on");
-                                        handler.postDelayed(callIdentifyAppInForegroundNew, 100);
-                                        break;
-                                    case Intent.ACTION_USER_PRESENT:
-                                        storeData("user present");
-                                        break;
-                                }
+                screenReceiver = new BroadcastReceiver() {
+                    @Override
+                    public void onReceive(Context context, Intent intent) {
+                        if (intent.getAction() != null) {
+                            switch (intent.getAction()) {
+                                case Intent.ACTION_SCREEN_OFF:
+                                    storeData("screen off");
+                                    handler.removeCallbacks(callIdentifyAppInForegroundOld);
+                                    break;
+                                case Intent.ACTION_SCREEN_ON:
+                                    storeData("screen on");
+                                    handler.postDelayed(callIdentifyAppInForegroundOld, 100);
+                                    break;
+                                case Intent.ACTION_USER_PRESENT:
+                                    storeData("user present");
+                                    break;
                             }
                         }
-                    };
-                }else {
-                    screenReceiver = new BroadcastReceiver() {
-                        @Override
-                        public void onReceive(Context context, Intent intent) {
-                            if (intent.getAction() != null) {
-                                switch (intent.getAction()) {
-                                    case Intent.ACTION_SCREEN_OFF:
-                                        storeData("screen off");
-                                        handler.removeCallbacks(callIdentifyAppInForegroundOld);
-                                        break;
-                                    case Intent.ACTION_SCREEN_ON:
-                                        storeData("screen on");
-                                        handler.postDelayed(callIdentifyAppInForegroundOld, 100);
-                                        break;
-                                    case Intent.ACTION_USER_PRESENT:
-                                        storeData("user present");
-                                        break;
-                                }
-                            }
-                        }
-                    };
-                }
-            }else{
+                    }
+                };
+            } else {
                 screenReceiver = new BroadcastReceiver() {
                     @Override
                     public void onReceive(Context context, Intent intent) {
@@ -293,15 +279,17 @@ public class ProspectiveLoggerWithNotes extends NotificationListenerService {
                     if (intent.getAction() != null) {
                         switch (intent.getAction()) {
                             case Intent.ACTION_PACKAGE_ADDED:
-                                Set<String> oldAppListAdd = sharedPreferences.getStringSet("installed apps", new HashSet<>());
+                                Set<String> oldAppListAdd = sharedPreferences.
+                                        getStringSet("installed apps", new HashSet<>());
                                 Set<String> newAppListAdd = getInstalledApps();
                                 if(newAppListAdd.containsAll(oldAppListAdd)){
                                     Set<String> newApps = identifyNewApp(oldAppListAdd, newAppListAdd);
                                     for(String newApp: newApps){
                                         storeData("installed: "+newApp);
                                     }
-                                    sharedPreferences.edit().putStringSet("installed apps", newAppListAdd).apply();
-                                }else{
+                                    sharedPreferences.edit().putStringSet("installed apps",
+                                            newAppListAdd).apply();
+                                } else {
                                     Timber.e("Issue with package added broadcast receiver");
                                 }
                                 break;
@@ -327,13 +315,17 @@ public class ProspectiveLoggerWithNotes extends NotificationListenerService {
             appReceiverFilter.addAction(Intent.ACTION_PACKAGE_ADDED);
             appReceiverFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
             appReceiverFilter.addDataScheme("package");
-
             registerReceiver(appReceiver, appReceiverFilter);
         }
     }
 
     private Set<String> getInstalledApps() {
         PackageManager pm = this.getPackageManager();
+        //tk 09.06.22 getInstalledPackages no longer works for Android 11 and above
+        //extra permissions are required QUERY_ALL_PACKAGES, which need a approval from Google for Play Store listing
+        //see https://support.google.com/googleplay/android-developer/answer/10158779?hl=en and
+        //https://developer.android.com/training/package-visibility
+        @SuppressLint("QueryPermissionsNeeded")
         final List<PackageInfo> appInstall= pm.getInstalledPackages(PackageManager.GET_PERMISSIONS|PackageManager.GET_RECEIVERS|
                 PackageManager.GET_SERVICES|PackageManager.GET_PROVIDERS);
 
@@ -355,15 +347,12 @@ public class ProspectiveLoggerWithNotes extends NotificationListenerService {
     }
 
     final Runnable callIdentifyAppInForegroundNew = new Runnable() {
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public void run() {
-            String appRunningInForeground = identifyAppInForeground.identifyForegroundTaskLollipop();
-
-            if (Objects.equals(appRunningInForeground, "UR activity")) {
-                //perhaps inform main
-            }
-            if (!appRunningInForeground.equals(currentlyRunningApp) && !appRunningInForeground.equals("THIS IS NOT A REAL APP")) {
+         
+            String appRunningInForeground = identifyAppInForeground.identifyForegroundTaskLollipop(getApplicationContext());
+            if (!appRunningInForeground.equals(currentlyRunningApp) &&
+                    !appRunningInForeground.equals("THIS IS NOT A REAL APP")) {
                 storeData("App: " + appRunningInForeground);
                 currentlyRunningApp = appRunningInForeground;
             }
@@ -377,9 +366,10 @@ public class ProspectiveLoggerWithNotes extends NotificationListenerService {
         public void run() {
             String appRunningInForeground = identifyAppInForeground.identifyForegroundTaskUnderLollipop();
             if (Objects.equals(appRunningInForeground, "UR activity")) {
-                //perhaps inform main
+                Timber.v("App is running in foreground");
             }
-            if (!appRunningInForeground.equals(currentlyRunningApp) && !appRunningInForeground.equals("THIS IS NOT A REAL APP")) {
+            if (!appRunningInForeground.equals(currentlyRunningApp) &&
+                    !appRunningInForeground.equals("THIS IS NOT A REAL APP")) {
                 storeData("App: " + appRunningInForeground);
                 currentlyRunningApp = appRunningInForeground;
             }
@@ -398,14 +388,15 @@ public class ProspectiveLoggerWithNotes extends NotificationListenerService {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        database.close();
+        if (database!=null) database.close();
+
         if(prospectiveLoggingDirection.screenLog){
             unregisterReceiver(screenReceiver);
         }
         if(prospectiveLoggingDirection.appChanges){
             unregisterReceiver(appReceiver);
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             onListenerDisconnected();
         }
     }
