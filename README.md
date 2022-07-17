@@ -12,11 +12,11 @@ A Terms of Service and Privacy Policy is available [here](https://psychsensorlab
 
 Sample data and supplementary R-code for analysis are available in the folder 'Data' above. Note: the password to decrypt raw unprocessed data is L8l%Y%!b-4hW
 
-Customise how the app works [here](https://usageloggersetup.netlify.app/ )
+Customise how the app works [here](https://usageloggersetup.netlify.app/)
 
 Decrypt data [here](https://usageloggerdecryptwebsite.netlify.app/)
 
-An extensive walkthrough can be found [here](https://u-log-walk.netlify.app/)
+An extensive walk through can be found [here](https://u-log-walk.netlify.app/)
 
 ## Customisation
 
@@ -50,7 +50,7 @@ In a previous [app](https://github.com/kris-geyer/pegLog) we flagged issues with
 
 ## Bugs/known issues
 
-Report bugs or functionality issues to k.geyer2@lancaster.ac.uk
+Report bugs or functionality issues to k.geyer2@lancaster.ac.uk
 
 ## Lab website
 
