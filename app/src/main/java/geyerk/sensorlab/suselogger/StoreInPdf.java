@@ -9,9 +9,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
 import android.os.AsyncTask;
-import android.os.Build;
 
-import androidx.annotation.RequiresApi;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.itextpdf.text.Document;
@@ -39,10 +37,9 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
 
     StoreInPdf(MainActivity delegate) { this.delegate = delegate;}
 
-    private AsyncResult delegate;
+    private final AsyncResult delegate;
     private LocalBroadcastManager localBroadcastManager;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected Object doInBackground(Object... objects) {
         final Context context = (Context) objects[0];
@@ -64,7 +61,8 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                     Timber.i("file exists: %s, permissions detected", file.exists());
                 }
 
-                return new DataCollectionResult(appropriateLength && file.exists() ,dataDirection,generalData, CONSTANTS.PUTTING_CONTEXTUAL_DATA_IN_PDF);
+                return new DataCollectionResult(appropriateLength && file.exists() ,dataDirection,generalData,
+                        CONSTANTS.PUTTING_CONTEXTUAL_DATA_IN_PDF);
             case CONSTANTS.COLLECTING_PAST_USAGE:
                 file = new File(path, CONSTANTS.USAGE_FILE);
                 boolean appropriateUsageLength = false;
@@ -74,7 +72,8 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                     Timber.e(e);
                 }
                 Timber.i("File exists: %s - appropriateUsageLength: %s", appropriateUsageLength, file.exists());
-                return new DataCollectionResult(appropriateUsageLength && file.exists() ,dataDirection,generalData, CONSTANTS.PUTTING_USAGE_DATA_IN_PDF);
+                return new DataCollectionResult(appropriateUsageLength && file.exists() ,dataDirection,generalData,
+                        CONSTANTS.PUTTING_USAGE_DATA_IN_PDF);
             case CONSTANTS.COLLECTING_PROSPECTIVE_DATA:
                 Timber.i("begging of packaging of prospective data");
                 file = new File(path, CONSTANTS.PROSPECTIVE_FILE);
@@ -84,18 +83,20 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                 }catch (Exception e){
                     Timber.e(e);
                 }
-                return new DataCollectionResult(appropriateProspectiveLength && file.exists(), dataDirection, generalData, CONSTANTS.PUTTING_PROSPECTIVE_DATA_IN_PDF);
+                return new DataCollectionResult(appropriateProspectiveLength && file.exists(), dataDirection, generalData,
+                        CONSTANTS.PUTTING_PROSPECTIVE_DATA_IN_PDF);
             default:
                 Timber.i("general data not detected");
-                return new DataCollectionResult(false,dataDirection, CONSTANTS.COLLECTING_CONTEXTUAL_DATA, CONSTANTS.PUTTING_PROSPECTIVE_DATA_IN_PDF);
+                return new DataCollectionResult(false,dataDirection,
+                        CONSTANTS.COLLECTING_CONTEXTUAL_DATA,
+                        CONSTANTS.PUTTING_PROSPECTIVE_DATA_IN_PDF);
         }
-        } catch (DocumentException e) {
-            Timber.e(e);
-        } catch (FileNotFoundException e) {
+        } catch (DocumentException | FileNotFoundException e) {
             Timber.e(e);
         }
 
-        return new DataCollectionResult(false, dataDirection, generalData, CONSTANTS.ERROR_EXPERIENCED_IN_ASYNC);
+        return new DataCollectionResult(false, dataDirection, generalData,
+                CONSTANTS.ERROR_EXPERIENCED_IN_ASYNC);
     }
 
     /**
@@ -121,25 +122,26 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
 
                     table = new PdfPTable(3);
                     for(App_to_permission_to_response app_to_permission_to_response: contextualData.app_to_permission_to_responses){
-                        Iterator it = app_to_permission_to_response.permissions_and_response.entrySet().iterator();
+                        Iterator<Map.Entry<String, Boolean>> it = app_to_permission_to_response.permissions_and_response.entrySet().iterator();
                         while (it.hasNext()) {
                             publishProgress(allToEnter /count++);
-                            Map.Entry pair = (Map.Entry)it.next();
+                            Map.Entry<String, Boolean> pair = it.next();
                             table.addCell(app_to_permission_to_response.app);
-                            table.addCell((String) pair.getKey());
+                            table.addCell(pair.getKey());
                             table.addCell(String.valueOf(pair.getValue()));
                             it.remove();
                         }
                     }
                     break;
                 case CONSTANTS.INSTALLED_AND_PERMISSION:
+                case CONSTANTS.RESPONSE_AND_PERMISSION:
                     table = new PdfPTable(2);
                     for(App_to_permission_to_response app_to_permission_to_response: contextualData.app_to_permission_to_responses){
-                        Iterator it = app_to_permission_to_response.permissions_and_response.entrySet().iterator();
+                        Iterator<Map.Entry<String, Boolean>> it = app_to_permission_to_response.permissions_and_response.entrySet().iterator();
                         while (it.hasNext()) {
                             publishProgress(allToEnter /count++);
-                            Map.Entry pair = (Map.Entry)it.next();
-                            table.addCell((String) pair.getKey());
+                            Map.Entry<String, Boolean> pair = it.next();
+                            table.addCell(pair.getKey());
                             table.addCell(String.valueOf(pair.getValue()));
                             it.remove();
                         }
@@ -148,10 +150,10 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                 case CONSTANTS.INSTALLED_AND_RESPONSE:
                     table = new PdfPTable(2);
                     for(App_to_permission_to_response app_to_permission_to_response: contextualData.app_to_permission_to_responses){
-                        Iterator it = app_to_permission_to_response.permissions_and_response.entrySet().iterator();
+                        Iterator<Map.Entry<String, Boolean>> it = app_to_permission_to_response.permissions_and_response.entrySet().iterator();
                         while (it.hasNext()) {
                             publishProgress(allToEnter /count++);
-                            Map.Entry pair = (Map.Entry)it.next();
+                            Map.Entry<String, Boolean> pair = it.next();
                             table.addCell(app_to_permission_to_response.app);
                             table.addCell(String.valueOf(pair.getValue()));
                             it.remove();
@@ -166,29 +168,15 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                         table.addCell(app_to_permission_to_response.app);
                     }
                     break;
-                case CONSTANTS.RESPONSE_AND_PERMISSION:
-                    table = new PdfPTable(2);
-                    for(App_to_permission_to_response app_to_permission_to_response: contextualData.app_to_permission_to_responses){
-                        Iterator it = app_to_permission_to_response.permissions_and_response.entrySet().iterator();
-                        ;
-                        while (it.hasNext()) {
-                            publishProgress(allToEnter /count++);
-                            Map.Entry pair = (Map.Entry)it.next();
-                            table.addCell((String) pair.getKey());
-                            table.addCell(String.valueOf(pair.getValue()));
-                            it.remove();
-                        }
-                    }
-                    break;
                 case CONSTANTS.ONLY_PERMISSION:
                     table = new PdfPTable(1);
                     for(App_to_permission_to_response app_to_permission_to_response: contextualData.app_to_permission_to_responses){
-                        Iterator it = app_to_permission_to_response.permissions_and_response.entrySet().iterator();
-                        ;
+                        Iterator<Map.Entry<String, Boolean>> it = app_to_permission_to_response.permissions_and_response.entrySet().iterator();
+
                         while (it.hasNext()) {
                             publishProgress(allToEnter /count++);
-                            Map.Entry pair = (Map.Entry)it.next();
-                            table.addCell((String) pair.getKey());
+                            Map.Entry<String, Boolean> pair = it.next();
+                            table.addCell(pair.getKey());
                             it.remove();
                         }
                     }
@@ -196,11 +184,11 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                 case CONSTANTS.ONLY_RESPONSE:
                     table = new PdfPTable(1);
                     for(App_to_permission_to_response app_to_permission_to_response: contextualData.app_to_permission_to_responses){
-                        Iterator it = app_to_permission_to_response.permissions_and_response.entrySet().iterator();
-                        ;
+                        Iterator<Map.Entry<String, Boolean>> it = app_to_permission_to_response.permissions_and_response.entrySet().iterator();
+
                         while (it.hasNext()) {
                             publishProgress(allToEnter /count++);
-                            Map.Entry pair = (Map.Entry)it.next();
+                            Map.Entry<String, Boolean> pair = it.next();
                             table.addCell(String.valueOf(pair.getValue()));
                             it.remove();
                         }
@@ -215,29 +203,28 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
             document.add(table);
             document.close();
 
-            if(dataDirection != CONSTANTS.ONLY_INSTALLED){
+            if (dataDirection != CONSTANTS.ONLY_INSTALLED){
                 if(contextualData.permissionNumber == table.size()){
                     return true;
-                }else{
+                } else {
                     Timber.i("permissions number: %d - table size: %d", contextualData.permissionNumber, table.size());
                     return false;
                 }
             }else {
                 if(contextualData.appNumber == table.size()){
                     return true;
-                }else{
+                } else {
                     Timber.i("app number: %d - table size: %d", contextualData.appNumber, table.size());
                     return false;
                 }
             }
-        }else{
+        } else {
             Timber.e("Document was not open when it came to querying the database");
             return false;
         }
     }
 
-    class CompleteContextData {
-
+    static class CompleteContextData {
         final ArrayList<App_to_permission_to_response> app_to_permission_to_responses;
         final int permissionNumber, appNumber;
         CompleteContextData(ArrayList<App_to_permission_to_response> app_to_permission_to_responses, int permissionNumber){
@@ -247,23 +234,22 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
         }
 
     }
-    class App_to_permission_to_response {
 
+    static class App_to_permission_to_response {
         final String app;
         final HashMap<String,Boolean> permissions_and_response;
         App_to_permission_to_response(String app, HashMap<String, Boolean> permissions_and_response){
             this.app = app;
             this.permissions_and_response = permissions_and_response;
         }
-
-
     }
+
     private CompleteContextData gatherContextualData(Context context) {
         ArrayList<App_to_permission_to_response> allData = new ArrayList<>();
         int permissionNumber = 0;
 
-
         PackageManager pm = context.getPackageManager();
+        @SuppressLint("QueryPermissionsNeeded")
         final List<PackageInfo> appInstall= pm.getInstalledPackages(PackageManager.GET_PERMISSIONS|PackageManager.GET_RECEIVERS|
                 PackageManager.GET_SERVICES|PackageManager.GET_PROVIDERS);
 
@@ -284,7 +270,7 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
             }
 
 
-            allData.add(new App_to_permission_to_response(""+pInfo.applicationInfo.loadLabel(pm),permissionsResponse));
+            allData.add(new App_to_permission_to_response("" + pInfo.applicationInfo.loadLabel(pm), permissionsResponse));
 
         }
 
@@ -295,8 +281,6 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
     /**
      * USAGE METHODS
      */
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("WrongConstant")
     private  ArrayList<UsageRecord> recordUsageEvent(int daysToGoBack, Context context) throws Exception {
         ArrayList<UsageRecord> allData = new ArrayList<>();
@@ -377,7 +361,8 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
 
     private boolean storeProspectiveData(File file, String password, Context context) throws FileNotFoundException, DocumentException {
         boolean appropriateSize = false;
-        StoreInSQL storeInSQL = new StoreInSQL(context, "prospective.db",1, "prospective_table", "(time INTEGER, event TEXT)");
+        StoreInSQL storeInSQL = new StoreInSQL(context, "prospective.db",1,
+                "prospective_table", "(time INTEGER, event TEXT)");
         SQLiteDatabase.loadLibs(context);
         SQLiteDatabase database = storeInSQL.getReadableDatabase(password);
         Cursor cursor = database.rawQuery("SELECT * FROM prospective_table",null);
@@ -403,6 +388,7 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                 appropriateSize = true;
             }
         }
+        cursor.close();
         document.close();
         database.close();
         return appropriateSize;
