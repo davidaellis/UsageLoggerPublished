@@ -6,7 +6,6 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
-import android.app.usage.UsageStatsManager;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -16,12 +15,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 
-import androidx.annotation.RequiresApi;
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import net.sqlcipher.database.SQLiteDatabase;
@@ -33,12 +31,13 @@ import java.util.List;
 import java.util.Set;
 
 import at.favre.lib.armadillo.Armadillo;
+import at.favre.lib.armadillo.BuildConfig;
 import timber.log.Timber;
 
 public class ProspectiveLogger extends Service {
 
     //Classes
-    private class ProspectiveLoggingDirection {
+    private static class ProspectiveLoggingDirection {
         final boolean screenLog, appLog, appChanges;
         ProspectiveLoggingDirection(boolean screenLog, boolean appLog, boolean appChanges){
             this.screenLog = screenLog;
@@ -87,8 +86,9 @@ public class ProspectiveLogger extends Service {
     private void initializeError() {
         if(BuildConfig.DEBUG){
             Timber.plant(new Timber.DebugTree(){
+                @NonNull
                 @Override
-                protected @org.jetbrains.annotations.Nullable String createStackElementTag(@NotNull StackTraceElement element) {
+                protected String createStackElementTag(@NotNull StackTraceElement element) {
                     return String.format("C:%s:%s",super.createStackElementTag(element), element.getLineNumber());
                 }
             });
@@ -161,19 +161,16 @@ public class ProspectiveLogger extends Service {
                 bundle.getBoolean("appChanges")
         );
 
-        StoreInSQL storeInSQL = new StoreInSQL(this, "prospective.db",1, "prospective_table", "(time INTEGER, event TEXT)");
+        StoreInSQL storeInSQL = new StoreInSQL(this, "prospective.db",1,
+                "prospective_table", "(time INTEGER, event TEXT)");
         SQLiteDatabase.loadLibs(this);
         database = storeInSQL.getWritableDatabase(password);
         handler = new Handler();
         currentlyRunningApp = this.getPackageName();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            @SuppressLint("WrongConstant") UsageStatsManager usageStatsManager = (UsageStatsManager) this.getSystemService("usagestats");
-            identifyAppInForeground = new IdentifyAppInForeground( this, usageStatsManager);
-        }else {
-            ActivityManager activityManager = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
-            identifyAppInForeground = new IdentifyAppInForeground(activityManager);
-        }
+        ActivityManager activityManager = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
+        identifyAppInForeground = new IdentifyAppInForeground(activityManager);
+
     }
 
     /**
@@ -183,50 +180,27 @@ public class ProspectiveLogger extends Service {
     private void initializeBroadcastReceivers() {
         if(prospectiveLoggingDirection.screenLog || prospectiveLoggingDirection.appLog){
             if(prospectiveLoggingDirection.appLog) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    screenReceiver = new BroadcastReceiver() {
-                        @Override
-                        public void onReceive(Context context, Intent intent) {
-                            if (intent.getAction() != null) {
-                                switch (intent.getAction()) {
-                                    case Intent.ACTION_SCREEN_OFF:
-                                        storeData("screen off");
-                                        handler.removeCallbacks(callIdentifyAppInForegroundNew);
-                                        break;
-                                    case Intent.ACTION_SCREEN_ON:
-                                        storeData("screen on");
-                                        handler.postDelayed(callIdentifyAppInForegroundNew, 100);
-                                        break;
-                                    case Intent.ACTION_USER_PRESENT:
-                                        storeData("user present");
-                                        break;
+                screenReceiver = new BroadcastReceiver() {
+                    @Override
+                    public void onReceive(Context context, Intent intent) {
+                        if (intent.getAction() != null) {
+                            switch (intent.getAction()) {
+                                case Intent.ACTION_SCREEN_OFF:
+                                    storeData("screen off");
+                                    handler.removeCallbacks(callIdentifyAppInForegroundOld);
+                                    break;
+                                case Intent.ACTION_SCREEN_ON:
+                                    storeData("screen on");
+                                    handler.postDelayed(callIdentifyAppInForegroundOld, 100);
+                                    break;
+                                case Intent.ACTION_USER_PRESENT:
+                                    storeData("user present");
+                                    break;
                                 }
                             }
                         }
                     };
-                }else {
-                    screenReceiver = new BroadcastReceiver() {
-                        @Override
-                        public void onReceive(Context context, Intent intent) {
-                            if (intent.getAction() != null) {
-                                switch (intent.getAction()) {
-                                    case Intent.ACTION_SCREEN_OFF:
-                                        storeData("screen off");
-                                        handler.removeCallbacks(callIdentifyAppInForegroundOld);
-                                        break;
-                                    case Intent.ACTION_SCREEN_ON:
-                                        storeData("screen on");
-                                        handler.postDelayed(callIdentifyAppInForegroundOld, 100);
-                                        break;
-                                    case Intent.ACTION_USER_PRESENT:
-                                        storeData("user present");
-                                        break;
-                                }
-                            }
-                        }
-                    };
-                }
-            }else{
+            } else {
                     screenReceiver = new BroadcastReceiver() {
                         @Override
                         public void onReceive(Context context, Intent intent) {
@@ -311,6 +285,7 @@ public class ProspectiveLogger extends Service {
 
     private Set<String> getInstalledApps() {
         PackageManager pm = this.getPackageManager();
+        @SuppressLint("QueryPermissionsNeeded")
         final List<PackageInfo> appInstall= pm.getInstalledPackages(PackageManager.GET_PERMISSIONS|PackageManager.GET_RECEIVERS|
                 PackageManager.GET_SERVICES|PackageManager.GET_PROVIDERS);
 
@@ -332,10 +307,10 @@ public class ProspectiveLogger extends Service {
     }
 
     final Runnable callIdentifyAppInForegroundNew = new Runnable() {
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+      // @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public void run() {
-            String appRunningInForeground = identifyAppInForeground.identifyForegroundTaskLollipop();
+            String appRunningInForeground = identifyAppInForeground.identifyForegroundTaskLollipop(getApplicationContext());
             if (!appRunningInForeground.equals(currentlyRunningApp) && !appRunningInForeground.equals("THIS IS NOT A REAL APP")) {
                 storeData("App: " + appRunningInForeground);
                 currentlyRunningApp = appRunningInForeground;
