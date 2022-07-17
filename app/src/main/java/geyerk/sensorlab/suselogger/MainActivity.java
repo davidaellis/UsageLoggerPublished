@@ -30,11 +30,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Random;
 
 import at.favre.lib.armadillo.Armadillo;
+import at.favre.lib.armadillo.BuildConfig;
 import timber.log.Timber;
 
 public class MainActivity extends Activity implements View.OnClickListener, AsyncResult {
@@ -66,7 +64,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
         initializeClasses();
         initializeLocalReceiver();
         if(!sharedPreferences.getBoolean("informed user", false)){
-            postAlert.customiseMessage(0, "NA", "What is Usage logger", "This app is for researching for scientific research, if you are not participating in scientific research please uninstall this app." , "alertDialogResponse");
+            postAlert.customiseMessage(0, "NA", getString(R.string.title_app_info),
+                    getString(R.string.app_info_short), "alertDialogResponse");
         }
     }
 
@@ -84,16 +83,16 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
         reportScreen = findViewById(R.id.tvReport);
         switch (sharedPreferences.getInt("data being collected", 0)){
             case CONSTANTS.COLLECTING_CONTEXTUAL_DATA:
-                reportScreen.setText("Currently collecting context data");
+                reportScreen.setText(R.string.coll_context_data);
                 break;
             case CONSTANTS.COLLECTING_PAST_USAGE:
-                reportScreen.setText("Currently collecting past usage data");
+                reportScreen.setText(R.string.coll_past_data);
                 break;
             case CONSTANTS.COLLECTING_PROSPECTIVE_DATA:
-                reportScreen.setText("Collecting active phone usage data");
+                reportScreen.setText(R.string.coll_active_phone_data);
                 break;
             case CONSTANTS.FILE_SENT:
-                reportScreen.setText("Study is complete");
+                reportScreen.setText(R.string.study_fin);
                 break;
 
         }
@@ -119,42 +118,40 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.btnReadQR:
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O_MR1){
-                    startActivityForResult(new Intent(this, GoogleQRScanner.class), CONSTANTS.QR_CODE_ACTIVITY);
-                }else{
-                    startActivityForResult(new Intent(this, GoogleQRScanner.class), CONSTANTS.QR_CODE_ACTIVITY);
+        if (view.getId() == R.id.btnEmail) {
+            if(sharedPreferences.getBoolean("permissions provided", false)){
+                collectFromDataSource();
+            } else {
+                if(this.checkCallingOrSelfPermission("android.permission.CAMERA")!=PackageManager.PERMISSION_GRANTED){
+                    continueWithSetUp();
+                } else {
+                    postAlert.customiseMessage(99, "NA", getString(R.string.title_next),
+                            getString(R.string.pls_press_qr_code), "NA");
                 }
-
-                break;
-            case R.id.btnSeePassword:
-                informUserOnPassword("noWhere");
-                break;
-            case R.id.btnEmail:
-                if(sharedPreferences.getBoolean("permissions provided", false)){
-                    collectFromDataSource();
-                }else{
-                    if(this.checkCallingOrSelfPermission("android.permission.CAMERA")!= PackageManager.PERMISSION_GRANTED){
-                        continueWithSetUp();
-                    }else {
-                        postAlert.customiseMessage(99, "NA", "Next step", "Thank you for providing the permission. Now please press on Read QR code and use your camera to scan a QR code provided to you as part of the study.", "NA");
-                    }
-                }
-                break;
+            }
+        } else if (view.getId() == R.id.btnReadQR) {
+            startActivityForResult(new Intent(this, GoogleQRScanner.class),
+                    CONSTANTS.QR_CODE_ACTIVITY);
+        } else if (view.getId() == R.id.btnSeePassword) {
+            informUserOnPassword("noWhere");
+        } else {
+            throw new IllegalStateException("Unexpected value: " + view.getId());
         }
     }
 
     private void initializeError() {
-        if(BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree(){
+                @NonNull
                 @Override
-                protected @org.jetbrains.annotations.Nullable String createStackElementTag(@NotNull StackTraceElement element) {
-                    return String.format("C:%s:%s",super.createStackElementTag(element), element.getLineNumber());
+                protected String createStackElementTag(@NotNull StackTraceElement element) {
+                    return String.format("C:%s:%s",super.createStackElementTag(element),
+                            element.getLineNumber());
                 }
             });
             Timber.i("check if phone restarted: ");
-            Timber.i("Phone restarted previously: %s", sharedPreferences.getBoolean("restarted", false));
+            Timber.i("Phone restarted previously: %s",
+                    sharedPreferences.getBoolean("restarted", false));
         }
     }
 
@@ -176,9 +173,11 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
 
     private void continueWithSetUp() {
         Timber.i("Continuing with set up");
-        if(this.checkCallingOrSelfPermission("android.permission.CAMERA")== PackageManager.PERMISSION_GRANTED){
+        if(this.checkCallingOrSelfPermission("android.permission.CAMERA") ==
+                PackageManager.PERMISSION_GRANTED){
             Gson gson = new Gson();
-            qrInput = gson.fromJson(sharedPreferences.getString("instructions from QR", "instructions not initialized"), QRInput.class);
+            qrInput = gson.fromJson(sharedPreferences.getString("instructions from QR",
+                    "instructions not initialized"), QRInput.class);
             if(!securePreferences.getBoolean("password generated", false)){
                     sendMessage(1);
             }else{
@@ -192,24 +191,24 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(QRCodeProvided()){
             dealWithPermission.determinePermissionThatAreEssential(establishPermissionsToRequest());
-        }else{
+        } else {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                postAlert.customiseMessage(99, "NA", "Next step", "Please press on Read QR code and use your camera to scan a QR code", "NA");
+                postAlert.customiseMessage(99, "NA", getString(R.string.title_next),
+                        getString(R.string.pls_press_qr_code), "NA");
             }else{
                 continueWithSetUp();
             }
-
         }
     }
 
     /**
      * DIRECTLY RELATED TO INTERPRETING QR CODE FROM RESEARCHER
      */
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -232,15 +231,15 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
                     break;
                 case 1:
                     result = data.getStringExtra("result");
-                    if(result!=null){
-                        Timber.i( " result is not Kson, string is: %s", result);
+                    if (result!=null) {
+                        Timber.i(" result is not Kson, string is: %s", result);
                     }else{
-                        Timber.i("result is not Kson, but result returned is null");
+                        Timber.i(" result is not Kson, but result returned is null");
                     }
                     break;
             }
-        }else{
-            if(requestCode == CONSTANTS.GENERAL_USAGE_PERMISSION_REQUEST){
+        } else {
+            if (requestCode == CONSTANTS.GENERAL_USAGE_PERMISSION_REQUEST){
                 Timber.i("requesting usage permission");
                 dealWithPermission.determinePermissionThatAreEssential(establishPermissionsToRequest());
             }
@@ -264,69 +263,75 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
     private void sendMessage(int message) {
         switch (message){
             case 1:
-                postAlert.customiseMessage(1, "NA", "What is Usage Logger", "Usage logger is an app that helps scientists identify what you are using your phone for. Please do not use this app for any other purpose, if you have been asked to use this app for purposes unrelated to scientific research then please uninstall it now. At this point no data has been collected.",  "alertDialogResponse");
+                postAlert.customiseMessage(1, "NA", getString(R.string.title_app_info),
+                        getString(R.string.app_info), "alertDialogResponse");
                 break;
             case 2:
                 StringBuilder whatTheAppDoes = new StringBuilder();
 
-
-                if(qrInput.dataSources.keySet().contains("contextual")){
+                if(qrInput.dataSources.containsKey("contextual")){
                     if(qrInput.contextualDataSources.contains("installed")){
-                        whatTheAppDoes.append("\n").append("- What apps are installed on your phone.");
+                        whatTheAppDoes.append("\n").append(getString(R.string.func_info1));
                     }
                     if(qrInput.contextualDataSources.contains("permission")){
-                        whatTheAppDoes.append("\n").append("- What permissions that the installed apps on your phone request.");
+                        whatTheAppDoes.append("\n").append(getString(R.string.func_info2));
                     }
                     if(qrInput.contextualDataSources.contains("response")){
-                        whatTheAppDoes.append("\n").append("- How you have previously responded to app's request for permission requests");
+                        whatTheAppDoes.append("\n").append(getString(R.string.func_info3));
                     }
                 }
-                if(qrInput.dataSources.keySet().contains("usage")){
-                    whatTheAppDoes.append("\n").append("- What you have previously used your phone for across the past ").append(qrInput.daysToMonitor).append("days This will include: when the screen was used and when apps were used. No information will be collected on what you did with the apps. However, inferences may be made regarding what you could have done with these apps");
+                if(qrInput.dataSources.containsKey("usage")){
+                    whatTheAppDoes.append("\n").append(getString(R.string.func_info4)).
+                            append(qrInput.daysToMonitor).append(getString(R.string.func_info5));
                 }
-                if(qrInput.dataSources.keySet().contains("prospective")){
-                    whatTheAppDoes.append("\n").append("- How you will use your phone in the future. This will include: ");
-                    whatTheAppDoes.append("\n").append("- When the phone is off or on");
+                if(qrInput.dataSources.containsKey("prospective")){
+                    whatTheAppDoes.append("\n").append(getString(R.string.func_info6));
+                    whatTheAppDoes.append("\n").append(getString(R.string.func_info7));
                     if(qrInput.prospectiveDataSource.contains("screen")){
-                        whatTheAppDoes.append("\n").append("- When the screen is off or on");
+                        whatTheAppDoes.append("\n").append(getString(R.string.func_info8));
                     }
                     if(qrInput.prospectiveDataSource.contains("app")){
-                        whatTheAppDoes.append("\n").append("- What apps you use and when you use them");
+                        whatTheAppDoes.append("\n").append(getString(R.string.func_info9));
                     }
                     if(qrInput.prospectiveDataSource.contains("notification")){
-                        whatTheAppDoes.append("\n").append("- When an app sends you a notification and when you delete the notification");
+                        whatTheAppDoes.append("\n").append(getString(R.string.func_info10));
                     }
                     if(qrInput.prospectiveDataSource.contains("installed")){
-                        whatTheAppDoes.append("\n").append("- When you change the apps installed");
+                        whatTheAppDoes.append("\n").append(getString(R.string.func_info11));
                     }
                 }
-                postAlert.customiseMessage(2, "NA", "What Usage logger has been requested to do", "The QR code that you previously scanned has informed this app to collect particular types of data. Including: " + whatTheAppDoes + "\n" +  "\n" + "Please press 'ok' if you are happy with this data being collected. If not contact the research and please be prepared to withdraw from the study if you feel it is necessary.", "alertDialogResponse");
+                postAlert.customiseMessage(2, "NA", getString(R.string.title_log_request),
+                        getString(R.string.prev_qr_code1) + whatTheAppDoes + "\n" +  "\n"
+                                + getString(R.string.prev_qr_code2), "alertDialogResponse");
                 break;
             case 3:
-                postAlert.customiseMessage(3, "NA", "Data security", "The developer of this app has done his upmost to secure the data (which has previously been described) that this app collects. This was done by encrypting the data, securely storing the encrypted data, restricting any access to the data, devising a complex security key to protect the encrypted and inaccessible data, securing this security key among other measures. However, it is important that you do not participate in this study if your phone is rooted (jailbroken) or that you believe that the normal Android security on your phone is compromised. Additionally, your data can not and will not be exported without you manually emailing/exporting the data yourself. I have made every effort to give you complete control of your data.",  "alertDialogResponse");
+                postAlert.customiseMessage(3, "NA", getString(R.string.title_data_sec),
+                        getString(R.string.data_security),  "alertDialogResponse");
                 break;
             case 4:
                 StringBuilder permissionsToBeRequested = new StringBuilder();
-                if(qrInput.dataSources.keySet().contains("usage") || qrInput.prospectiveDataSource.contains("app")){
-                    permissionsToBeRequested.append("\n").append("Usage permission");
+                if(qrInput.dataSources.containsKey("usage") || qrInput.prospectiveDataSource.contains("app")){
+                    permissionsToBeRequested.append("\n").append(getString(R.string.usage_perm));
                 }
                 if(qrInput.prospectiveDataSource.contains("notification")){
-                    permissionsToBeRequested.append("\n").append("Notification listing permission");
+                    permissionsToBeRequested.append("\n").append(getString(R.string.note_list_perm));
                 }
                 if(permissionsToBeRequested.length() == 0){
-                    permissionsToBeRequested.append("\n").append("No permissions are required");
+                    permissionsToBeRequested.append("\n").append(getString(R.string.no_perm_req));
                 }
-
-                postAlert.customiseMessage(4, "NA", "Permissions required", "In order to participate you will have to provide the following permissions: " + permissionsToBeRequested, "alertDialogResponse");
+                postAlert.customiseMessage(4, "NA", getString(R.string.title_perm_req),
+                        getString(R.string.give_perms) + permissionsToBeRequested,
+                        "alertDialogResponse");
                 break;
             case 5:
-                postAlert.customiseMessage(5, "NA", "Issue Reading QR code", "There was a problem reading the QR code. Can you please scan the code again","");
+                postAlert.customiseMessage(5, "NA", getString(R.string.title_problem_qr),
+                        getString(R.string.problem_read_qr),""); //should this not also be alertDialogResponse?
         }
     }
 
     private String[] establishPermissionsToRequest() {
         String[] permissionsNeeded = {"NA","NA"};
-        if(qrInput.dataSources.keySet().contains("usage") || qrInput.prospectiveDataSource.contains("app")){
+        if(qrInput.dataSources.containsKey("usage") || qrInput.prospectiveDataSource.contains("app")){
                 permissionsNeeded[0] ="usage";
         }
 
@@ -338,15 +343,13 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
 
     private void requestUsagePermissions(String permission){
         if(permission.equals("usage")){
-            //request permission
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                startActivityForResult(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS), CONSTANTS.GENERAL_USAGE_PERMISSION_REQUEST);
-            }
-        }
-        else if(permission.equals("notification")){
+            startActivityForResult(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS),
+                        CONSTANTS.GENERAL_USAGE_PERMISSION_REQUEST);
+        } else if (permission.equals("notification")) {
             //request notification permission
-            startActivityForResult(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"), CONSTANTS.GENERAL_USAGE_PERMISSION_REQUEST);
-        }else{
+            startActivityForResult(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"),
+                    CONSTANTS.GENERAL_USAGE_PERMISSION_REQUEST);
+        } else {
             Timber.i("All permission granted");
         }
     }
@@ -354,20 +357,20 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
     /**
      * DIRECTLY RELATED TO HANDLING RESPONSE TO ALERT DIALOGS
      */
-
-    private BroadcastReceiver localReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver localReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Bundle bundle = intent.getExtras();
-            if(bundle!=null){
-                int message = bundle.getInt("messageID",100);
+            if (bundle != null) {
+                int message = bundle.getInt("messageID", 100);
                 String permission = bundle.getString("permissionToRequest", "NA");
-                if(permission.equals("NA")){
-                    if(!securePreferences.getBoolean("password generated", false)){
+                if (permission.equals("NA")) {
+                    if (!securePreferences.getBoolean("password generated", false)) {
                         securePreferences.edit().putLong("message" + message, System.currentTimeMillis()).apply();
-                        Timber.i("result from securePref message%d: %d", message, securePreferences.getLong("message"+message, 1L));
+                        Timber.i("result from securePref message%d: %d", message,
+                                securePreferences.getLong("message" + message, 1L));
                     }
-                    switch (message){
+                    switch (message) {
                         case 0:
                             sharedPreferences.edit().putBoolean("informed user", true).apply();
                             continueWithSetUp();
@@ -379,7 +382,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
                             break;
                         case 4:
                             try {
-                                generatePassword();
+                                //generatePassword();
+                                generate_password();
                                 informUserOnPassword("alertDialogResponse");
                             } catch (Exception e) {
                                 Timber.e(e);
@@ -398,63 +402,22 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
                             break;
                     }
 
-                }else{
+                } else {
                     requestUsagePermissions(permission);
                 }
             }
         }
-        private void generatePassword() throws Exception {
-
-            Long[] randomValues = new Long[4];
-            randomValues[0] = securePreferences.getLong("message1", 1L);
-            randomValues[1] = securePreferences.getLong("message2", 1L);
-            randomValues[2] = securePreferences.getLong("message3", 1L);
-            randomValues[3] = securePreferences.getLong("message4", 1L);
-
-            Timber.i("randomValues[0]: %d - randomValues[1]: %d - randomValues[2]: %d - randomValues[3]: %d", randomValues[0],randomValues[1],randomValues[2],randomValues[3]);
-            if(
-                    randomValues[0] == 1||
-                            randomValues[1] == 1||
-                            randomValues[2] == 1||
-                            randomValues[3] == 1){
-                throw new Exception("Did not appropriately generate messages from the securePreferences");
-            }else{
-                Ascii ascii = new Ascii();
-                StringBuilder password = new StringBuilder();
-                Random userRandomInitial = new Random(randomValues[0]);
-                while (password.length() < 12){
-                    Random userRandom ;
-                    userRandom = new Random(randomValues[userRandomInitial.nextInt(4)]);
-
-                    Random random = new Random(System.currentTimeMillis()* randomValues[userRandomInitial.nextInt(4)]);
-                    Thread.sleep(userRandom.nextInt(40) +1);
-
-                    int randomAsciiInt =  random.nextInt(93) + 33;
-                    Character randomAsciiChar = ascii.returnAscii(randomAsciiInt);
-                    if(randomAsciiChar != ' '){
-                        Timber.i("returned from Ascii: %s", randomAsciiChar);
-                        password.append(randomAsciiChar);
-                    }
-                }
-                Arrays.fill(randomValues,null);
-                Calendar c = Calendar.getInstance();
-                c.set(Calendar.HOUR_OF_DAY, 1);
-                c.set(Calendar.MINUTE, 1);
-                c.set(Calendar.MILLISECOND, 1);
-                c.set(Calendar.SECOND, 1);
-
-                securePreferences.edit()
-                        .putString("password", String.valueOf(password))
-                        .putBoolean("password generated", true)
-                        .putLong("message1", c.getTimeInMillis())
-                        .putLong("message2", c.getTimeInMillis())
-                        .putLong("message3", c.getTimeInMillis())
-                        .putLong("message4", c.getTimeInMillis())
-
-                        .apply();
-            }
-        }
     };
+
+    public void generate_password() {
+        String pass = GeneratePassword.randomString(12);
+        Timber.i("generated password: %s", pass);
+
+        securePreferences.edit()
+               .putString("password", pass)
+               .putBoolean("password generated", true)
+               .apply();
+    }
 
     BroadcastReceiver progressReceiver = new BroadcastReceiver() {
         @Override
@@ -472,7 +435,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
     private void informUserOnPassword(String whereToSend) {
         Button password = findViewById(R.id.btnSeePassword);
         password.setVisibility(View.VISIBLE);
-        postAlert.customiseMessage(5, "NA", "Password", "Your password is " + securePreferences.getString("password", "password not generated yet"), whereToSend);
+        postAlert.customiseMessage(5, "NA", getString(R.string.pwd),
+                "Your password is " + securePreferences.getString("password",
+                        "not generated yet"), whereToSend);
     }
 
 
@@ -486,7 +451,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
     /**
      * INITIATE DATA COLLECTION
      */
-
     private void collectFromDataSource() {
         updateUI();
         String nextDataSource = "not established";
@@ -515,7 +479,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
                 Timber.i(resources.getString(R.string.context_data_collection));
                 sharedPreferences.edit().putInt("data being collected", CONSTANTS.COLLECTING_CONTEXTUAL_DATA).apply();
                 storeInPdf = new StoreInPdf(this);
-                storeInPdf.execute(this, securePreferences.getString("password", "not real password"), CONSTANTS.RETURN_CONTEXT_TYPE(qrInput.contextualDataSources), CONSTANTS.COLLECTING_CONTEXTUAL_DATA);
+                storeInPdf.execute(this, securePreferences.getString("password", "not real password"),
+                        CONSTANTS.RETURN_CONTEXT_TYPE(qrInput.contextualDataSources), CONSTANTS.COLLECTING_CONTEXTUAL_DATA);
                 break;
             case "usage":
                 progressBar.setVisibility(View.VISIBLE);
@@ -523,23 +488,26 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
                 Timber.i(resources.getString(R.string.past_data_collection));
                 sharedPreferences.edit().putInt("data being collected", CONSTANTS.COLLECTING_PAST_USAGE).apply();
                 storeInPdf = new StoreInPdf(this);
-                storeInPdf.execute(this, securePreferences.getString("password", "not real password"),  qrInput.daysToMonitor, CONSTANTS.COLLECTING_PAST_USAGE);
+                storeInPdf.execute(this, securePreferences.getString("password", "not real password"),
+                        qrInput.daysToMonitor, CONSTANTS.COLLECTING_PAST_USAGE);
                 break;
             case "prospective":
                 progressBar.setVisibility(View.INVISIBLE);
                 reportScreen.setText(resources.getString(R.string.prospective_Data_collection));
                 Timber.i(resources.getString(R.string.prospective_Data_collection));
                 if(sharedPreferences.getBoolean("background logging underway", false)){
-                    Timber.i("attempting to package prospective logger");
+                    Timber.i("attempting to package continuous logger");
                     storeInPdf = new StoreInPdf(this);
-                    storeInPdf.execute(this, securePreferences.getString("password", "not real password"),  CONSTANTS.READY_FOR_EMAIL, CONSTANTS.COLLECTING_PROSPECTIVE_DATA);
+                    storeInPdf.execute(this, securePreferences.getString("password", "not real password"),
+                            CONSTANTS.READY_FOR_EMAIL, CONSTANTS.COLLECTING_PROSPECTIVE_DATA);
                 }else{
                     startBackgroundLogging();
                 }
                 break;
             case "finish":
                 progressBar.setVisibility(View.GONE);
-                postAlert.customiseMessage(CONSTANTS.SEND_EMAIL, "NA", "Send email?", "The only remaining step is to send off the data to the researcher via email. Do you wish to send the data at this point?", "alertDialogResponse");
+                postAlert.customiseMessage(CONSTANTS.SEND_EMAIL, "NA", getString(R.string.title_send_email),
+                        getString(R.string.send_data_away), "alertDialogResponse");
                 break;
             default:
                 Timber.i("next data source not established");
@@ -547,10 +515,10 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
         }
     }
 
-    private boolean isMyServiceRunning(Class<?> serviceClass) {
+    private boolean isMyServiceRunning() {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (serviceClass.getName().equals(service.service.getClassName())) {
+            if (ProspectiveLogger.class.getName().equals(service.service.getClassName())) {
                 return true;
             }
         }
@@ -570,14 +538,14 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
         if(!qrInput.prospectiveDataSource.contains("notification")){
             toStartService = new Intent(this, ProspectiveLogger.class);
             toStartService.putExtras(bundle);
-            if(!isMyServiceRunning(ProspectiveLogger.class)) {
+            if(!isMyServiceRunning()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     startForegroundService(toStartService);
                 } else {
                     startService(toStartService);
                 }
             }
-        }else{
+        } else {
             toStartService = new Intent(this, ProspectiveLoggerWithNotes.class);
             toStartService.putExtras(bundle);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -591,7 +559,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
     /**
      * RESPOND TO DATA COLLECTION INITIATIVES
      */
-
     @Override
     public void processFinish(DataCollectionResult output) {
         Timber.i("data collection result. DataRetrieved: %d - Success: %s", output.dataRetrieved, output.success);
@@ -616,7 +583,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
         }
     }
 
-
     private void sendEmail() {
         Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
         intent.setType("text/plain");
@@ -636,15 +602,18 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
         //if target files are identified to exist then they are packages into the attachments of the email
         try {
             if(contextFile.exists()){
-                files.add(FileProvider.getUriForFile(this, "geyerk.sensorlab.suselogger.fileprovider", contextFile));
+                files.add(FileProvider.getUriForFile(this,
+                        "geyerk.sensorlab.suselogger.fileprovider", contextFile));
             }
 
             if(usageEvents.exists()){
-                files.add(FileProvider.getUriForFile(this, "geyerk.sensorlab.suselogger.fileprovider", usageEvents));
+                files.add(FileProvider.getUriForFile(this,
+                        "geyerk.sensorlab.suselogger.fileprovider", usageEvents));
             }
 
             if(prospective.exists()){
-                files.add(FileProvider.getUriForFile(this, "geyerk.sensorlab.suselogger.fileprovider", prospective));
+                files.add(FileProvider.getUriForFile(this,
+                        "geyerk.sensorlab.suselogger.fileprovider", prospective));
             }
 
             if(files.size()>0){
