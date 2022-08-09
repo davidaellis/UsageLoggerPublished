@@ -46,11 +46,10 @@ Setting to record different behaviours:
 
 ## FAQ
 
-1. Do I need to use the decryption website?
+### Do I need to use the decryption website?
 You don’t need to use the decrypting website, if you open the encrypted PDF files with the correct password. However, we have created a website that will automatically decrypt and convert PDF files into CSV files for your convenience. PDF files are used as this allows participants to view their own data on their device at any time. 
 
-3. I've head that doze mode can be a problem. Is this still a problem?
-
+### I've head that doze mode can be a problem. Is this still a problem?
 In a previous [app](https://github.com/kris-geyer/pegLog) we flagged issues with 'doze mode'. This is where the Android operating system attempts to restrict activity on a device after certain periods of inactivity, which can adversely impact background data collection processes. However, this is not an issue for UsageLogger2 because all recorded activity occurs while the phone is active. 
 
 ## Contact / Lab
