@@ -13241,9 +13241,9 @@ os and path are used to access particular files</p>
 <ol>
     <li>Exclude unimportant events</li>
     <li>remove duplicates of the same event</li>
-    <li>Combine multiple form of interaction at the same time</li>
-    <p><b>Then the script must establish the duration of usage events</b></p>
-    <li>remove events which are bizzarly long or events that lasted less than a second</li>
+    <li>Combine multiple form of interaction at the same time<br>
+    <b>Then the script must establish the duration of usage events</b></li>
+    <li>remove events which are bizarrely long or events that lasted less than a second</li>
 </ol>
 </div>
 </div>
@@ -13357,11 +13357,12 @@ size of dataset after cleaning stage 4: 566
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2>Establishing variables</h2><p><h3>Screen usage</h3>
-This is established through excluding all screen off events and the summing the duration.</p>
-<p>Then, establihing the different usage rates per day</p>
-
+<h2>Establishing variables</h2>
+    <h3>Screen usage</h3>
+    <p>This is established through excluding all screen off events and the summing the duration.</p>
+    <p>Then, establishing the different usage rates per day</p>
 </div>
+
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
@@ -13427,7 +13428,7 @@ See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stabl
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><h3>Establishing top used apps</h3>
-This is done by creating a new dataframe for each of the apps and then summing up the duration which they were used.</p>
+<p>This is done by creating a new dataframe for each of the apps and then summing up the duration which they were used.</p>
 
 </div>
 </div>
