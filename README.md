@@ -7,8 +7,7 @@ UsageLogger2 is an Android app that records or extracts data about how a person 
 
 Geyer, K., Ellis, D.A., Shaw, H. and Davidson, B. I. (2022) Open-source smartphone app and tools for measuring, quantifying, and visualizing technology use. <em>Behavior Research Methods, 54</em>(1), 1-12, doi: [10.3758/s13428-021-01585-7](https://doi.org/10.3758/s13428-021-01585-7)
 
-#### Preprint
-Geyer, K., Ellis, D. A., Shaw, H., & Davidson, B. I. (2020, July 21). Open source smartphone app and tools for measuring, quantifying, and visualizing technology use. [https://doi.org/10.3758/s13428-021-01585-7](https://doi.org/10.3758/s13428-021-01585-7)
+Geyer, K., Ellis, D. A., Shaw, H., & Davidson, B. I. (2020, July 21). *Open source smartphone app and tools for measuring, quantifying, and visualizing technology use.* PsyArXiv. [https://doi.org/10.3758/s13428-021-01585-7](https://doi.org/10.3758/s13428-021-01585-7)
 
 ### Other resources
 - Download a working version from [Google Play Store](https://play.google.com/store/apps/details?id=geyerk.sensorlab.suselogger). 
