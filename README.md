@@ -10,12 +10,12 @@ Geyer, K., Ellis, D.A., Shaw, H. and Davidson, B. I. (2022) Open-source smartpho
 Geyer, K., Ellis, D. A., Shaw, H., & Davidson, B. I. (2020, July 21). *Open source smartphone app and tools for measuring, quantifying, and visualizing technology use.* PsyArXiv. [https://doi.org/10.3758/s13428-021-01585-7](https://doi.org/10.3758/s13428-021-01585-7)
 
 ### Other resources
-- Download a working version from [Google Play Store](https://play.google.com/store/apps/details?id=geyerk.sensorlab.suselogger). 
-- A Privacy Policy is available [here](https://usagelogger2.netlify.app/privacy/)
-- Sample data and scripts (in R and Python) are supplied. See 'sample data and scripts' folder above.
+- Download a working version from [Google Play Store](https://play.google.com/store/apps/details?id=geyerk.sensorlab.suselogger).
 - Customise how the app works [here](https://usageloggersetup.netlify.app/)
 - Decrypt data [here](https://usageloggerdecryptwebsite.netlify.app/)
-- An extensive walk through can be found [here](https://u-log-walk.netlify.app/)
+- An extensive walkthrough can be found [here](https://u-log-walk.netlify.app/)
+- A Privacy Policy is available [here](https://usagelogger2.netlify.app/privacy/)
+- Sample data and scripts (in R and Python) are supplied. See 'sample data and scripts' folder above.
 
 ## Customisation
 
@@ -23,7 +23,7 @@ This is discussed in detail as part of the academic paper above (see above link)
 
 **Contextual data**
 
-The following data types can be collected:
+*Types of data to be recorded:*
 
 - Installed apps
 - Permissions apps request
@@ -31,14 +31,16 @@ The following data types can be collected:
 
 **Continuous logging** 
 
-Setting to record different behaviours:
+*Types of behaviours to be recorded.*
 
 - Screen on/off events
 - What apps are used and when
 - When apps send notifications
 - When apps are added or removed (installed or uninstalled)
 
-**Past usage** includes data prior to installation including:
+**Past usage** 
+
+*Logs prior to app installation, including:*
 
 - Screen on/off events
 - What apps are used and when
