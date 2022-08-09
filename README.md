@@ -31,7 +31,7 @@ This is discussed in detail as part of the academic paper above (see above link)
 
 **Continuous logging** 
 
-*Types of behaviours to be recorded.*
+*Types of behaviours to be recorded:*
 
 - Screen on/off events
 - What apps are used and when
@@ -40,7 +40,7 @@ This is discussed in detail as part of the academic paper above (see above link)
 
 **Past usage** 
 
-*Logs prior to app installation, including:*
+*Logs prior to app installation (max. 5 days), including:*
 
 - Screen on/off events
 - What apps are used and when
