@@ -53,4 +53,4 @@ You don’t need to use the decrypting website, if you open the encrypted PDF fi
 In a previous [app](https://github.com/kris-geyer/pegLog) we flagged issues with 'doze mode'. This is where the Android operating system attempts to restrict activity on a device after certain periods of inactivity, which can adversely impact background data collection processes. However, this is not an issue for UsageLogger2 because all recorded activity occurs while the phone is active. 
 
 ## Contact / Lab
-If you have any problems or specific questions, you are welcome to contact us at <a href="mailto:h.shaw5@lancaster.ac.uk">h.shaw5@lancaster.ac.uk</a>. You can read more about our work on our [lab website](https://psychsensorlab.com/)
+If you have any problems or specific questions, you are welcome to contact us at <a href="mailto:h.shaw5@lancaster.ac.uk">h.shaw5@lancaster.ac.uk</a>. You can read more about our work on our [lab website](https://psychsensorlab.com/).
