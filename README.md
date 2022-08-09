@@ -1,4 +1,4 @@
-# UsageLogger2
+# Usage Logger (v2)
 
 ## Introduction
 UsageLogger2 is an Android app that records or extracts data about how a person uses their smartphone. Primarily developed to assist with psychological research and behavioural science more generally, the app can be customised to perform a number of different functions. This includes the ability to extract historical usage data from a smartphones internal memory.  
