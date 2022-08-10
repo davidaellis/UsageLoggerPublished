@@ -11,22 +11,21 @@ function initializeSortable() {
 }
 
 function sanityCheck() {
-    $(document).ready(function() {
-        if ($('#c_installed_apps').is(':checked')) {
-            return true;
-        } else {
-            $("#sanity_check").show();
-            window.onclick = function(event) {
-                if (event.target == document.getElementById("sanity_check")) {
-                    $("#sanity_check").hide()
-                }
-            }
-            $("#close_warning").click(function() {
+    var checked_option = $('input[name="option[]"]:checked').length;
+    if (checked_option || document.getElementById("past_usage").checked) {
+        return true;
+    } else {
+        $("#sanity_check").show();
+        window.onclick = function(event) {
+            if (event.target == document.getElementById("sanity_check")) {
                 $("#sanity_check").hide()
-            })
-            return false;
+            }
         }
-    });
+        $("#close_warning").click(function() {
+            $("#sanity_check").hide()
+        })
+        return false;
+    }
 }
 
 function initializeButtonFunction() {
@@ -34,13 +33,14 @@ function initializeButtonFunction() {
         $("#my_modal").show();
         window.onclick = function(event) {
             if (event.target == document.getElementById("my_modal")) {
-                $("#my_modal").hide()
+                $("#my_modal").hide();
             }
         }
     }
 
     $("#finished").click(function() {
-        if (sanityCheck() === true) {
+       var rt_sanity = sanityCheck();
+       if (rt_sanity === true) {
             writeQR(getTextForQR());
             window.onclick = function(event) {
                 if (event.target == document.getElementById("qr_modal")) {
@@ -48,7 +48,7 @@ function initializeButtonFunction() {
                 }
             }
         }
-    })
+    });
 
     $("#close_instructions").click(function() {
         $("#my_modal").hide()
@@ -83,7 +83,7 @@ function updateSortableContent(elementToUpdate) {
     var elementPresent = false;
 
     elementsInSortable.each(function(index, li) {
-        if (li.id == elementToUpdate + 'li') {
+        if (li.id == elementToUpdate + '_li') {
             elementPresent = true;
         }
     })
@@ -99,22 +99,22 @@ function addElementToSortable(elementToAdd) {
     switch (elementToAdd) {
         case "continuous":
             $("#continuous_log_options").show();
-            $("#sortable").append('<li id=' + elementToAdd + 'li class="draggable">Continuous logging</li>')
+            $("#sortable").append('<li id=' + elementToAdd + '_li class="draggable">Continuous Logging</li>')
             break;
         case "past_usage":
             $("#past_usage_options").show();
-            $("#sortable").append('<li id=' + elementToAdd + 'li class="draggable">Past Usage</li>')
+            $("#sortable").append('<li id=' + elementToAdd + '_li class="draggable">Past Usage</li>')
             break;
         case "contextual":
             $("#contextual_options").show();
-            $("#sortable").append('<li id=' + elementToAdd + 'li class="draggable">Contextual Data</li>')
+            $("#sortable").append('<li id=' + elementToAdd + '_li class="draggable">Contextual Data</li>')
             break;
         default:
     }
 }
 
 function removeElementFromSortable(elementToRemove) {
-    $("#" + elementToRemove + "li").remove();
+    $("#" + elementToRemove + "_li").remove();
     switch (elementToRemove) {
         case "continuous":
             $("#continuous_log_options").hide();
@@ -134,7 +134,7 @@ function getTextForQR() {
     var order = establishOrder();
     toReturn += "\n";
 
-    if (document.getElementById("contextual").checked) {
+   if (document.getElementById("contextual").checked) {
         toReturn += "{C:T,";
 
         if (document.getElementById("c_installed_apps").checked) {
@@ -167,7 +167,7 @@ function getTextForQR() {
         toReturn += "{U:T,";
         var daysToMonitor = document.getElementById("days_to_monitor");
         var result_days_monitor = 0;
-        switch (daysToMonitor.options[daysToMonitor.selectedIndex].text) {
+        switch (daysToMonitor.value) { // fixed tk, Aug. 2022
             case "one":
                 result_days_monitor = 1;
                 break;
