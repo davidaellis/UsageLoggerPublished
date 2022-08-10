@@ -1,0 +1,54 @@
+#close_instructions, #close_qr, #close_warning {
+    float: right;
+    font-size: 2.5em;
+    color: red;
+}
+
+.draggable {
+   cursor: move;
+}
+
+#qr_modal, #my_modal, #sanity_check {
+  display: none;
+}
+
+#qrcode_table {
+  float:right;
+}
+
+#left {
+  float: left;
+  width: 50%;
+  height: 50%;
+}
+
+.block {
+  clear: both;
+  padding: 1em 0;
+}
+
+.spacer {
+    margin: 0;
+    padding: 0;
+    height: 1em;
+}
+
+.option {
+    margin: 0 0 0.4em 0;
+    padding: 0;
+}
+
+#right {
+  float: right;
+  width: 50%;
+  height: 50%;
+}
+
+.title {
+  margin-bottom: 0;
+}
+
+#contextual_options, #continuous_log_options, #past_usage_options {
+  display: none;
+  list-style-type: none;
+}

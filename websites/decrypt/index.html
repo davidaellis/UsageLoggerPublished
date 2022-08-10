@@ -1,1 +1,50 @@
-Placeholder for new decrypt site
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Decrypt and Convert - Usage Logger 2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="../assets/css/decrypt.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+</head>
+
+<body>
+<div class="wrapper">
+<h1>Usage Logger 2 - Decrypt & Convert</h1>
+
+    <div id="show-instructions">
+        <h2>Instructions</h2>
+        <p>To decrypt and convert the data you have collected with Usage Logger 2, click on "Select PDF". After you have selected a PDF file you will be asked to enter a password, supplied by the user. After submitting the password, the PDF is decrypted and converted to a CSV file, which will automatically download. The CSV file will have the same name as the PDF you selected.</p>
+        <p>Please note, no data is uploaded to the server. This script works locally on your device.</p>
+        <hr>
+    </div>
+
+    <div id="submit-pdf">
+        <p><button id="upload-button">Select PDF</button>&nbsp;<input type="file" id="file-to-upload" accept="application/pdf" /></p>
+    </div>
+
+    <div id="pdf-main-container">
+        <div id="pdf-loader">Loading document ...</div>
+        <div id="password-container">
+            <input type="password" id="pdf-password" autocomplete="off" placeholder="Insert password" /><button id="submit-password">Submit</button>
+            <div id="password-message"></div>
+        </div>
+
+        <div id="pdf-contents">
+            <div id="pdf-meta">
+                <div id="page-count-container">Page <div id="pdf-current-page"></div> of <div id="pdf-total-pages"></div></div>
+            </div>
+            <canvas id="pdf-canvas" width="400"></canvas>
+            <div id="text-layer"></div>
+            <div id="page-loader">Loading page ...</div>
+        </div>
+    </div>
+</div>
+
+<script src="../assets/js/pdf.js"></script>
+<script src="../assets/js/pdf.worker.js"></script>
+<script src="../assets/js/decrypt.js"></script>
+
+</body>
+</html>

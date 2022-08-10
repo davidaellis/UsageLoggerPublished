@@ -1,0 +1,81 @@
+#file-to-upload {
+	display: none;
+}
+
+#pdf-main-container {
+	width: 400px;
+	margin: 0px auto;
+}
+
+#pdf-loader {
+	display: none;
+	height: 100px;
+}
+
+#pdf-contents {
+	display: none;
+}
+
+#pdf-meta {
+	overflow: hidden;
+	margin: 0;
+}
+
+#page-count-container {
+	float: right;
+}
+
+#pdf-current-page {
+	display: inline;
+}
+
+#pdf-total-pages {
+	display: inline;
+}
+
+#pdf-canvas {
+	border: 1px solid rgba(0,0,0,0.2);
+	box-sizing: border-box;
+}
+
+#page-loader {
+	height: 100px;
+	line-height: 100px;
+	text-align: center;
+	display: none;
+	font-size: 13px;
+}
+
+#text-layer {
+   position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	overflow: hidden;
+	opacity: 0.2;
+	line-height: 1.0;
+}
+
+#text-layer > div {
+	color: transparent;
+	position: absolute;
+	white-space: pre;
+	cursor: text;
+	transform-origin: 0% 0%;
+}
+
+#pdf-password{
+	margin: 0 10px auto;
+	width: 150px;
+	height: 27px;
+	font-size: 18px;
+}
+
+#password-message {
+    text-align: center;
+    margin-top: 15px;
+    background-color: #FFCCCB;
+    font-size 1em;
+    color:red;
+}

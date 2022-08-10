@@ -1,3 +1,8 @@
+* {
+    cursor: default;
+    user-select: none;
+}
+
 body {
   background-color: #fff;
   padding: 50px;
@@ -288,7 +293,7 @@ footer {
 }
 
 .app_img_large {
-    width: 825px;
+    width: 100%;
     border: solid 1px #ccc;
 }
 
@@ -305,4 +310,36 @@ footer {
 .new_section h4,h5,h6 {
     margin-top: 1.5em;
     margin-bottom: 0.5em;
+}
+
+.modal {
+    background-color: #fff;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+}
+
+.modal_content {
+    margin: 0 auto;
+    margin-top: 2em;
+    background-color: #e0e0e0;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.modal_content h1 {
+    margin-bottom: 1em;
+}
+
+button {
+    padding: 4px 8px;
+    background-color: #ccc;
+    border: 1px solid #666;
+    font-size: 1.2em;
+    border-radius: 5px;
 }
