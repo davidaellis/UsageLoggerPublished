@@ -424,7 +424,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                .apply();
     }
 
-    BroadcastReceiver progressReceiver = new BroadcastReceiver() {
+    final BroadcastReceiver progressReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
                 Bundle bundle = intent.getExtras();
