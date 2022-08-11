@@ -114,8 +114,8 @@ public class LoggerService extends Service {
         }
 
         NotificationCompat.Builder nfc = new NotificationCompat.Builder(getApplicationContext(),"usage logger")
-                .setSmallIcon(R.drawable.ic_notifications)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_notifications))
+                .setSmallIcon(R.drawable.ic_stat_name)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_stat_name))
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .setVisibility(NotificationCompat.VISIBILITY_SECRET) //This hides the notification from lock screen
