@@ -82,7 +82,8 @@
 
         <div style="float:right"><a href="#intro">top</a></div>
         <h2>Android App</h2>
-        <p>The app can be found <a href="https://play.google.com/store/apps/details?id=psych.sensorlab.usagelogger2">here</a> and should look something like below</p>
+        <!--<p>The app can be found <a href="https://play.google.com/store/apps/details?id=psych.sensorlab.usagelogger2">here</a> and should look something like below</p>-->
+        <p>The app can be found <a href="https://play.google.com/store/apps/details?id=geyerk.sensorlab.suselogger">here</a> and should look something like below</p>
         <p><img src="../assets/img/walkthrough/app_home.png" class="app_img_large"></p>
         <p>All participants will need to install this app by going to page in the google play store pressing install. When opening the app it should look like this.</p>
         <p><img src="../assets/img/walkthrough/home.png" class="app_img"></p>
@@ -138,9 +139,9 @@
     <div class="new_section" id="decryption">
 
         <div style="float:right"><a href="#intro">top</a></div>
-        <h2>Decryption</h2>
-        <p>The website can be found <a href="https://usage-logger-decrypt.netlify.com">here</a>.</p>
-        <p>At this point, the data has been collected and exported to the researcher and it needs to be decrypted. While, you can open the file then enter the password and have access to the pdf table. The pdf table format of the data is not easy to analyse, it needs to be converted into a csv or other format. Various R and python packages that are employed can be used. But the packages don't seem to function well with the usage logger output. This is because those packages typically do not pay attention to the cell division and instead focus on what is on the same line. Therefore, if a long app name requires two lines then half of the name may be entered into a different row and therefore, it can be double-counted. </p>
+        <h2>Decryption and Conversion</h2>
+        <p>The decrypt and convert webpage can be found <a href="https://usagelogger2.netlify.com/decrypt/">here</a>.</p>
+        <p>At this point, the data has been collected and sent to the researcher. However it still needs to be decrypted and converted to a suitable file format. While, you can open the file then enter the password and have access to the pdf table. The pdf table format of the data is not easy to analyse, it needs to be converted into a csv or other format. Various R and python packages that are employed can be used. But the packages don't seem to function well with the usage logger output. This is because those packages typically do not pay attention to the cell division and instead focus on what is on the same line. Therefore, if a long app name requires two lines then half of the name may be entered into a different row and therefore, it can be double-counted. </p>
         <p>This website, handles the decryption process specifically for the output of usage logger to avoid such errors. We strongly advise that you use it to decrypt your data</p>
         <p><img src="../assets/img/walkthrough/decrypt_whole.png" class="app_img"></p>
         <p>To decrypt the data that you have collected from usage logger simply click on 'select PDF' button, if you have chosen a pdf file then you will be transported to a screen where you will be asked to insert a password. Please supply the associated password, after this process is complete you should automatically have a csv file dropped into your folder with the cleaned data. It will have the same name as the file which you have supplied it. </p>
@@ -152,11 +153,11 @@
         <h2>Analysis</h2>
         <p>The analysis can be carried out in python and R. For python there are notebooks that are in github which are analyse either the :</p>
         <ul>
-            <li><a href="https://github.com/daviaellis/UsageLoggerPublished/blob/master/Data/Python/Context%20analysis.ipynb">Context</a></li>
-            <li><a href="https://github.com/daviaellis/UsageLoggerPublished/blob/master/Data/Python/Prospective%20Analysis.ipynb">Continual usage</a></li>
-            <li><a href="https://github.com/daviaellis/UsageLoggerPublished/blob/master/Data/Python/Past%20Usage%20Analysis.ipynb">Past Usage</a></li>
+            <li><a href="https://github.com/davidaellis/UsageLoggerPublished/tree/master/sample%20data%20and%20scripts/Python/Context%20analysis.ipynb">Contextual Data Analysis</a></li>
+            <li><a href="https://github.com/davidaellis/UsageLoggerPublished/tree/master/sample%20data%20and%20scripts/Python/Continuous%20Analysis.ipynb">Continuous Logging Analysis</a></li>
+            <li><a href="https://github.com/davidaellis/UsageLoggerPublished/tree/master/sample%20data%20and%20scripts/Python/Past%20Usage%20Analysis.ipynb">Past Usage Analysis</a></li>
         </ul>
-        <p>There are also R scripts that are provided <a href="https://github.com/daviaellis/UsageLoggerPublished/tree/master/Data/R">here</a></p>
+        <p>A number of <a href="https://github.com/davidaellis/UsageLoggerPublished/tree/master/sample%20data%20and%20scripts/R">R scripts</a> are also provided.</p>
     </div>
 
     <div class="new_section" id="contact">
