@@ -36,11 +36,11 @@ Visit the [customisation website](https://usagelogger2.netlify.app/customise/) t
 
 *Types of behaviours to be recorded:*
 
-- When phone is restarted
 - Screen on/off events
 - What apps are used and when
 - When apps send notifications
 - When apps are added or removed (installed or uninstalled)
+- *When phone is restarted (not customisable)*
 
 **Past usage** 
 
