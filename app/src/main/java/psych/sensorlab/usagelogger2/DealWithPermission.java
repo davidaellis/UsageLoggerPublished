@@ -86,7 +86,7 @@ class DealWithPermission {
                 break;
             case "usage":
                 postAlert.customiseMessage(CONSTANTS.ALERT_DIALOG_USAGE_PERMISSION, permission,
-                        context.getString(R.string.req_usage_perm), context.getString(R.string.usage_perm_info),
+                        context.getString(R.string.title_usage_perm), context.getString(R.string.usage_perm_info),
                         "alertDialogResponse");
                 break;
             case "notification":

@@ -34,7 +34,7 @@ class CONSTANTS {
 
     static final String
     CONTEXT_FILE = "context.pdf",
-    USAGE_FILE = "past_usage.pdf",
+    USAGE_FILE = "usage.pdf",
     CONTINUOUS_FILE = "continuous.pdf";
 
     static final int
