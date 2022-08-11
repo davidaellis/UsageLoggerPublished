@@ -1,7 +1,7 @@
 # Usage Logger 2
 
 ## Introduction
-Usage Logger 2 is an Android app that records or extracts data about how a person uses their smartphone. Primarily developed to assist with psychological research and behavioural science more generally, the app can be customised to perform a number of different functions.  This includes the ability to extract historical data about previous (retrospective) usage from the previous 5 days.
+Usage Logger 2 is an Android app that records or extracts data about how a person uses their smartphone. Primarily developed to assist with psychological research and behavioural science more generally, the app can be configured to perform a number of different functions. This includes the ability to extract information about previous (retrospective) usage (max. 5 days) as well as current usage of the phone.
 
 ### Publications
 
@@ -26,7 +26,7 @@ Visit the [customisation website](https://usagelogger2.netlify.app/customise/) t
 
 **Contextual data**
 
-*Types of data to be recorded:*
+*Types of data:*
 
 - Installed apps
 - Permissions that apps request
@@ -34,7 +34,7 @@ Visit the [customisation website](https://usagelogger2.netlify.app/customise/) t
 
 **Continuous logging** 
 
-*Types of behaviours to be recorded:*
+*Types of behaviours:*
 
 - Screen on/off events
 - What apps are used and when
@@ -53,9 +53,6 @@ Visit the [customisation website](https://usagelogger2.netlify.app/customise/) t
 
 ### Do I need to use the decryption website?
 You don’t need to use the decrypting website, if you open the encrypted PDF files with the correct password. However, we have created a website that will automatically decrypt and convert PDF files into CSV files for your convenience. PDF files are used as this allows participants to view their own data on their device at any time. 
-
-### I've head that doze mode can be a problem. Is this still relevant?
-In a [previous app](https://github.com/kris-geyer/pegLog) we flagged issues with 'doze mode'. This is where the Android operating system attempts to restrict activity on a device after certain periods of inactivity, which can adversely impact background data collection processes. However, this is not an issue for Usage Logger 2 because all recorded activity occurs while the phone is active. 
 
 ## Contact / Lab
 If you have any problems or specific questions, you are welcome to contact Dr. Heather Shaw (<a href="mailto:h.shaw5@lancaster.ac.uk">h.shaw5@lancaster.ac.uk</a>). You can read more about our work on our [lab website](https://psychsensorlab.com/).
