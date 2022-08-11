@@ -22,20 +22,38 @@
         <div class="modal_content">
             <span id="close_instructions">&times;</span>
             <h1>Instructions</h1>
-            <p>Click outside the box or the 'x' in the right hand corner to close this window.</p>
-            <p>This website allows researchers to customise UsageLogger2. It is possible to specify the type or types of data to be collected. The order of collection can also be configured. Click a section headline below to reveal more information.</p>
-            <div id="accordion">
-                <h2>Select Data Sources</h2>
-                <ul>
-                    <li>Contextual data provides a snapshot of what software is installed on the smartphone. This can include installed apps, requested permissions and/or permissions granted.</li>
-                    <li>Continuous logging records smartphone interactions after installation. Features captured include screen on/off events, specific app usage and notifications received. </li>
-                    <li>Past usage extracts data from an internal database of historical data maintained by Android.</li>
-                </ul>
-                <h2>Customise Order</h2>
-                <p>Customise the order in which data is collected by dragging and dropping the text on the right hand of the screen. The text only appears after one or more data sources have been selected.</p>
-                <h2>Generate a QR Code</h2>
-                <p>Clicking the 'Create QR-Code' button finalizes the customisation. A QR-Code is then generated. This code must then be scanned with the UsageLogger2 app. It loads the configuration into the app and tells the app what data to collect. The QR code can also be downloaded for future use (configurations).</p>
-            </div>
+            <p>Please press outside the box or the 'x' in the right hand corner to return to customisation settings.</p>
+            <p>This webpage was built to allow you to customise the Usage Logger app. To do so, on the left specify the type of data you wish to collect. Once selected, you can customise the order in which the data is collected.</p>
+
+            <h2>Customise Data Collection</h2>
+            <p>Specify the type of data to collect:</p>
+            <h3>Contextual Data</h3>
+            <p>Contextual data provides a researcher with a snapshot of what software is installed on the smartphone. This can include:</p>
+            <ul>
+                <li>Installed apps: What apps are installed on the device</li>
+                <li>Permissions requested: What permissions have been requested by which apps. Permissions provide access to particular restricted data like phone call logs or location. See here for more information.</li>
+                <li>Response to permission request: Has the user provided the permission or not.</li>
+            </ul>
+            <h3>Past Usage</h3>
+            <p>This will provide information about the phone was used for during the last few days (max. 5 days ago).</p>
+            <h3>Continuous Logging</h3>
+            <p>Continuous logging records smartphone interactions after installation of the app. Features captured include:</p>
+
+            <ul>
+                <li>Screen usage: Record when the screen was on/off.</li>
+                <li>App usage: Record at what point apps were used and store the identity of the apps.</li>
+                <li>Notifications: Record which apps have sent notifications.</li>
+                <li>Changes in installed apps: Record if any apps were installed/uninstalled.</li>
+            </ul>
+
+            <h3>Customise Order</h3>
+            <p>Customise the order in which data is collected by dragging and dropping the text on the right hand of the screen that appears after one or more data sources have been selected.</p>
+
+            <h2>Create QR-Code</h2>
+            <p>Clicking the 'Create QR-Code' button will generate a QR-code image. This is required to customise the app. Users can scan the QR-code from within the app, which will then start the data collection process. The QR-code can also be saved for future use.</p>
+
+            <h2>Contact</h2>
+            <p>In case of problems or questions, please contact </p>
         </div>
     </div>
 
@@ -59,7 +77,7 @@
 
     <!-- data source selection -->
     <div id="left">
-        <h2 class="title">Select Data Sources</h2>
+        <h2 class="title">Customise Data Collection</h2>
         <small>(Select at least one data source)</small>
         <p class="spacer">&nbsp;</p>
         <p class="option"><span title="Provides a snapshot of information about software on a device">Contextual Data</span>
@@ -129,12 +147,5 @@
 <script type="text/javascript" src="../assets/js/jquery.qrcode.js"></script>
 <script type="text/javascript" src="../assets/js/qrcode.js"></script>
 <script type="text/javascript" src="../assets/js/canvas2image.js"></script>
-<script>
-    $( function() {
-      $("#accordion").accordion({
-        heightStyle: "content"
-      });
-    });
-</script>
 </body>
 </html>

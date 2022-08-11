@@ -3,37 +3,38 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Walkthrough - UsageLogger2</title>
+    <title>Walkthrough - Usage Logger 2</title>
     <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
 </head>
 
 <body>
-<div class="container" id="intro">
+<div class="wrapper" id="intro">
 
-    <h1>UsageLogger2 Walkthrough</h1>
+    <h1>Usage Logger 2 - Walkthrough</h1>
     <h2>Contents</h2>
     <ol>
         <li><a href="#customisation">Customisation</a></li>
-        <li><a href="#app">App</a></li>
+        <li><a href="#app">Android App</a></li>
         <li><a href="#decryption">Decryption</a></li>
         <li><a href="#analysis">Analysis</a></li>
     </ol>
 
     <div class="new_section">
         <h2>Introduction</h2>
-        <p>Usage logger is an Android app that records or extracts data about how a person uses their smartphone. Primarily developed to assist with psychological research and behavioural science more generally, the app can be customised to perform a number of different functions. This includes an ability to extract historical data about previous (retrospective) usage form the previous 5 days. </p>
+        <p>Usage Logger 2 is an Android app that records or extracts data about how a person uses their smartphone. Primarily developed to assist with psychological research and behavioural science more generally, the app can be customised to perform a number of different functions. This includes the ability to extract historical data about previous (retrospective) usage from the previous 5 days.</p>
 
         <h3>Publications</h3>
-        <p>Geyer, K., Ellis, D. A., Shaw, H. and Davidson, B. I. (2020). Open source smartphone apps and tools for measuring, quantifying, and visualizing screen time. PsyArXiv, <a href="https://psyarxiv.com/eqhfa">Link here</a> </p>
+        <p>Geyer, K., Ellis, D.A., Shaw, H. and Davidson, B. I. (2022) Open-source smartphone app and tools for measuring, quantifying, and visualizing technology use. <em>Behavior Research Methods</em>, 54(1), 1-12. doi: <a href="https://link.springer.com/article/10.3758/s13428-021-01585-7">10.3758/s13428-021-01585-7</a></p>
+        <p>Geyer, K., Ellis, D. A., Shaw, H., & Davidson, B. I. (2020, July 21). <em>Open source smartphone app and tools for measuring, quantifying, and visualizing technology use</em>. PsyArXiv. doi: <a href="https://doi.org/10.31234/osf.io/eqhfa">10.31234/osf.io/eqhfa</a></p>
 
         <h3>Other resources</h3>
         <ul>
-            <li>Download a working version from the <a href="https://play.google.com/store/apps/details?id=geyerk.sensorlab.suselogger">Google play store</a></li>
-            <li>A Terms of Service and Privacy Policy is available <a href="https://usage-logger-privacy.netlify.com/">here</a></li>
-            <li>Sample data and supplementary R-code for analysis are available <a href="https://github.com/kris-geyer/UsageLoggerPublished/tree/master/Data">here</a>. Note: the password to decrypt raw unprocessed data is L8l%Y%!b-4hW&lt;/p&gt;</li>
-            <li><a href="https://usagelogger2.netlify.com/decrypt/">Decrypt data here</a></li>
-            <li>See how the app works in our <a href="https://www.youtube.com/watch?v=VET3PkaNayo&amp;feature=youtu.be">YouTube video</a></li>
-            <li>Customise how the app works <a href="https://usage-logger-custom.netlify.com/">here</a></li>
+            <li>Android App on <a href="https://play.google.com/store/apps/details?id=psych.sensorlab.usagelogger2">Google Play Store</a>.</li>
+            <li>Developer <a href="https://www.youtube.com/watch?v=VET3PkaNayo&amp;feature=youtu.be">video</a> about the app.</li>
+            <li><a href="../customise/">Customise</a> what data the app collects.</li>
+            <li><a href="../decrypt/">Decrypt</a> collected data.</li>
+            <li><a href="https://github.com/daviaellis/UsageLoggerPublished/tree/master/Data">Sample data and scripts</a>  for analysis.</li>
+            <li><a href="../privacy">Privacy Policy</a></li>
         </ul>
     </div>
 
@@ -41,15 +42,12 @@
 
         <div style="float:right"><a href="#intro">top</a></div>
         <h2>Customisation</h2>
-        <p>The customisation website allows for the researcher to choose how the app will function. There are three different data streams that may be employed and altered. Additionally, the researcher can customise the order that the data sources are queried.</p>
+        <p>The <a href="../customise">customisation website</a> allows the researcher to choose how the app will function. There are three different data streams that may be employed and altered. Additionally, the researcher can customise the order that the data sources are queried.</p>
         <p><img src="../assets/img/walkthrough/custom_whole.png" class="app_img_large"></p>
-        <p>The website can be found <a href="https://usage-logger-custom.netlify.app/">here</a></p>
-        <p>These instructions are repeated on the website, you can press "show instructions" to see them on the page</p>
 
-        <h3>Customise data collection: Specify the type of data should collect</h3>
-        <p><img src="../assets/img/walkthrough/custom_custom.png" class="app_img"></p>
+        <h3>Specify the type of data to collect</h3>
 
-        <h4>Contextual data</h4>
+        <h4>1) Contextual data</h4>
         <p>Contextual data is intended to provide the researcher with a better understanding of what the smartphone can be used for at a particular point. The data collected can include three difference sources of data. </p>
 
         <ul>
@@ -58,17 +56,17 @@
             <li>Response to permission request - Has the user provided the permission or not.</li>
         </ul>
 
-        <h4>Past usage</h4>
+        <h4>2) Past usage</h4>
         <p>The will provide a database of what the person has used their phone for during the last couple of days (max 5 days ago). As this database is maintained by Android, it is difficult to provide much filtering at this stage. </p>
 
-        <h4>Continuous logging</h4>
-        <p>Continuous logging will record how the participants use their smartphones in the future. There are a number of features which can be included in the data recording.</p>
+        <h4>3) Continuous logging</h4>
+        <p>Continuous logging records how the participants use their smartphones in the future. There are a number of features which can be included in the data recording.</p>
         <ul>
-            <li>Phone usage - record when the phone was on/off.</li>
-            <li>Screen usage - record when the screen was on/off.</li>
-            <li>App usage - record at what point apps were used and store the identity of the apps.</li>
-            <li>Notifications - record which apps have sent notifications.</li>
-            <li>Changes in installed apps - Record if any apps were installed/uninstalled.</li>
+            <li>Phone usage: record when the phone was on/off.</li>
+            <li>Screen usage: record when the screen was on/off.</li>
+            <li>App usage: record at what point apps were used and store the identity of the apps.</li>
+            <li>Notifications: record which apps have sent notifications.</li>
+            <li>Changes in installed apps: Record if any apps were installed/uninstalled.</li>
         </ul>
 
         <h3>Customise order</h3>
@@ -84,8 +82,8 @@
     <div class="new_section" id="app">
 
         <div style="float:right"><a href="#intro">top</a></div>
-        <h2>App</h2>
-        <p>The app can be found <a href="https://play.google.com/store/apps/details?id=geyerk.sensorlab.suselogger">here</a> and should look something like below</p>
+        <h2>Android App</h2>
+        <p>The app can be found <a href="https://play.google.com/store/apps/details?id=psych.sensorlab.usagelogger2">here</a> and should look something like below</p>
         <p><img src="../assets/img/walkthrough/app_home.png" class="app_img_large"></p>
         <p>All participants will need to install this app by going to page in the google play store pressing install. When opening the app it should look like this.</p>
         <p><img src="../assets/img/walkthrough/home.png" class="app_img"></p>
