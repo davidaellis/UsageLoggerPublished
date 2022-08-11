@@ -7,9 +7,9 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     defaultConfig {
-        applicationId "geyerk.sensorlab.suselogger"
+        applicationId "psych.sensorlag.usagelogger2"
         minSdkVersion 21 //Android 5
-        targetSdkVersion 32 //Android 12
+        targetSdkVersion 32//Android 12
         versionCode 4
         versionName "1.103"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -28,24 +28,15 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
 
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'at.favre.lib:armadillo:0.9.0'
+    implementation 'com.itextpdf:itextg:5.5.10'
+    implementation 'ch.dissem.jabit:jabit-cryptography-spongy:2.0.4'
+    implementation 'net.zetetic:android-database-sqlcipher:4.0.0@aar'
+    implementation 'com.github.yuriy-budiyev:code-scanner:2.1.2'
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-
-    //Timber
-    implementation 'com.jakewharton.timber:timber:4.7.1'
-    //Gson
-    implementation 'com.google.code.gson:gson:2.8.6'
-    //Armadillo
-    implementation 'at.favre.lib:armadillo:0.9.0'
-    //pdf encipher
-    implementation 'com.itextpdf:itextg:5.5.10'
-    //supports background processes
-    implementation 'ch.dissem.jabit:jabit-cryptography-spongy:2.0.4'
-    //sqlCypher
-    implementation 'net.zetetic:android-database-sqlcipher:4.0.0@aar'
-    //qr code scanner
-    implementation 'com.github.yuriy-budiyev:code-scanner:2.1.2'
-    //event bus (broadcast messages)
-    implementation 'org.greenrobot:eventbus:3.3.1'
 }
