@@ -9,7 +9,6 @@
 
     <ProgressBar
         android:id="@+id/pb"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -22,8 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="@string/setup_status"
-        android:textColor="@android:color/white"
         android:textSize="20sp"
+        android:textColor="@color/primary_text"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="@+id/pb"
         app:layout_constraintStart_toStartOf="@+id/pb" />
@@ -45,8 +44,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="30dp"
-            android:background="@drawable/button_design"
             android:padding="30dp"
+            android:textSize="16sp"
+            android:textColor="@color/button_text"
             android:text="@string/title_next" />
 
         <Button
@@ -54,8 +54,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="30dp"
-            android:background="@drawable/button_design"
             android:padding="30dp"
+            android:textSize="16sp"
+            android:textColor="@color/button_text"
             android:text="@string/read_qr" />
 
         <Button
@@ -63,8 +64,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="30dp"
-            android:background="@drawable/button_design"
+            android:textSize="16sp"
             android:padding="30dp"
+            android:textColor="@color/button_text"
             android:text="@string/see_pwd" />
 
     </LinearLayout>
