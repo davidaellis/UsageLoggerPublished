@@ -33,8 +33,8 @@ class CONSTANTS {
     }
 
     static final String
-    CONTEXT_FILE = "context.pdf",
-    USAGE_FILE = "usage.pdf",
+    CONTEXT_FILE = "contextual.pdf",
+    USAGE_FILE = "past_usage.pdf",
     CONTINUOUS_FILE = "continuous.pdf";
 
     static final int
@@ -49,7 +49,7 @@ class CONSTANTS {
             PERMISSION_NOT_ASSESSED = 1,
             COLLECTING_CONTEXTUAL_DATA = 1,
             COLLECTING_PAST_USAGE = 2,
-            COLLECTING_PROSPECTIVE_DATA = 3,
+            COLLECTING_CONTINUOUS_DATA = 3,
             READY_FOR_EMAIL = 4,
             FILE_SENT = 5,
 
@@ -65,5 +65,5 @@ class CONSTANTS {
             PUTTING_CONTEXTUAL_DATA_IN_PDF = 1,
             PUTTING_USAGE_DATA_IN_PDF = 2,
             ERROR_EXPERIENCED_IN_ASYNC = 3,
-            PUTTING_PROSPECTIVE_DATA_IN_PDF = 4;
+            PUTTING_CONTINUOUS_DATA_IN_PDF = 4;
 }
