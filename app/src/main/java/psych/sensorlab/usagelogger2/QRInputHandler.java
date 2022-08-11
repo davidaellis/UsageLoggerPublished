@@ -1,4 +1,4 @@
-package geyerk.sensorlab.suselogger;
+package psych.sensorlab.usagelogger2;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,11 +11,11 @@ import java.util.Set;
 
 import timber.log.Timber;
 
-class QrInputHandler {
+class QRInputHandler {
 
     private final String input;
 
-    QrInputHandler(String input, Context context) throws Exception {
+    QRInputHandler(String input, Context context) throws Exception {
         this.input = input;
         Gson gson = new Gson();
         String json  = gson.toJson(analyseInput());
