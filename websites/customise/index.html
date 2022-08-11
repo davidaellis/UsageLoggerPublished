@@ -27,42 +27,44 @@
 
             <h2>Customise Data Collection</h2>
             <p>Specify the type of data to collect:</p>
-            <h3>Contextual Data</h3>
-            <p>Contextual data provides a researcher with a snapshot of what software is installed on the smartphone. This can include:</p>
+            <h3>1) Contextual Data</h3>
+            <p>Contextual data provides a researcher with a snapshot of what software is installed on the smartphone. Data captured can include:</p>
             <ul>
-                <li>Installed apps: What apps are installed on the device</li>
-                <li>Permissions requested: What permissions have been requested by which apps. Permissions provide access to particular restricted data like phone call logs or location. See here for more information.</li>
+                <li>Installed apps: What apps are installed on the device.</li>
+                <li>Permissions requested: What permissions have been requested by which apps. Permissions provide access to particular restricted data like phone call logs or location. See <a href="https://developer.android.com/guide/topics/permissions/overview" target="_blank">here</a> for more information.</li>
                 <li>Response to permission request: Has the user provided the permission or not.</li>
             </ul>
-            <h3>Past Usage</h3>
-            <p>This will provide information about the phone was used for during the last few days (max. 5 days ago).</p>
-            <h3>Continuous Logging</h3>
-            <p>Continuous logging records smartphone interactions after installation of the app. Features captured include:</p>
 
+            <h3>2) Continuous Logging</h3>
+            <p>Continuous logging records smartphone interactions after installation of the app. These can include:</p>
             <ul>
                 <li>Screen usage: Record when the screen was on/off.</li>
                 <li>App usage: Record at what point apps were used and store the identity of the apps.</li>
-                <li>Notifications: Record which apps have sent notifications.</li>
+                <li>Notifications: Record which apps sent notifications.</li>
                 <li>Changes in installed apps: Record if any apps were installed/uninstalled.</li>
+                <li style="color: #666;"><em>Phone usage: Record when the phone was on/off (default setting, not customisable</em>).</li>
             </ul>
 
-            <h3>Customise Order</h3>
+            <h3>3) Past Usage</h3>
+            <p>This will provide information about the phone was used for during the last few days (max. 5 days ago).</p>
+
+            <h3>4) Customise Order</h3>
             <p>Customise the order in which data is collected by dragging and dropping the text on the right hand of the screen that appears after one or more data sources have been selected.</p>
 
             <h2>Create QR-Code</h2>
-            <p>Clicking the 'Create QR-Code' button will generate a QR-code image. This is required to customise the app. Users can scan the QR-code from within the app, which will then start the data collection process. The QR-code can also be saved for future use.</p>
+            <p>Clicking the 'Create QR-Code' button will generate a QR-code image. This is required to customise the app. Users can scan the QR-code from within the app, which will then start the data collection process. The QR-code is automatically downloaded by the browser, but may have to be renamed (e.g., by adding an extension to the image name -> .png). This is useful if you want to reuse the same configuration settings in the future.</p>
 
             <h2>Contact</h2>
-            <p>In case of problems or questions, please contact </p>
+            <p>In case of problems or questions, please contact Dr. Heather Shaw (<a href="mailto:h.shaw5@lancaster.ac.uk">h.shaw5@lancaster.ac.uk</a>).</p>
         </div>
     </div>
 
     <div id="qr_modal" class="modal">
         <div class="modal_content">
             <span id="close_qr">&times;</span>
-            <h1>QR Code</h1>
+            <h1>QR-Code</h1>
             <div id="qr_target"></div>
-            <button id="save_qr">Save QR Code</button>
+            <button id="save_qr">Save QR-Code</button>
         </div>
     </div>
 

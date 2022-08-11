@@ -17,6 +17,7 @@
         <li><a href="#app">Android App</a></li>
         <li><a href="#decryption">Decryption</a></li>
         <li><a href="#analysis">Analysis</a></li>
+        <li><a href="#contact">Contact</a></li>
     </ol>
 
     <div class="new_section">
@@ -45,38 +46,37 @@
         <p>The <a href="../customise">customisation website</a> allows the researcher to choose how the app will function. There are three different data streams that may be employed and altered. Additionally, the researcher can customise the order that the data sources are queried.</p>
         <p><img src="../assets/img/walkthrough/custom_whole.png" class="app_img_large"></p>
 
-        <h3>Specify the type of data to collect</h3>
+        <h3>Specify the type of data to collect:</h3>
 
         <h4>1) Contextual data</h4>
-        <p>Contextual data is intended to provide the researcher with a better understanding of what the smartphone can be used for at a particular point. The data collected can include three difference sources of data. </p>
-
+        <p>Contextual data provides a researcher with a snapshot of what software is installed on the smartphone. Data captured can include:</p>
         <ul>
-            <li>Apps installed - What apps are installed on the device</li>
-            <li>Permissions requested - What permissions have been requested by which apps. Permissions provide access to particular restricted data like phone call logs or location. See <a href="https://developer.android.com/guide/topics/permissions/overview" target="_blank">here</a> for more information.</li>
-            <li>Response to permission request - Has the user provided the permission or not.</li>
+            <li>Apps installed: What apps are installed on the device.</li>
+            <li>Permissions requested: What permissions have been requested by which apps. Permissions provide access to particular restricted data like phone call logs or location. See <a href="https://developer.android.com/guide/topics/permissions/overview" target="_blank">here</a> for more information.</li>
+            <li>Response to permission request: Has the user provided the permission or not.</li>
         </ul>
 
-        <h4>2) Past usage</h4>
-        <p>The will provide a database of what the person has used their phone for during the last couple of days (max 5 days ago). As this database is maintained by Android, it is difficult to provide much filtering at this stage. </p>
-
-        <h4>3) Continuous logging</h4>
-        <p>Continuous logging records how the participants use their smartphones in the future. There are a number of features which can be included in the data recording.</p>
+        <h4>2) Continuous Logging</h4>
+        <p>Continuous logging records smartphone interactions after installation of the app. These can include:</p>
         <ul>
-            <li>Phone usage: record when the phone was on/off.</li>
-            <li>Screen usage: record when the screen was on/off.</li>
-            <li>App usage: record at what point apps were used and store the identity of the apps.</li>
-            <li>Notifications: record which apps have sent notifications.</li>
+            <li>Screen usage: Record when the screen was on/off.</li>
+            <li>App usage: Record at what point apps were used and store the identity of the apps.</li>
+            <li>Notifications: Record which apps sent notifications.</li>
             <li>Changes in installed apps: Record if any apps were installed/uninstalled.</li>
+            <li style="color: #666"><em>Phone usage: Record when the phone was on/off (default setting, not customisable</em>).</li>
         </ul>
+
+        <h4>3) Past usage</h4>
+        <p>This will provide information about the phone was used for during the last few days (max. 5 days ago). </p>
 
         <h3>Customise order</h3>
         <p>Customise the order in which the data is collected by dragging and dropping the text on the right hand of the screen that appears after you have demonstrated that you want a piece of data collected.</p>
         <p>If you have fully populated the forms in the website, it might look something like this.</p>
         <p><img src="../assets/img/walkthrough/custom_pop.png" class="app_img_large"></p>
 
-        <h3>When you're finished</h3>
-        <p>When you're done please press on the 'finished' button. This will generate a QR code, this is necessary so that we can efficently relay how you customised the app to the participants in the study. You participants will have to scan the QR code using usage logger in order to collect any data, data collection will not start if you do not scan via the usage logger app. Additionally, you can save the QR code by pressing the 'save QR' button. </p>
-        <p>This QR code will be scanned by the app and this will inform the app how it should function.</p>
+        <h3>Create QR-Code</h3>
+        <p>Clicking the 'Create QR-Code' button will generate a QR-code image. This is required to customise the app. Users can scan the QR-code from within the app, which will then start the data collection process. The QR-code is automatically downloaded by the browser, but may have to be renamed (e.g., by adding an extension to the image name -> .png). This is useful if you want to reuse the same configuration settings in the future.</p>
+        <p>This QR-Code will be scanned by the app and this will inform the app how it should function.</p>
     </div>
 
     <div class="new_section" id="app">
@@ -88,10 +88,10 @@
         <p>All participants will need to install this app by going to page in the google play store pressing install. When opening the app it should look like this.</p>
         <p><img src="../assets/img/walkthrough/home.png" class="app_img"></p>
         <p>The participant will be informed that this app is only intended for scientific research.</p>
-        <p>Then the phone will request access to the camera permission. This is essential to scan the QR code. </p>
+        <p>Then the phone will request access to the camera permission. This is essential to scan the QR-Code. </p>
         <p><img src="../assets/img/walkthrough/camera_perm.png" class="app_img"></p>
-        <p>What appears next will be dependent on the type of phone that the participant has, newer phones will ask if permission should only be granted this time or every time when using this app; either is acceptable. Afterwards participants will be asked to press the read QR code button to scan the QR code required (produced by the customisation website; see above).</p>
-        <p>After the QR code is scanned, it will inform the participant again that this is only intended for use for scientific research</p>
+        <p>What appears next will be dependent on the type of phone that the participant has, newer phones will ask if permission should only be granted this time or every time when using this app; either is acceptable. Afterwards participants will be asked to press the read QR-Code button to scan the QR-Code required (produced by the customisation website; see above).</p>
+        <p>After the QR-Code is scanned, it will inform the participant again that this is only intended for use for scientific research</p>
         <p>Then the participant will receive a message about what data will be collected by the app</p>
         <p><img src="../assets/img/walkthrough/instructions.png" class="app_img"></p>
         <p>Another message will appear describing the data security to the participant. For a detailed guide of the security please see the preprint.</p>
@@ -157,7 +157,13 @@
             <li><a href="https://github.com/daviaellis/UsageLoggerPublished/blob/master/Data/Python/Prospective%20Analysis.ipynb">Continual usage</a></li>
             <li><a href="https://github.com/daviaellis/UsageLoggerPublished/blob/master/Data/Python/Past%20Usage%20Analysis.ipynb">Past Usage</a></li>
         </ul>
-        <p>There are also R scripts that are provided <a href="https://github.com/daviaellis/UsageLoggerPublished/tree/master/Data/R">here </a></p>
+        <p>There are also R scripts that are provided <a href="https://github.com/daviaellis/UsageLoggerPublished/tree/master/Data/R">here</a></p>
+    </div>
+
+    <div class="new_section" id="contact">
+        <div style="float:right"><a href="#intro">top</a></div>
+        <h2>Contact</h2>
+        <p>In case of problems or questions, please contact Dr. Heather Shaw, <a href="mailto:h.shaw5@lancaster.ac.uk">h.shaw5@lancaster.ac.uk</a>.</p>
     </div>
 
 </div>
