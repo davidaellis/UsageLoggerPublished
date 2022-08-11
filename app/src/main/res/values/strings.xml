@@ -1,36 +1,36 @@
 <resources>
-    <string name="app_name">Usage Logger</string>
-    <string name="context_data_collection">Status: Data is being collected about what you have installed on your device</string>
-    <string name="past_data_collection">Status: Data is being collected about what you have previously employed your phone for</string>
-    <string name="prospective_Data_collection">"Status: Phone usage monitoring ongoing"</string>
+    <string name="app_name">Usage Logger 2</string>
+    <string name="context_data_collection">Status: Data is being collected about what you have installed on your device.</string>
+    <string name="past_data_collection">Status: Data is being collected about what you have previously used your phone for.</string>
+    <string name="prospective_Data_collection">Status: Phone usage monitoring ongoing.</string>
 
     <string name="coll_active_phone_data">Collecting active phone usage data</string>
-    <string name="coll_past_data">"Currently collecting past usage data"</string>
+    <string name="coll_past_data">Currently collecting past usage data</string>
     <string name="coll_context_data">Currently collecting context data</string>
-    <string name="study_fin">"Study is complete"</string>
+    <string name="study_fin">Study is complete</string>
     <string name="pwd">Password</string>
     <string name="usage_perm">Usage permission</string>
     <string name="req_usage_perm">Requesting usage permission</string>
     <string name="note_list_perm">Notification listing permission</string>
     <string name="no_perm_req">No permissions are required</string>
 
-    <string name="pls_press_qr_code">Please press on Read QR code and use your camera to scan a QR code</string>
-     <string name="prev_qr_code1">The QR code that you previously scanned has informed this app to collect particular types of data. Including: </string>
-    <string name="prev_qr_code2">Please press \'ok\' if you are happy with this data being collected. If not contact the research and please be prepared to withdraw from the study if you feel it is necessary.</string>
+    <string name="pls_press_qr_code">Please press on \'Read QR-Code\' button and use your camera to scan a QR-Code.</string>
+     <string name="prev_qr_code1">The QR-Code that you previously scanned has configured this app to collect particular types of data. These include: </string>
+    <string name="prev_qr_code2">Please press \'OK\' if you are happy with this data being collected. If not contact the research and please be prepared to withdraw from the study if you feel it is necessary.</string>
     <string name="send_data_away">The only remaining step is to send off the data to the researcher via email. Do you wish to send the data at this point?</string>
-    <string name="problem_read_qr">There was a problem reading the QR code. Can you please scan the code again</string>
+    <string name="problem_read_qr">There was a problem reading the QR-Code. Can you please scan the code again</string>
     <string name="data_security">The developer of this app has done his upmost to secure the data (which has previously been described) that this app collects. This was done by encrypting the data, securely storing the encrypted data, restricting any access to the data, devising a complex security key to protect the encrypted and inaccessible data, securing this security key among other measures. However, it is important that you do not participate in this study if your phone is rooted (jail-broken) or that you believe that the normal Android security on your phone is compromised. Additionally, your data can not and will not be exported without you manually emailing/exporting the data yourself. I have made every effort to give you complete control of your data.</string>
     <string name="give_perms">In order to participate you will have to provide the following permissions: </string>
-    <string name="cam_perm">To calibrate this app with the scientific study which you are participating in, this app will scan a QR code. In order to do this, it requires you to allow for this app to access the camera. Please allow this permissions in a moment</string>
+    <string name="cam_perm">To configure this app for the scientific study which you are participating in, a QR-Code will need to be scanned. For this, you will need to allow the app to access the phone\'s camera.</string>
     <string name="usage_perm_info">The experiment that you are involved in requires you to provide usage permission. Usage permission will allow the app to monitor what you have used your phone for (what apps you\'ve used and when the screen has been on/off up to the last 5 days). This feature allows to see what apps you continue to use as well.</string>
     <string name="note_perm_info">The experiment that you are involved in requires you to provide Notification permission. Notification permission means that the app will know when you have received notifications and when you have deleted it.</string>
     <string name="all_perms_given">All essential permissions needed</string>
 
-    <string name="title_app_info">What is Usage Logger</string>
+    <string name="title_app_info">What is Usage Logger 2</string>
     <string name="title_next">Next step</string>
     <string name="title_log_request">What Usage logger has been requested to do</string>
     <string name="title_send_email">Send email?</string>
-    <string name="title_problem_qr">Issue Reading QR code</string>
+    <string name="title_problem_qr">Issue Reading QR-Code</string>
     <string name="title_perm_req">Permissions required</string>
     <string name="title_data_sec">Data security</string>
     <string name="title_cam_perm">Requesting camera permission</string>
@@ -43,7 +43,7 @@
     <string name="func_info2">- What permissions that the installed apps on your phone request.</string>
     <string name="func_info3">- How you have previously responded to app\'s request for permission requests</string>
     <string name="func_info4">- What you have previously used your phone for across the past </string>
-    <string name="func_info5">days This will include: when the screen was used and when apps were used. No information will be collected on what you did with the apps. However, inferences may be made regarding what you could have done with these apps</string>
+    <string name="func_info5">days. This will include: when the screen was used and when apps were used. No information will be collected on what you did with the apps. However, inferences may be made regarding what you could have done with these apps</string>
     <string name="func_info6">- How you will use your phone in the future. This will include: </string>
     <string name="func_info7">- When the phone is off or on</string>
     <string name="func_info8">- When the screen is off or on</string>
@@ -52,6 +52,6 @@
     <string name="func_info11">- When you change the apps installed</string>
 
     <string name="see_pwd">See Password</string>
-    <string name="read_qr">Read QR Code</string>
+    <string name="read_qr">Read QR-Code</string>
     <string name="setup_status">Status: Setting up app</string>
 </resources>
