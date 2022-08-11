@@ -33,7 +33,7 @@ class CONSTANTS {
     }
 
     static final String
-    CONTEXT_FILE = "contextual.pdf",
+    CONTEXT_FILE = "context.pdf",
     USAGE_FILE = "past_usage.pdf",
     CONTINUOUS_FILE = "continuous.pdf";
 
