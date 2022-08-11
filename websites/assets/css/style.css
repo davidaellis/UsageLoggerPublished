@@ -298,17 +298,17 @@ footer {
     border: solid 1px #ccc;
 }
 
-.new_section h2 {
+.new_section h2, .modal_content h2 {
     margin-top: 2.5em;
     border-bottom: 2px solid #ccc;
 }
 
-.new_section h3 {
+.new_section h3, .modal_content h3 {
     margin-top: 2em;
     margin-bottom: 0.5em;
 }
 
-.new_section h4,h5,h6 {
+.new_section h4,h5,h6, .modal_content h4,h5,h6 {
     margin-top: 1.5em;
     margin-bottom: 0.5em;
 }
@@ -327,7 +327,7 @@ footer {
 .modal_content {
     margin: 0 auto;
     margin-top: 2em;
-    background-color: #e0e0e0;
+    background-color: #CFD8DC;
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
@@ -339,8 +339,9 @@ footer {
 
 button {
     padding: 4px 8px;
-    background-color: #ccc;
-    border: 1px solid #666;
+    background-color: #93a6b0;
+    border: 1px solid #455A64;
+    color: #fff;
     font-size: 1.2em;
     border-radius: 5px;
 }
