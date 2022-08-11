@@ -195,8 +195,8 @@ public class LoggerWithNotesService extends NotificationListenerService {
                 bundle.getBoolean("appChanges")
         );
 
-        StoreInSQL storeInSQL = new StoreInSQL(this, "prospective.db",1,
-                "prospective_table", "(time INTEGER, event TEXT)");
+        StoreInSQL storeInSQL = new StoreInSQL(this, "continuous.db",1,
+                "continuous_table", "(time INTEGER, event TEXT)");
         SQLiteDatabase.loadLibs(this);
         database = storeInSQL.getWritableDatabase(password);
         handler = new Handler();
@@ -381,7 +381,7 @@ public class LoggerWithNotesService extends NotificationListenerService {
         values.put("time", System.currentTimeMillis());
         values.put("event", data);
         Timber.i("notes data: %d - %s", System.currentTimeMillis(), data);
-        database.insert("prospective_table",null, values);
+        database.insert("continuous_table",null, values);
     }
 
     @Override

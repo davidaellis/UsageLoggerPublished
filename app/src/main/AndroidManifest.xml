@@ -44,7 +44,7 @@
         </activity>
 
         <service android:name="psych.sensorlab.usagelogger2.LoggerWithNotesService"
-            android:label="ProspectiveLoggerWithNotes"
+            android:label="LoggerWithNotes"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
             android:exported="false">
             <intent-filter>

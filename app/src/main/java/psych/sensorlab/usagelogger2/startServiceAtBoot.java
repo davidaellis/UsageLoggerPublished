@@ -21,15 +21,15 @@ public class startServiceAtBoot extends BroadcastReceiver {
             QRInput qrInput = gson.fromJson(sharedPreferences.getString("instructions from QR", "instructions not initialized"), QRInput.class);
             sharedPreferences.edit().putBoolean("restarted", true).apply();
             //check if anything needs to be restarted
-            if(qrInput.dataSources.containsKey("prospective")){
+            if(qrInput.dataSources.containsKey("continuous")){
                 Intent startServiceIntent;
 
                 Bundle bundle = new Bundle();
                 bundle.putBoolean("restart", true);
-                bundle.putBoolean("screenLog", qrInput.prospectiveDataSource.contains("screen"));
-                bundle.putBoolean("appLog", qrInput.prospectiveDataSource.contains("app"));
-                bundle.putBoolean("appChanges", qrInput.prospectiveDataSource.contains("installed"));
-                if (qrInput.prospectiveDataSource.contains("notification")){
+                bundle.putBoolean("screenLog", qrInput.continuousDataSource.contains("screen"));
+                bundle.putBoolean("appLog", qrInput.continuousDataSource.contains("app"));
+                bundle.putBoolean("appChanges", qrInput.continuousDataSource.contains("installed"));
+                if (qrInput.continuousDataSource.contains("notification")){
                     //start service for notification listening
                     startServiceIntent = new Intent(context, LoggerWithNotesService.class);
                 } else {

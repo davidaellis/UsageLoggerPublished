@@ -37,9 +37,9 @@ import timber.log.Timber;
 public class LoggerService extends Service {
 
     //Classes
-    private static class ProspectiveLoggingDirection {
+    private static class ContinuousLoggingDirection {
         final boolean screenLog, appLog, appChanges;
-        ProspectiveLoggingDirection(boolean screenLog, boolean appLog, boolean appChanges){
+        ContinuousLoggingDirection(boolean screenLog, boolean appLog, boolean appChanges){
             this.screenLog = screenLog;
             this.appLog = appLog;
             this.appChanges = appChanges;
@@ -51,7 +51,7 @@ public class LoggerService extends Service {
     private BroadcastReceiver screenReceiver, appReceiver;
 
     //Components
-    private ProspectiveLoggingDirection prospectiveLoggingDirection;
+    private ContinuousLoggingDirection continuousLoggingDirection;
     private Handler handler;
     private String currentlyRunningApp;
     private SQLiteDatabase database;
@@ -68,7 +68,7 @@ public class LoggerService extends Service {
 
         try {
             initializeComponents(bundle);
-            if(prospectiveLoggingDirection.screenLog || prospectiveLoggingDirection.appLog || prospectiveLoggingDirection.appChanges){
+            if(continuousLoggingDirection.screenLog || continuousLoggingDirection.appLog || continuousLoggingDirection.appChanges){
                 initializeBroadcastReceivers();
                 if(bundle.getBoolean("restart")){
                     Handler restartHandler = new Handler();
@@ -152,14 +152,14 @@ public class LoggerService extends Service {
         if(password.equals("not password")){
             throw new Exception("Could not retrieve password");
         }
-        prospectiveLoggingDirection = new ProspectiveLoggingDirection(
+        continuousLoggingDirection = new ContinuousLoggingDirection(
                 bundle.getBoolean("screenLog"),
                 bundle.getBoolean("appLog"),
                 bundle.getBoolean("appChanges")
         );
 
-        StoreInSQL storeInSQL = new StoreInSQL(this, "prospective.db",1,
-                "prospective_table", "(time INTEGER, event TEXT)");
+        StoreInSQL storeInSQL = new StoreInSQL(this, "continuous.db",1,
+                "continuous_table", "(time INTEGER, event TEXT)");
         SQLiteDatabase.loadLibs(this);
         database = storeInSQL.getWritableDatabase(password);
         handler = new Handler();
@@ -174,8 +174,8 @@ public class LoggerService extends Service {
      * HANDLING BROADCAST RECEIVERS
      */
     private void initializeBroadcastReceivers() {
-        if(prospectiveLoggingDirection.screenLog || prospectiveLoggingDirection.appLog){
-            if(prospectiveLoggingDirection.appLog) {
+        if(continuousLoggingDirection.screenLog || continuousLoggingDirection.appLog){
+            if(continuousLoggingDirection.appLog) {
                 screenReceiver = new BroadcastReceiver() {
                     @Override
                     public void onReceive(Context context, Intent intent) {
@@ -225,7 +225,7 @@ public class LoggerService extends Service {
         registerReceiver(screenReceiver, screenReceiverFilter);
         }
 
-        if(prospectiveLoggingDirection.appChanges) {
+        if(continuousLoggingDirection.appChanges) {
             SharedPreferences sharedPreferences = getSharedPreferences("appPrefs", MODE_PRIVATE);
             if(!sharedPreferences.getBoolean("initial app survey conducted", false)){
                 sharedPreferences.edit()
@@ -334,17 +334,17 @@ public class LoggerService extends Service {
         values.put("time", System.currentTimeMillis());
         values.put("event", data);
         Timber.i("data: %d - %s", System.currentTimeMillis(), data);
-        database.insert("prospective_table",null, values);
+        database.insert("continuous_table",null, values);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         database.close();
-        if(prospectiveLoggingDirection.screenLog){
+        if(continuousLoggingDirection.screenLog){
             unregisterReceiver(screenReceiver);
         }
-        if(prospectiveLoggingDirection.appChanges){
+        if(continuousLoggingDirection.appChanges){
             unregisterReceiver(appReceiver);
         }
     }

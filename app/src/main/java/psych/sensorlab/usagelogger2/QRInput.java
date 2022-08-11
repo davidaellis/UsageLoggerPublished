@@ -6,13 +6,13 @@ import java.util.Set;
 class QRInput {
 
     final HashMap<String, Integer> dataSources;
-    final Set<String> contextualDataSources, prospectiveDataSource;
+    final Set<String> contextualDataSources, continuousDataSource;
     final int daysToMonitor;
 
-    QRInput(HashMap<String, Integer> dataSources, Set<String> contextualDataSources, int daysToMonitor, Set<String> prospectiveDataSources) {
+    QRInput(HashMap<String, Integer> dataSources, Set<String> contextualDataSources, int daysToMonitor, Set<String> continuousDataSources) {
         this.dataSources = dataSources;
         this.contextualDataSources = contextualDataSources;
-        this.prospectiveDataSource = prospectiveDataSources;
+        this.continuousDataSource = continuousDataSources;
         this.daysToMonitor = daysToMonitor;
     }
 }

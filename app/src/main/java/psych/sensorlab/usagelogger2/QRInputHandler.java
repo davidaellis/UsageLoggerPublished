@@ -28,7 +28,7 @@ class QRInputHandler {
         String[] rows = this.input.split("\n");
         HashMap<String, Integer> dataSources = new HashMap<>();
         Set<String> contextualDataSources = new HashSet<>();
-        Set<String> prospectiveDataSources = new HashSet<>();
+        Set<String> continuousDataSources = new HashSet<>();
         int daysToMonitor = 0;
         if (rows.length < 1){
             throw new Exception("No data detected in QR");
@@ -54,23 +54,23 @@ class QRInputHandler {
             }
         }
         if(rows[3].charAt(3) == 'T'){
-            dataSources.put("prospective", returnOrder(rows[3]));
+            dataSources.put("continuous", returnOrder(rows[3]));
             if(rows[3].charAt(8) == 'T'){
-                prospectiveDataSources.add("screen");
+                continuousDataSources.add("screen");
             }
             if(rows[3].charAt(12) == 'T'){
-                prospectiveDataSources.add("app");
+                continuousDataSources.add("app");
             }
             if(rows[3].charAt(16) == 'T'){
-                prospectiveDataSources.add("notification");
+                continuousDataSources.add("notification");
             }
             if(rows[3].charAt(20) == 'T'){
-                prospectiveDataSources.add("installed");
+                continuousDataSources.add("installed");
             }
         }
         dataSources.put("finish", dataSources.size());
 
-        return new QRInput(dataSources, contextualDataSources, daysToMonitor, prospectiveDataSources);
+        return new QRInput(dataSources, contextualDataSources, daysToMonitor, continuousDataSources);
     }
 
     private int returnOrder(final String row){

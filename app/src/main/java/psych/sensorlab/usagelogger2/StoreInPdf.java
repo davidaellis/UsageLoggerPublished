@@ -74,22 +74,22 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                 Timber.i("File exists: %s - appropriateUsageLength: %s", appropriateUsageLength, file.exists());
                 return new DataCollectionResult(appropriateUsageLength && file.exists() ,dataDirection,generalData,
                         CONSTANTS.PUTTING_USAGE_DATA_IN_PDF);
-            case CONSTANTS.COLLECTING_PROSPECTIVE_DATA:
-                Timber.i("begin of packaging of prospective data");
+            case CONSTANTS.COLLECTING_CONTINUOUS_DATA:
+                Timber.i("begin of packaging of continuous data");
                 file = new File(path, CONSTANTS.CONTINUOUS_FILE);
-                boolean appropriateProspectiveLength = false;
+                boolean appropriateContinuousLength = false;
                 try {
-                    appropriateProspectiveLength = storeProspectiveData(file, password, context);
+                    appropriateContinuousLength = storeContinuousData(file, password, context);
                 } catch (Exception e){
                     Timber.e(e);
                 }
-                return new DataCollectionResult(appropriateProspectiveLength && file.exists(), dataDirection, generalData,
-                        CONSTANTS.PUTTING_PROSPECTIVE_DATA_IN_PDF);
+                return new DataCollectionResult(appropriateContinuousLength && file.exists(), dataDirection, generalData,
+                        CONSTANTS.PUTTING_CONTINUOUS_DATA_IN_PDF);
             default:
                 Timber.i("general data not detected");
                 return new DataCollectionResult(false,dataDirection,
                         CONSTANTS.COLLECTING_CONTEXTUAL_DATA,
-                        CONSTANTS.PUTTING_PROSPECTIVE_DATA_IN_PDF);
+                        CONSTANTS.PUTTING_CONTINUOUS_DATA_IN_PDF);
         }
         } catch (DocumentException | FileNotFoundException e) {
             Timber.e(e);
@@ -356,16 +356,15 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
     }
 
     /**
-     * PROSPECTIVE DATA METHODS
+     * CONTINUOUS DATA METHODS
      */
-
-    private boolean storeProspectiveData(File file, String password, Context context) throws FileNotFoundException, DocumentException {
+    private boolean storeContinuousData(File file, String password, Context context) throws FileNotFoundException, DocumentException {
         boolean appropriateSize = false;
-        StoreInSQL storeInSQL = new StoreInSQL(context, "prospective.db",1,
-                "prospective_table", "(time INTEGER, event TEXT)");
+        StoreInSQL storeInSQL = new StoreInSQL(context, "continuous.db",1,
+                "continuous_table", "(time INTEGER, event TEXT)");
         SQLiteDatabase.loadLibs(context);
         SQLiteDatabase database = storeInSQL.getReadableDatabase(password);
-        Cursor cursor = database.rawQuery("SELECT * FROM prospective_table",null);
+        Cursor cursor = database.rawQuery("SELECT * FROM continuous_table",null);
         int event = cursor.getColumnIndex("event");
         int time= cursor.getColumnIndex("time");
 
