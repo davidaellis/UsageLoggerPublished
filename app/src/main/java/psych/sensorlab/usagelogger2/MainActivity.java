@@ -1,7 +1,6 @@
 package psych.sensorlab.usagelogger2;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,8 +18,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -85,20 +82,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         progressBar = findViewById(R.id.pb);
         progressBar.setVisibility(View.INVISIBLE);
         reportScreen = findViewById(R.id.tvReport);
-        switch (sharedPreferences.getInt("data being collected", 0)){
+        switch (sharedPreferences.getInt("data collected info", 0)){
             case CONSTANTS.COLLECTING_CONTEXTUAL_DATA:
                 reportScreen.setText(R.string.coll_context_data);
                 break;
             case CONSTANTS.COLLECTING_PAST_USAGE:
                 reportScreen.setText(R.string.coll_past_data);
                 break;
-            case CONSTANTS.COLLECTING_PROSPECTIVE_DATA:
+            case CONSTANTS.COLLECTING_CONTINUOUS_DATA:
                 reportScreen.setText(R.string.coll_active_phone_data);
                 break;
             case CONSTANTS.FILE_SENT:
                 reportScreen.setText(R.string.study_fin);
                 break;
-
         }
         findViewById(R.id.btnReadQR).setOnClickListener(this);
         findViewById(R.id.btnSeePassword).setOnClickListener(this);
@@ -123,14 +119,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btnEmail) {
-            if(sharedPreferences.getBoolean("permissions provided", false)){
+            if (sharedPreferences.getBoolean("permissions provided", false)) {
                 collectFromDataSource();
             } else {
-                if(this.checkCallingOrSelfPermission("android.permission.CAMERA")!=PackageManager.PERMISSION_GRANTED){
+                if (QRCodeProvided()) {
+                    Timber.i("QR code has already been scanned, continue with setup");
                     continueWithSetUp();
                 } else {
-                    postAlert.customiseMessage(99, "NA", getString(R.string.title_next),
-                            getString(R.string.pls_press_qr_code), "NA");
+                    if (this.checkCallingOrSelfPermission("android.permission.CAMERA")!=PackageManager.PERMISSION_GRANTED) {
+                        Timber.i("Camera permission has NOT been given, asking for it now");
+                        dealWithPermission.determinePermissionThatAreEssential(new String[]{Manifest.permission.CAMERA});
+                    } else {
+                        Timber.i("Okay, camera permission already given");
+                        postAlert.customiseMessage(99, "NA", getString(R.string.title_next),
+                                getString(R.string.pls_press_qr_code), "NA");
+                    }
                 }
             }
         } else if (view.getId() == R.id.btnReadQR) {
@@ -174,19 +177,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void continueWithSetUp() {
-        Timber.i("Continuing with set up");
-        if(this.checkCallingOrSelfPermission("android.permission.CAMERA") ==
+        Timber.i("Continuing with setup");
+        if (this.checkCallingOrSelfPermission("android.permission.CAMERA") ==
                 PackageManager.PERMISSION_GRANTED){
             Gson gson = new Gson();
             qrInput = gson.fromJson(sharedPreferences.getString("instructions from QR",
                     "instructions not initialized"), QRInput.class);
             if(!securePreferences.getBoolean("password generated", false)){
                     sendMessage(1);
-            }else{
+            } else {
                 Timber.i("call to determine position");
                 dealWithPermission.determinePermissionThatAreEssential(establishPermissionsToRequest());
             }
-        }else{
+        } else {
             Timber.i("requesting approval of camera permission");
             dealWithPermission.determinePermissionThatAreEssential(new String[]{Manifest.permission.CAMERA});
         }
@@ -202,7 +205,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 postAlert.customiseMessage(99, "NA", getString(R.string.title_next),
                         getString(R.string.pls_press_qr_code), "NA");
-            }else{
+            } else {
                 continueWithSetUp();
             }
         }
@@ -249,7 +252,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
     private void commitKsonToFile(String input) throws Exception {
         new QRInputHandler(input, this);
         final String messageToReport =  sharedPreferences.getString("instructions from QR", "instructions not initialized");
@@ -259,14 +261,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             qrInput = gson.fromJson(messageToReport, QRInput.class);
             sendMessage(1);
         }else{
-            Timber.e("Issue deciphering QR instructions");
+            Timber.e("Issue deciphering QR configuration");
         }
     }
 
     private void sendMessage(int message) {
         switch (message){
             case 1:
-                postAlert.customiseMessage(1, "NA", getString(R.string.title_app_info),
+                //last warning before collecting data
+                postAlert.customiseMessage(1, "NA", getString(R.string.title_attention),
                         getString(R.string.app_info), "alertDialogResponse");
                 break;
             case 2:
@@ -287,19 +290,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     whatTheAppDoes.append("\n").append(getString(R.string.func_info4)).
                             append(qrInput.daysToMonitor).append(getString(R.string.func_info5));
                 }
-                if(qrInput.dataSources.containsKey("prospective")){
+                if(qrInput.dataSources.containsKey("continuous")){
                     whatTheAppDoes.append("\n").append(getString(R.string.func_info6));
                     whatTheAppDoes.append("\n").append(getString(R.string.func_info7));
-                    if(qrInput.prospectiveDataSource.contains("screen")){
+                    if(qrInput.continuousDataSource.contains("screen")){
                         whatTheAppDoes.append("\n").append(getString(R.string.func_info8));
                     }
-                    if(qrInput.prospectiveDataSource.contains("app")){
+                    if(qrInput.continuousDataSource.contains("app")){
                         whatTheAppDoes.append("\n").append(getString(R.string.func_info9));
                     }
-                    if(qrInput.prospectiveDataSource.contains("notification")){
+                    if(qrInput.continuousDataSource.contains("notification")){
                         whatTheAppDoes.append("\n").append(getString(R.string.func_info10));
                     }
-                    if(qrInput.prospectiveDataSource.contains("installed")){
+                    if(qrInput.continuousDataSource.contains("installed")){
                         whatTheAppDoes.append("\n").append(getString(R.string.func_info11));
                     }
                 }
@@ -313,10 +316,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case 4:
                 StringBuilder permissionsToBeRequested = new StringBuilder();
-                if(qrInput.dataSources.containsKey("usage") || qrInput.prospectiveDataSource.contains("app")){
-                    permissionsToBeRequested.append("\n").append(getString(R.string.usage_perm));
+                if(qrInput.dataSources.containsKey("usage") || qrInput.continuousDataSource.contains("app")){
+                    permissionsToBeRequested.append("\n\n").append(getString(R.string.usage_perm));
                 }
-                if(qrInput.prospectiveDataSource.contains("notification")){
+                if(qrInput.continuousDataSource.contains("notification")){
                     permissionsToBeRequested.append("\n").append(getString(R.string.note_list_perm));
                 }
                 if(permissionsToBeRequested.length() == 0){
@@ -334,11 +337,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private String[] establishPermissionsToRequest() {
         String[] permissionsNeeded = {"NA","NA"};
-        if(qrInput.dataSources.containsKey("usage") || qrInput.prospectiveDataSource.contains("app")){
+        if(qrInput.dataSources.containsKey("usage") || qrInput.continuousDataSource.contains("app")){
                 permissionsNeeded[0] ="usage";
         }
 
-        if(qrInput.prospectiveDataSource.contains("notification")){
+        if(qrInput.continuousDataSource.contains("notification")){
             permissionsNeeded[1] = "notification";
         }
         return permissionsNeeded;
@@ -348,7 +351,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(permission.equals("usage")){
             startActivityForResult(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS),
                     CONSTANTS.GENERAL_USAGE_PERMISSION_REQUEST);
-
         } else if (permission.equals("notification")) {
             //request notification permission
             startActivityForResult(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"),
@@ -443,7 +445,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         "not generated yet"), whereToSend);
     }
 
-
     private void generatePlanForDataCollection() {
         int numberOfDataLoggingActivities = qrInput.dataSources.size();
         Timber.i("number of data logging activities: %d", numberOfDataLoggingActivities);
@@ -487,22 +488,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case "usage":
                 progressBar.setVisibility(View.VISIBLE);
-                reportScreen.setText(resources.getString(R.string.past_data_collection));
-                Timber.i(resources.getString(R.string.past_data_collection));
+                reportScreen.setText(resources.getString(R.string.usage_data_collection));
+                Timber.i(resources.getString(R.string.usage_data_collection));
                 sharedPreferences.edit().putInt("data being collected", CONSTANTS.COLLECTING_PAST_USAGE).apply();
                 storeInPdf = new StoreInPdf(this);
                 storeInPdf.execute(this, securePreferences.getString("password", "not real password"),
                         qrInput.daysToMonitor, CONSTANTS.COLLECTING_PAST_USAGE);
                 break;
-            case "prospective":
+            case "continuous":
                 progressBar.setVisibility(View.INVISIBLE);
-                reportScreen.setText(resources.getString(R.string.prospective_Data_collection));
-                Timber.i(resources.getString(R.string.prospective_Data_collection));
+                reportScreen.setText(resources.getString(R.string.continuous_data_collection));
+                Timber.i(resources.getString(R.string.continuous_data_collection));
                 if(sharedPreferences.getBoolean("background logging underway", false)){
                     Timber.i("attempting to package continuous logger");
                     storeInPdf = new StoreInPdf(this);
                     storeInPdf.execute(this, securePreferences.getString("password", "not real password"),
-                            CONSTANTS.READY_FOR_EMAIL, CONSTANTS.COLLECTING_PROSPECTIVE_DATA);
+                            CONSTANTS.READY_FOR_EMAIL, CONSTANTS.COLLECTING_CONTINUOUS_DATA);
                 }else{
                     startBackgroundLogging();
                 }
@@ -529,16 +530,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void startBackgroundLogging() {
-        Timber.i("prospective is the next data source");
-        sharedPreferences.edit().putInt("data being collected", CONSTANTS.COLLECTING_PROSPECTIVE_DATA).putBoolean("background logging underway", true).apply();
+        Timber.i("continuous is the next data source");
+        sharedPreferences.edit().putInt("data being collected", CONSTANTS.COLLECTING_CONTINUOUS_DATA).putBoolean("background logging underway", true).apply();
         Intent toStartService;
         Bundle bundle = new Bundle();
         bundle.putString("password", securePreferences.getString("password", "not actual password"));
         bundle.putBoolean("restart", false);
-        bundle.putBoolean("screenLog", qrInput.prospectiveDataSource.contains("screen"));
-        bundle.putBoolean("appLog", qrInput.prospectiveDataSource.contains("app"));
-        bundle.putBoolean("appChanges", qrInput.prospectiveDataSource.contains("installed"));
-        if(!qrInput.prospectiveDataSource.contains("notification")){
+        bundle.putBoolean("screenLog", qrInput.continuousDataSource.contains("screen"));
+        bundle.putBoolean("appLog", qrInput.continuousDataSource.contains("app"));
+        bundle.putBoolean("appChanges", qrInput.continuousDataSource.contains("installed"));
+        if(!qrInput.continuousDataSource.contains("notification")){
             toStartService = new Intent(this, LoggerService.class);
             toStartService.putExtras(bundle);
             if(!isMyServiceRunning()) {
@@ -574,12 +575,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case CONSTANTS.COLLECTING_PAST_USAGE:
-                Timber.i("Finished collecting past usage");
+                Timber.i("Finished collecting past usage info");
                 sharedPreferences.edit().putInt("currentActivity", (1+sharedPreferences.getInt("currentActivity", 0))).apply();
                 collectFromDataSource();
                 break;
-            case CONSTANTS.COLLECTING_PROSPECTIVE_DATA:
-                Timber.i("Finished collecting prospective usage");
+            case CONSTANTS.COLLECTING_CONTINUOUS_DATA:
+                Timber.i("Finished collecting continuous usage info");
                 sharedPreferences.edit().putInt("currentActivity", (1+sharedPreferences.getInt("currentActivity", 0))).apply();
                 collectFromDataSource();
                 break;
@@ -604,28 +605,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //if target files are identified to exist then they are packages into the attachments of the email
         try {
-            if(contextFile.exists()){
+            if (contextFile.exists()) {
                 files.add(FileProvider.getUriForFile(this,
                         "psych.sensorlab.usagelogger2.fileprovider", contextFile));
             }
 
-            if(usageEvents.exists()){
+            if (usageEvents.exists()) {
                 files.add(FileProvider.getUriForFile(this,
                         "psych.sensorlab.usagelogger2.fileprovider", usageEvents));
             }
 
-            if(continuous.exists()){
+            if (continuous.exists()) {
                 files.add(FileProvider.getUriForFile(this,
                         "psych.sensorlab.usagelogger2.fileprovider", continuous));
             }
 
-            if(files.size()>0){
+            if (files.size() > 0) {
                 intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
                 intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                sharedPreferences.edit().putInt("data being collected", CONSTANTS.FILE_SENT).apply();
+                sharedPreferences.edit().putInt("data collected info", CONSTANTS.FILE_SENT).apply();
                 startActivity(intent);
 
-            }else{
+            } else {
                 Timber.e("No files to upload");
             }
         }
@@ -633,5 +634,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Timber.e(e);
         }
     }
-
 }
