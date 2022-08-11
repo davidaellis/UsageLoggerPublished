@@ -75,58 +75,7 @@ function saveQR() {
     childrenOfQrTarget[0].id = "actual_qr"
     console.log(childrenOfQrTarget[0].id)
     console.log(childrenOfQrTarget[0])
-    //Canvas2Image.saveAsPNG(childrenOfQrTarget[0], 400, 400) //does not add proper file extension, tk Aug 2022
-    saveAsPNG(childrenOfQrTarget[0], "usagelogger2_qrcode")
-}
-
-function saveAsPNG(image, filename){ // No IE <11 support. Chrome URL bug for large images may crash
-    var anchorElement, event, blob;
-    function image2Canvas(image){  // converts an image to canvas
-        function createCanvas(width, height){  // creates a canvas of width height
-            var can = document.createElement("canvas");
-            can.width = width;
-            can.height = height;
-            return can;
-        };
-        var newImage = canvas(img.width, img.height); // create new image
-        newImage.ctx = newImage.getContext("2d");  // get image context
-        newImage.ctx.drawImage(image, 0, 0); // draw the image onto the canvas
-        return newImage;  // return the new image
-    }
-    if(image.toDataURL === undefined){    // does the image have the toDataURL function
-        image = image2Canvas(image);  // No then convert to canvas
-    }
-    // if msToBlob and msSaveBlob then use them to save. IE >= 10
-    if(image.msToBlob !== undefined && navigator.msSaveBlob !== undefined){
-       blob = image.msToBlob();
-       navigator.msSaveBlob(blob, filename + ".png");
-       return;
-    }
-    anchorElement = document.createElement('a');  // Create a download link
-    anchorElement.href = image.toDataURL();   // attach the image data URL
-    // check for download attribute
-    if ( anchorElement.download !== undefined ) {
-        anchorElement.download = filename + ".png";  // set the download filename
-        if (typeof MouseEvent === "function") {   // does the browser support the object MouseEvent
-            event = new MouseEvent(   // yes create a new mouse click event
-                "click", {
-                    view        : window,
-                    bubbles     : true,
-                    cancelable  : true,
-                    ctrlKey     : false,
-                    altKey      : false,
-                    shiftKey    : false,
-                    metaKey     : false,
-                    button      : 0,
-                    buttons     : 1,
-                }
-            );
-            anchorElement.dispatchEvent(event); // simulate a click on the download link.
-        } else
-        if (anchorElement.fireEvent) {    // if no MouseEvent object try fireEvent
-            anchorElement.fireEvent("onclick");
-        }
-    }
+    Canvas2Image.saveAsPNG(childrenOfQrTarget[0], 400, 400, "qrcode.png")
 }
 
 function updateSortableContent(elementToUpdate) {
