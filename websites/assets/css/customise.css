@@ -16,6 +16,10 @@
   float:right;
 }
 
+#save_qr {
+    margin-top: 30px;
+}
+
 #left {
   float: left;
   width: 50%;

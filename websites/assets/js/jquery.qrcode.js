@@ -61,7 +61,7 @@
 				.css("border-collapse", "collapse")
 				.css('background-color', options.background);
 		  
-			// compute tileS percentage
+			// compute tiles percentage
 			var tileW	= options.width / qrcode.getModuleCount();
 			var tileH	= options.height / qrcode.getModuleCount();
 
@@ -79,7 +79,6 @@
 			// return just built canvas
 			return $table;
 		}
-  
 
 		return this.each(function(){
 			var element	= options.render == "canvas" ? createCanvas() : createTable();

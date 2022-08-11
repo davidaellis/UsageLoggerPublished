@@ -228,8 +228,6 @@ var Canvas2Image = function () {
 		}
 	}
 
-
-
 	return {
 		saveAsImage: saveAsImage,
 		saveAsPNG: function (canvas, width, height) {
