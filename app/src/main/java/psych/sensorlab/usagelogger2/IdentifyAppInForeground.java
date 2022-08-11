@@ -1,4 +1,4 @@
-package geyerk.sensorlab.suselogger;
+package psych.sensorlab.usagelogger2;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;

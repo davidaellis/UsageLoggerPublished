@@ -1,4 +1,4 @@
-package geyerk.sensorlab.suselogger;
+package psych.sensorlab.usagelogger2;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
@@ -34,7 +34,7 @@ import at.favre.lib.armadillo.Armadillo;
 import at.favre.lib.armadillo.BuildConfig;
 import timber.log.Timber;
 
-public class ProspectiveLogger extends Service {
+public class LoggerService extends Service {
 
     //Classes
     private static class ProspectiveLoggingDirection {
@@ -68,7 +68,7 @@ public class ProspectiveLogger extends Service {
 
         try {
             initializeComponents(bundle);
-            if(prospectiveLoggingDirection.screenLog|| prospectiveLoggingDirection.appLog|| prospectiveLoggingDirection.appChanges){
+            if(prospectiveLoggingDirection.screenLog || prospectiveLoggingDirection.appLog || prospectiveLoggingDirection.appChanges){
                 initializeBroadcastReceivers();
                 if(bundle.getBoolean("restart")){
                     Handler restartHandler = new Handler();
@@ -113,18 +113,15 @@ public class ProspectiveLogger extends Service {
             }
         }
 
-
-
         NotificationCompat.Builder nfc = new NotificationCompat.Builder(getApplicationContext(),"usage logger")
-                .setSmallIcon(R.drawable.ic_prospective_logger)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_prospective_logger))
+                .setSmallIcon(R.drawable.ic_notifications)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_notifications))
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .setVisibility(NotificationCompat.VISIBILITY_SECRET) //This hides the notification from lock screen
                 .setContentTitle(this.getApplication().getPackageName())
                 .setContentText("Usage Logger is collecting data")
                 .setOngoing(true);
-
 
         nfc.setContentTitle(this.getApplication().getPackageName());
         nfc.setContentText(contentText);
@@ -176,7 +173,6 @@ public class ProspectiveLogger extends Service {
     /**
      * HANDLING BROADCAST RECEIVERS
      */
-
     private void initializeBroadcastReceivers() {
         if(prospectiveLoggingDirection.screenLog || prospectiveLoggingDirection.appLog){
             if(prospectiveLoggingDirection.appLog) {

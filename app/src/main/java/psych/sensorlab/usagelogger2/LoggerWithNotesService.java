@@ -1,4 +1,4 @@
-package geyerk.sensorlab.suselogger;
+package psych.sensorlab.usagelogger2;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
@@ -36,7 +36,7 @@ import at.favre.lib.armadillo.Armadillo;
 import at.favre.lib.armadillo.BuildConfig;
 import timber.log.Timber;
 
-public class ProspectiveLoggerWithNotes extends NotificationListenerService {
+public class LoggerWithNotesService extends NotificationListenerService {
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
@@ -67,9 +67,9 @@ public class ProspectiveLoggerWithNotes extends NotificationListenerService {
     }
 
     //Classes
-    private static class ProspectiveLoggingDirection {
+    private static class LoggingDirection {
         final boolean screenLog, appLog, appChanges;
-        ProspectiveLoggingDirection(boolean screenLog, boolean appLog, boolean appChanges){
+        LoggingDirection(boolean screenLog, boolean appLog, boolean appChanges){
             this.screenLog = screenLog;
             this.appLog = appLog;
             this.appChanges = appChanges;
@@ -81,7 +81,7 @@ public class ProspectiveLoggerWithNotes extends NotificationListenerService {
     private BroadcastReceiver screenReceiver, appReceiver;
 
     //Components
-    private ProspectiveLoggingDirection prospectiveLoggingDirection;
+    private LoggingDirection loggingDirection;
     private PackageManager packageManager;
     private Handler handler;
     private String currentlyRunningApp;
@@ -98,7 +98,7 @@ public class ProspectiveLoggerWithNotes extends NotificationListenerService {
         Bundle bundle  = intent.getExtras();
         try {
             initializeComponents(bundle);
-            if(prospectiveLoggingDirection.screenLog || prospectiveLoggingDirection.appLog || prospectiveLoggingDirection.appChanges){
+            if(loggingDirection.screenLog || loggingDirection.appLog || loggingDirection.appChanges){
                 initializeBroadcastReceivers();
                 onListenerConnected();
                 if (bundle.getBoolean("restart")) {
@@ -136,15 +136,14 @@ public class ProspectiveLoggerWithNotes extends NotificationListenerService {
 
         NotificationCompat.Builder nfc = new NotificationCompat.Builder(getApplicationContext(),
                 "usage logger")
-                .setSmallIcon(R.drawable.ic_prospective_logger)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_prospective_logger))
+                .setSmallIcon(R.drawable.ic_notifications)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_notifications))
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .setVisibility(NotificationCompat.VISIBILITY_SECRET) //This hides the notification from lock screen
                 .setContentTitle(this.getApplication().getPackageName())
-                .setContentText("Usage Logger is collecting data")
+                .setContentText("Usage Logger 2 is collecting data")
                 .setOngoing(true);
-
 
         nfc.setContentTitle(this.getApplication().getPackageName());
         nfc.setContentText(contentText);
@@ -190,7 +189,7 @@ public class ProspectiveLoggerWithNotes extends NotificationListenerService {
         if(password.equals("not password")){
             throw new Exception("Could not retrieve password");
         }
-        prospectiveLoggingDirection = new ProspectiveLoggingDirection(
+        loggingDirection = new LoggingDirection(
                 bundle.getBoolean("screenLog"),
                 bundle.getBoolean("appLog"),
                 bundle.getBoolean("appChanges")
@@ -213,8 +212,8 @@ public class ProspectiveLoggerWithNotes extends NotificationListenerService {
      */
 
     private void initializeBroadcastReceivers() {
-        if(prospectiveLoggingDirection.screenLog || prospectiveLoggingDirection.appLog){
-            if(prospectiveLoggingDirection.appLog) {
+        if(loggingDirection.screenLog || loggingDirection.appLog){
+            if(loggingDirection.appLog) {
                 screenReceiver = new BroadcastReceiver() {
                     @Override
                     public void onReceive(Context context, Intent intent) {
@@ -264,7 +263,7 @@ public class ProspectiveLoggerWithNotes extends NotificationListenerService {
             registerReceiver(screenReceiver, screenReceiverFilter);
         }
 
-        if(prospectiveLoggingDirection.appChanges) {
+        if(loggingDirection.appChanges) {
             SharedPreferences sharedPreferences = getSharedPreferences("appPrefs", MODE_PRIVATE);
             if(!sharedPreferences.getBoolean("initial app survey conducted", false)){
                 sharedPreferences.edit()
@@ -390,10 +389,10 @@ public class ProspectiveLoggerWithNotes extends NotificationListenerService {
         super.onDestroy();
         if (database!=null) database.close();
 
-        if(prospectiveLoggingDirection.screenLog){
+        if(loggingDirection.screenLog){
             unregisterReceiver(screenReceiver);
         }
-        if(prospectiveLoggingDirection.appChanges){
+        if(loggingDirection.appChanges){
             unregisterReceiver(appReceiver);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

@@ -1,4 +1,4 @@
-package geyerk.sensorlab.suselogger;
+package psych.sensorlab.usagelogger2;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,13 +6,12 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.os.Bundle;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import timber.log.Timber;
 
-public class GoogleQRScanner extends AppCompatActivity {
+public class QRScanner extends AppCompatActivity {
     /* access modifiers changed from: private */
     public CodeScanner mCodeScanner;
 
@@ -24,10 +23,10 @@ public class GoogleQRScanner extends AppCompatActivity {
         CodeScannerView codeScannerView = findViewById(R.id.scanner_view);
         this.mCodeScanner = new CodeScanner(this, codeScannerView);
         this.mCodeScanner.setDecodeCallback(result -> activity.runOnUiThread(() -> {
-            GoogleQRScanner.this.handleResult(result.getText());
+            QRScanner.this.handleResult(result.getText());
             Timber.i("run message qr: %s", result.getText());
         }));
-        codeScannerView.setOnClickListener(view -> GoogleQRScanner.this.mCodeScanner.startPreview());
+        codeScannerView.setOnClickListener(view -> QRScanner.this.mCodeScanner.startPreview());
     }
 
     public Activity getActivity(Context context) {

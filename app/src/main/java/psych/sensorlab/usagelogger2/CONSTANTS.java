@@ -1,4 +1,4 @@
-package geyerk.sensorlab.suselogger;
+package psych.sensorlab.usagelogger2;
 
 import java.util.Set;
 
@@ -35,7 +35,7 @@ class CONSTANTS {
     static final String
     CONTEXT_FILE = "context.pdf",
     USAGE_FILE = "usage.pdf",
-    PROSPECTIVE_FILE = "continuous.pdf";
+    CONTINUOUS_FILE = "continuous.pdf";
 
     static final int
             QR_CODE_ACTIVITY = 1,

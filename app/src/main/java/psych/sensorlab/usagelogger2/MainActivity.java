@@ -1,4 +1,4 @@
-package geyerk.sensorlab.suselogger;
+package psych.sensorlab.usagelogger2;
 
 import android.Manifest;
 import android.app.Activity;
@@ -19,8 +19,11 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -32,10 +35,9 @@ import java.io.File;
 import java.util.ArrayList;
 
 import at.favre.lib.armadillo.Armadillo;
-import at.favre.lib.armadillo.BuildConfig;
 import timber.log.Timber;
 
-public class MainActivity extends Activity implements View.OnClickListener, AsyncResult {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AsyncResult {
 
     /**
      * GLOBAL VARIABLES
@@ -53,20 +55,22 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
     /**
      * DIRECTLY RELATED TO INITIALIZING APP
      */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         initializeSharedPreferences();
         initializeUI();
         initializeError();
         initializeClasses();
         initializeLocalReceiver();
+
         if(!sharedPreferences.getBoolean("informed user", false)){
             postAlert.customiseMessage(0, "NA", getString(R.string.title_app_info),
                     getString(R.string.app_info_short), "alertDialogResponse");
         }
+
     }
 
     private void initializeSharedPreferences() {
@@ -130,7 +134,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
                 }
             }
         } else if (view.getId() == R.id.btnReadQR) {
-            startActivityForResult(new Intent(this, GoogleQRScanner.class),
+            startActivityForResult(new Intent(this,QRScanner.class),
                     CONSTANTS.QR_CODE_ACTIVITY);
         } else if (view.getId() == R.id.btnSeePassword) {
             informUserOnPassword("noWhere");
@@ -169,8 +173,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
         return !sharedPreferences.getString("instructions from QR", "instructions not initialized").equals("instructions not initialized");
     }
 
-
-
     private void continueWithSetUp() {
         Timber.i("Continuing with set up");
         if(this.checkCallingOrSelfPermission("android.permission.CAMERA") ==
@@ -207,7 +209,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
     }
 
     /**
-     * DIRECTLY RELATED TO INTERPRETING QR CODE FROM RESEARCHER
+     * DIRECTLY RELATED TO INTERPRETING QR-CODE FROM RESEARCHER
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -247,8 +249,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
         }
     }
 
+
     private void commitKsonToFile(String input) throws Exception {
-        new QrInputHandler(input, this);
+        new QRInputHandler(input, this);
         final String messageToReport =  sharedPreferences.getString("instructions from QR", "instructions not initialized");
         if(!messageToReport.equals("instructions not initialized")){
             Timber.i("input from QR: %s", messageToReport);
@@ -344,11 +347,12 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
     private void requestUsagePermissions(String permission){
         if(permission.equals("usage")){
             startActivityForResult(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS),
-                        CONSTANTS.GENERAL_USAGE_PERMISSION_REQUEST);
+                    CONSTANTS.GENERAL_USAGE_PERMISSION_REQUEST);
+
         } else if (permission.equals("notification")) {
             //request notification permission
             startActivityForResult(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"),
-                    CONSTANTS.GENERAL_USAGE_PERMISSION_REQUEST);
+                   CONSTANTS.GENERAL_USAGE_PERMISSION_REQUEST);
         } else {
             Timber.i("All permission granted");
         }
@@ -382,7 +386,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
                             break;
                         case 4:
                             try {
-                                //generatePassword();
                                 generate_password();
                                 informUserOnPassword("alertDialogResponse");
                             } catch (Exception e) {
@@ -518,7 +521,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
     private boolean isMyServiceRunning() {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (ProspectiveLogger.class.getName().equals(service.service.getClassName())) {
+            if (LoggerService.class.getName().equals(service.service.getClassName())) {
                 return true;
             }
         }
@@ -536,7 +539,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
         bundle.putBoolean("appLog", qrInput.prospectiveDataSource.contains("app"));
         bundle.putBoolean("appChanges", qrInput.prospectiveDataSource.contains("installed"));
         if(!qrInput.prospectiveDataSource.contains("notification")){
-            toStartService = new Intent(this, ProspectiveLogger.class);
+            toStartService = new Intent(this, LoggerService.class);
             toStartService.putExtras(bundle);
             if(!isMyServiceRunning()) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -546,7 +549,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
                 }
             }
         } else {
-            toStartService = new Intent(this, ProspectiveLoggerWithNotes.class);
+            toStartService = new Intent(this, LoggerWithNotesService.class);
             toStartService.putExtras(bundle);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 startForegroundService(toStartService);
@@ -594,7 +597,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
         File
                 contextFile = new File(directory + File.separator + CONSTANTS.CONTEXT_FILE),
                 usageEvents = new File(directory + File.separator + CONSTANTS.USAGE_FILE),
-                prospective = new File(directory + File.separator + CONSTANTS.PROSPECTIVE_FILE);
+                continuous = new File(directory + File.separator + CONSTANTS.CONTINUOUS_FILE);
 
         //list of files to be uploaded
         ArrayList<Uri> files = new ArrayList<>();
@@ -603,17 +606,17 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
         try {
             if(contextFile.exists()){
                 files.add(FileProvider.getUriForFile(this,
-                        "geyerk.sensorlab.suselogger.fileprovider", contextFile));
+                        "psych.sensorlab.usagelogger2.fileprovider", contextFile));
             }
 
             if(usageEvents.exists()){
                 files.add(FileProvider.getUriForFile(this,
-                        "geyerk.sensorlab.suselogger.fileprovider", usageEvents));
+                        "psych.sensorlab.usagelogger2.fileprovider", usageEvents));
             }
 
-            if(prospective.exists()){
+            if(continuous.exists()){
                 files.add(FileProvider.getUriForFile(this,
-                        "geyerk.sensorlab.suselogger.fileprovider", prospective));
+                        "psych.sensorlab.usagelogger2.fileprovider", continuous));
             }
 
             if(files.size()>0){
@@ -623,7 +626,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Asyn
                 startActivity(intent);
 
             }else{
-                Timber.e("no files to upload");
+                Timber.e("No files to upload");
             }
         }
         catch (Exception e){

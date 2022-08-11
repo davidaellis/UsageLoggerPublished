@@ -1,8 +1,9 @@
-package geyerk.sensorlab.suselogger;
+package psych.sensorlab.usagelogger2;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.ContextThemeWrapper;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -38,6 +39,8 @@ class PostAlert {
                 }).create();
 
         builder.show();
+        builder.getButton(builder.BUTTON_POSITIVE).setTextColor(Color.parseColor("#E91E63"));
+        builder.getButton(builder.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#E91E63"));
     }
 
 }

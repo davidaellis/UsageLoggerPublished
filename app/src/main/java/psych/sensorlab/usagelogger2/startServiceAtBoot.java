@@ -1,4 +1,4 @@
-package geyerk.sensorlab.suselogger;
+package psych.sensorlab.usagelogger2;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -31,10 +31,10 @@ public class startServiceAtBoot extends BroadcastReceiver {
                 bundle.putBoolean("appChanges", qrInput.prospectiveDataSource.contains("installed"));
                 if (qrInput.prospectiveDataSource.contains("notification")){
                     //start service for notification listening
-                    startServiceIntent = new Intent(context, ProspectiveLoggerWithNotes.class);
+                    startServiceIntent = new Intent(context, LoggerWithNotesService.class);
                 } else {
                     //start service without notification listening
-                    startServiceIntent = new Intent(context, ProspectiveLogger.class);
+                    startServiceIntent = new Intent(context, LoggerService.class);
                 }
                 startServiceIntent.putExtras(bundle);
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {

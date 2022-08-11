@@ -1,4 +1,4 @@
-package geyerk.sensorlab.suselogger;
+package psych.sensorlab.usagelogger2;
 
 import android.annotation.SuppressLint;
 import android.app.usage.UsageEvents;
@@ -75,12 +75,12 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                 return new DataCollectionResult(appropriateUsageLength && file.exists() ,dataDirection,generalData,
                         CONSTANTS.PUTTING_USAGE_DATA_IN_PDF);
             case CONSTANTS.COLLECTING_PROSPECTIVE_DATA:
-                Timber.i("begging of packaging of prospective data");
-                file = new File(path, CONSTANTS.PROSPECTIVE_FILE);
+                Timber.i("begin of packaging of prospective data");
+                file = new File(path, CONSTANTS.CONTINUOUS_FILE);
                 boolean appropriateProspectiveLength = false;
-                try{
+                try {
                     appropriateProspectiveLength = storeProspectiveData(file, password, context);
-                }catch (Exception e){
+                } catch (Exception e){
                     Timber.e(e);
                 }
                 return new DataCollectionResult(appropriateProspectiveLength && file.exists(), dataDirection, generalData,
