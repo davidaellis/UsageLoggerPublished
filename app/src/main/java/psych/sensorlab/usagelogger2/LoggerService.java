@@ -68,7 +68,8 @@ public class LoggerService extends Service {
 
         try {
             initializeComponents(bundle);
-            if(continuousLoggingDirection.screenLog || continuousLoggingDirection.appLog || continuousLoggingDirection.appChanges){
+            if(continuousLoggingDirection.screenLog || continuousLoggingDirection.appLog ||
+                    continuousLoggingDirection.appChanges){
                 initializeBroadcastReceivers();
                 if(bundle.getBoolean("restart")){
                     Handler restartHandler = new Handler();
@@ -97,37 +98,32 @@ public class LoggerService extends Service {
 
     private Notification DeclareInForeground() {
 
-        final String contentText = "Currently collecting data in background";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-            NotificationChannel channel = new NotificationChannel("usage logger", getString(R.string.app_name), NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channel = new NotificationChannel("usage logger",
+                    getString(R.string.app_name), NotificationManager.IMPORTANCE_DEFAULT);
             channel.enableLights(false);
             channel.enableVibration(false);
             channel.setSound(null,null);
             channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-
             channel.setShowBadge(true);
+
             if (manager != null) {
                 manager.createNotificationChannel(channel);
             }
         }
 
-        NotificationCompat.Builder nfc = new NotificationCompat.Builder(getApplicationContext(),"usage logger")
+        NotificationCompat.Builder nfc = new NotificationCompat.Builder(
+                getApplicationContext(),"usage logger")
                 .setSmallIcon(R.drawable.ic_stat_name)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_stat_name))
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .setVisibility(NotificationCompat.VISIBILITY_SECRET) //This hides the notification from lock screen
-                .setContentTitle(this.getApplication().getPackageName())
-                .setContentText("Usage Logger is collecting data")
-                .setOngoing(true);
-
-        nfc.setContentTitle(this.getApplication().getPackageName());
-        nfc.setContentText(contentText);
-        nfc.setStyle(new NotificationCompat.BigTextStyle().bigText(contentText).setBigContentTitle(this.getApplication().getPackageName()));
-        nfc.setWhen(System.currentTimeMillis());
-
+                .setContentTitle(getString(R.string.app_name))
+                .setContentText(getString(R.string.notification_text))
+                .setOngoing(true)
+                .setWhen(System.currentTimeMillis());
         return nfc.build();
     }
 

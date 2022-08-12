@@ -117,18 +117,16 @@ public class LoggerWithNotesService extends NotificationListenerService {
 
     private Notification DeclareInForeground() {
 
-        final String contentText = "Currently collecting data in background";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
             NotificationChannel channel = new NotificationChannel("usage logger", getString(R.string.app_name),
                     NotificationManager.IMPORTANCE_DEFAULT);
             channel.enableLights(false);
             channel.enableVibration(false);
             channel.setSound(null,null);
             channel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-
             channel.setShowBadge(true);
+
             if (manager != null) {
                 manager.createNotificationChannel(channel);
             }
@@ -141,16 +139,10 @@ public class LoggerWithNotesService extends NotificationListenerService {
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .setVisibility(NotificationCompat.VISIBILITY_SECRET) //This hides the notification from lock screen
-                .setContentTitle(this.getApplication().getPackageName())
-                .setContentText("Usage Logger 2 is collecting data")
-                .setOngoing(true);
-
-        nfc.setContentTitle(this.getApplication().getPackageName());
-        nfc.setContentText(contentText);
-        nfc.setStyle(new NotificationCompat.BigTextStyle().bigText(contentText).
-                setBigContentTitle(this.getApplication().getPackageName()));
-        nfc.setWhen(System.currentTimeMillis());
-
+                .setContentTitle(getString(R.string.app_name))
+                .setContentText(getString(R.string.notification_text_notes))
+                .setOngoing(true)
+                .setWhen(System.currentTimeMillis());
         return nfc.build();
     }
 
@@ -181,7 +173,7 @@ public class LoggerWithNotesService extends NotificationListenerService {
         if (!bundle.getBoolean("restart")){
             password = bundle.getString("password", "not password");
             securePreferences.edit().putString("password", password).apply();
-        }else{
+        } else {
             initializeError();
             password = securePreferences.getString("password", "not password");
         }
@@ -189,6 +181,7 @@ public class LoggerWithNotesService extends NotificationListenerService {
         if(password.equals("not password")){
             throw new Exception("Could not retrieve password");
         }
+
         loggingDirection = new LoggingDirection(
                 bundle.getBoolean("screenLog"),
                 bundle.getBoolean("appLog"),
@@ -210,7 +203,6 @@ public class LoggerWithNotesService extends NotificationListenerService {
     /**
      * HANDLING BROADCAST RECEIVERS
      */
-
     private void initializeBroadcastReceivers() {
         if(loggingDirection.screenLog || loggingDirection.appLog){
             if(loggingDirection.appLog) {

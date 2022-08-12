@@ -31,6 +31,7 @@ public class startServiceAtBoot extends BroadcastReceiver {
                 bundle.putBoolean("appChanges", qrInput.continuousDataSource.contains("installed"));
                 if (qrInput.continuousDataSource.contains("notification")){
                     //start service for notification listening
+                    //(e.g., continuous logging with notifications was selected in configuration)
                     startServiceIntent = new Intent(context, LoggerWithNotesService.class);
                 } else {
                     //start service without notification listening
