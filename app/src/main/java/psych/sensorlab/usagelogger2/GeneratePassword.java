@@ -8,7 +8,7 @@ import java.util.Random;
  */
 public class GeneratePassword {
 
-    public static final String DATA = "123456789ABCDEFGHKMNOPQRSTUVWXYZabcdefghkmnopqrstuvwxyz!$%&@#?";
+    public static final String DATA = "123456789ABCDEFGHKMNPQRSTUVWXYZabcdefghkmnpqrstuvwxyz!$%&@#?";
     public static final Random RANDOM = new Random();
     public static String randomString(int len) {
         StringBuilder sb = new StringBuilder(len);
