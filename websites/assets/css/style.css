@@ -1,8 +1,3 @@
-* {
-    cursor: default;
-    user-select: none;
-}
-
 body {
   background-color: #fff;
   padding: 50px;
@@ -39,7 +34,7 @@ h3, h4, h5, h6 {
 a {
   color:#267CB9;
   text-decoration:none;
-  cursor: pointer;
+  cursor: grab;
 }
 
 a:hover, a:focus {
