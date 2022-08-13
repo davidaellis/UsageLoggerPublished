@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         resultCode = 0;
         if(data!=null){
             switch (resultCode){
-                case 0:
+                case 0: //todo - check logic, as resultCode is always 0?
                     result = data.getStringExtra("result");
                     if(result!=null){
                         try {
@@ -276,39 +276,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 StringBuilder whatTheAppDoes = new StringBuilder();
 
                 if(qrInput.dataSources.containsKey("contextual")){
+                    whatTheAppDoes.append("\n\n").append(getString(R.string.func_context1));
                     if(qrInput.contextualDataSources.contains("installed")){
-                        whatTheAppDoes.append("\n").append(getString(R.string.func_info1));
+                        whatTheAppDoes.append("\n").append(getString(R.string.func_context2));
                     }
                     if(qrInput.contextualDataSources.contains("permission")){
-                        whatTheAppDoes.append("\n").append(getString(R.string.func_info2));
+                        whatTheAppDoes.append("\n").append(getString(R.string.func_context3));
                     }
                     if(qrInput.contextualDataSources.contains("response")){
-                        whatTheAppDoes.append("\n").append(getString(R.string.func_info3));
+                        whatTheAppDoes.append("\n").append(getString(R.string.func_context4));
+                    }
+                }
+                if(qrInput.dataSources.containsKey("continuous")){
+                    whatTheAppDoes.append("\n\n").append(getString(R.string.func_continuous1));
+                    whatTheAppDoes.append("\n").append(getString(R.string.func_continuous2));
+                    if(qrInput.continuousDataSource.contains("screen")){
+                        whatTheAppDoes.append("\n").append(getString(R.string.func_continuous3));
+                    }
+                    if(qrInput.continuousDataSource.contains("app")){
+                        whatTheAppDoes.append("\n").append(getString(R.string.func_continuous4));
+                    }
+                    if(qrInput.continuousDataSource.contains("notification")){
+                        whatTheAppDoes.append("\n").append(getString(R.string.func_continuous5));
+                    }
+                    if(qrInput.continuousDataSource.contains("installed")){
+                        whatTheAppDoes.append("\n").append(getString(R.string.func_continuous6));
                     }
                 }
                 if(qrInput.dataSources.containsKey("usage")){
-                    whatTheAppDoes.append("\n").append(getString(R.string.func_info4)).
-                            append(qrInput.daysToMonitor).append(getString(R.string.func_info5));
-                }
-                if(qrInput.dataSources.containsKey("continuous")){
-                    whatTheAppDoes.append("\n").append(getString(R.string.func_info6));
-                    whatTheAppDoes.append("\n").append(getString(R.string.func_info7));
-                    if(qrInput.continuousDataSource.contains("screen")){
-                        whatTheAppDoes.append("\n").append(getString(R.string.func_info8));
-                    }
-                    if(qrInput.continuousDataSource.contains("app")){
-                        whatTheAppDoes.append("\n").append(getString(R.string.func_info9));
-                    }
-                    if(qrInput.continuousDataSource.contains("notification")){
-                        whatTheAppDoes.append("\n").append(getString(R.string.func_info10));
-                    }
-                    if(qrInput.continuousDataSource.contains("installed")){
-                        whatTheAppDoes.append("\n").append(getString(R.string.func_info11));
-                    }
+                    whatTheAppDoes.append("\n\n").append(getString(R.string.func_past1)).
+                            append(" ").append(qrInput.daysToMonitor).append(" ").
+                            append(getString(R.string.func_past2)).append("\n").
+                            append(getString(R.string.func_past3)).append("\n").
+                            append(getString(R.string.func_past4));
                 }
                 postAlert.customiseMessage(2, "NA", getString(R.string.title_log_request),
-                        getString(R.string.prev_qr_code1) + whatTheAppDoes + "\n" +  "\n"
-                                + getString(R.string.prev_qr_code2), "alertDialogResponse");
+                        getString(R.string.func_start) + whatTheAppDoes + "\n" +  "\n"
+                                + getString(R.string.func_end), "alertDialogResponse");
                 break;
             case 3:
                 postAlert.customiseMessage(3, "NA", getString(R.string.title_data_sec),

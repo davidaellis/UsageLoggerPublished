@@ -12,11 +12,9 @@
     <string name="pwd">Password</string>
 
     <string name="pls_press_qr_code">Please press on the READ QR-CODE button to scan a QR-Code associated with the study.</string>
-    <string name="prev_qr_code1">The QR-Code that you previously scanned has configured this app to collect particular types of data. These include: </string>
-    <string name="prev_qr_code2">Please press OK if you are happy that this data is being collected. If not, please contact the research and be prepared to withdraw from the study if you feel it is necessary.</string>
-    <string name="send_data_away">The only remaining step is to send the data to the researcher by email. Do you wish to send the data at this point?</string>
-    <string name="problem_read_qr">There was a problem reading the QR-Code. Can you please scan the code again</string>
-    <string name="data_security">Much effort has gone into securing the data that this app collects. Every effort has been made to give you control of your data. Your data can not and will not be shared without you explicitly emailing/exporting the data. \n\nHowever, it is important that you do not participate in this study if your phone is rooted (jail-broken) or if you believe that the normal Android security on your phone is compromised.</string>
+    <string name="send_data_away">The only remaining step is to send the data to the researcher by email. Do you wish to send the data now?</string>
+    <string name="problem_read_qr">There was a problem reading the QR-Code. Please scan the code again.</string>
+    <string name="data_security">Much effort has gone into securing the data that this app collects. Ultimately, you have full control of your data, in that it will not be shared without you explicitly emailing/exporting the data. \n\nHowever, if your phone is rooted (jail-broken) or if you believe that the normal Android security on your phone is compromised, do not participate in this study.</string>
     <string name="give_perms">In order to participate, you will have to grant the following permissions:</string>
 
     <!-- permission requests -->
@@ -33,7 +31,7 @@
     <string name="title_app_info">What is this app for?</string>
     <string name="title_attention">Attention!</string>
     <string name="title_next">Next step</string>
-    <string name="title_log_request">What Usage logger has been requested to do</string>
+    <string name="title_log_request">What information will be collected?</string>
     <string name="title_send_email">Send email?</string>
     <string name="title_problem_qr">Issue Reading QR-Code</string>
 
@@ -45,19 +43,29 @@
 
     <string name="title_data_sec">Data security</string>
 
-    <string name="app_info_short">This app is has been developed for research purposes. If you are not participating in any research study, please uninstall this app.</string>
-    <string name="app_info">This app helps researchers to identify what you are using your phone for. Please do not use this app for any other purposes. If you have been asked to use this app for purposes unrelated to scientific research then please uninstall it now. At this point no data has been collected.</string>
-    <string name="func_info1">- What apps are installed on your phone.</string>
-    <string name="func_info2">- What permissions that the installed apps on your phone request.</string>
-    <string name="func_info3">- How you have previously responded to app\'s request for permission requests</string>
-    <string name="func_info4">- What you have previously used your phone for</string>
-    <string name="func_info5">days. This will include: when the screen was used and when apps were used. No information will be collected on what you did with the apps. However, inferences may be made regarding what you could have done with these apps</string>
-    <string name="func_info6">- How you will use your phone in the future. This will include: </string>
-    <string name="func_info7">- When the phone is restarted</string>
-    <string name="func_info8">- When the screen is off or on</string>
-    <string name="func_info9">- What apps you use and when you use them</string>
-    <string name="func_info10">- When an app sends you a notification and when you delete the notification</string>
-    <string name="func_info11">- When you change the apps installed</string>
+    <string name="app_info_short">This app is has been developed for research purposes. If you are not participating in a research study, please uninstall this app now.</string>
+    <string name="app_info">This app helps researchers to know what you are using your phone for. Please do not use this app for any other purposes.\n\nIf you have been asked to use this app for purposes unrelated to scientific research then please uninstall it now. At this point no data has been collected.</string>
+
+    <string name="func_start">The QR-Code that you previously scanned has configured this app to collect certain types of data, as follows:</string>
+    <!-- context data -->
+    <string name="func_context1">1) Contextual information:</string>
+    <string name="func_context2">&#8226; Apps installed on your phone.</string>
+    <string name="func_context3">&#8226; Permissions that apps request.</string>
+    <string name="func_context4">&#8226; Responses to permission requests.</string>
+    <!-- continuous logging -->
+    <string name="func_continuous1">2) Current, ongoing, information:</string>
+    <string name="func_continuous2">&#8226; When the phone is restarted.</string>
+    <string name="func_continuous3">&#8226; When the screen is off or on.</string>
+    <string name="func_continuous4">&#8226; What apps you use and when.</string>
+    <string name="func_continuous5">&#8226; When notifications appear/are deleted.</string>
+    <string name="func_continuous6">&#8226; When you install or delete an app.</string>
+    <!-- past usage -->
+    <string name="func_past1">3) Usage in the last</string>
+    <string name="func_past2"> days, including:</string>
+    <string name="func_past3">&#8226; When the screen was on or off.</string>
+    <string name="func_past4">&#8226; When and what apps were used.</string>
+
+    <string name="func_end">While no information is collected on what you did with the apps, inferences might be made. Press OK if you are happy that this data will be collected. If not, please contact the researcher and consider withdrawing from the study.</string>
 
     <string name="see_pwd">See Password</string>
     <string name="read_qr">Read QR-Code</string>
