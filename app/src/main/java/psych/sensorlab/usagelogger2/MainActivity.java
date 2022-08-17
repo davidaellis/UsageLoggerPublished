@@ -103,15 +103,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void updateUI(){
+        //controls if READ-QR Code button should be shown, or see password button
         Button passwordBtn = findViewById(R.id.btnSeePassword);
-
-        if(QRCodeProvided()){
+        if (QRCodeProvided()) {
             Button email = findViewById(R.id.btnEmail);
             email.setVisibility(View.VISIBLE);
             Button QRReadBtn = findViewById(R.id.btnReadQR);
             QRReadBtn.setVisibility(View.GONE);
             passwordBtn.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             passwordBtn.setVisibility(View.GONE);
         }
     }
@@ -266,6 +266,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void sendMessage(int message) {
+        Timber.v("showing message alert id: %s", message);
         switch (message){
             case 1:
                 //last warning before collecting data
@@ -274,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case 2:
                 StringBuilder whatTheAppDoes = new StringBuilder();
-
+                //list of types of data the app will collect "What info will be collected?"
                 if(qrInput.dataSources.containsKey("contextual")){
                     whatTheAppDoes.append("\n\n").append(getString(R.string.func_context1));
                     if(qrInput.contextualDataSources.contains("installed")){
@@ -315,10 +316,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 + getString(R.string.func_end), "alertDialogResponse");
                 break;
             case 3:
+                //data security alert (e.g. if phone is rooted)
                 postAlert.customiseMessage(3, "NA", getString(R.string.title_data_sec),
                         getString(R.string.data_security),  "alertDialogResponse");
                 break;
             case 4:
+                //list of required permissions
                 StringBuilder permissionsToBeRequested = new StringBuilder();
                 if(qrInput.dataSources.containsKey("usage") || qrInput.continuousDataSource.contains("app")){
                     permissionsToBeRequested.append("\n\n").append(getString(R.string.usage_perm));
@@ -329,6 +332,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(permissionsToBeRequested.length() == 0){
                     permissionsToBeRequested.append("\n").append(getString(R.string.no_perm_req));
                 }
+                //show alert listing what permissions will be asked for
                 postAlert.customiseMessage(4, "NA", getString(R.string.title_perm_req),
                         getString(R.string.give_perms) + permissionsToBeRequested,
                         "alertDialogResponse");
@@ -374,11 +378,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (bundle != null) {
                 int message = bundle.getInt("messageID", 100);
                 String permission = bundle.getString("permissionToRequest", "NA");
+                Timber.v("Broadcast receiver permission req.: %s", permission);
+                Timber.v("Broadcast receiver message id: %s", message);
                 if (permission.equals("NA")) {
                     if (!securePreferences.getBoolean("password generated", false)) {
-                        securePreferences.edit().putLong("message" + message, System.currentTimeMillis()).apply();
-                        Timber.i("result from securePref message%d: %d", message,
-                                securePreferences.getLong("message" + message, 1L));
+                        securePreferences.edit().putLong("message" + message,
+                                System.currentTimeMillis()).apply();
+                        // Timber.i("result from securePref message id %d: %d", message,
+                               // securePreferences.getLong("message" + message, 1L));
                     }
                     switch (message) {
                         case 0:
@@ -393,13 +400,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         case 4:
                             try {
                                 generate_password();
-                                informUserOnPassword("alertDialogResponse");
+                                //okay to generate PWD but don't show to user yet, tk Aug 2022
+                                //informUserOnPassword("alertDialogResponse");
                             } catch (Exception e) {
                                 Timber.e(e);
                             }
+                            dealWithPermission.determinePermissionThatAreEssential(establishPermissionsToRequest());
                             break;
                         case 5:
-                            dealWithPermission.determinePermissionThatAreEssential(establishPermissionsToRequest());
+                            informUserOnPassword("alertDialogResponse");
                             break;
                         case CONSTANTS.ALL_PERMISSIONS_GRANTED:
                             sharedPreferences.edit().putBoolean("permissions provided", true).apply();
@@ -421,7 +430,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void generate_password() {
         String pass = GeneratePassword.randomString(12);
         Timber.i("generated password: %s", pass);
-
         securePreferences.edit()
                .putString("password", pass)
                .putBoolean("password generated", true)
@@ -442,11 +450,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     };
 
     private void informUserOnPassword(String whereToSend) {
+        //show password info alert
         Button password = findViewById(R.id.btnSeePassword);
         password.setVisibility(View.VISIBLE);
-        postAlert.customiseMessage(5, "NA", getString(R.string.pwd),
-                "Your password is " + securePreferences.getString("password",
-                        "not generated yet"), whereToSend);
+        postAlert.customiseMessage(5, "NA", getString(R.string.title_pwd),
+                securePreferences.getString("password", "not generated yet"), whereToSend);
     }
 
     private void generatePlanForDataCollection() {
