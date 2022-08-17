@@ -9,13 +9,13 @@
     <string name="coll_context_data">Currently collecting context data</string>
 
     <string name="study_fin">Study is complete</string>
-    <string name="pwd">Password</string>
 
     <string name="pls_press_qr_code">Please press on the READ QR-CODE button to scan a QR-Code associated with the study.</string>
     <string name="send_data_away">The only remaining step is to send the data to the researcher by email. Do you wish to send the data now?</string>
     <string name="problem_read_qr">There was a problem reading the QR-Code. Please scan the code again.</string>
     <string name="data_security">Much effort has gone into securing the data that this app collects. Ultimately, you have full control of your data, in that it will not be shared without you explicitly emailing/exporting the data. \n\nHowever, if your phone is rooted (jail-broken) or if you believe that the normal Android security on your phone is compromised, do not participate in this study.</string>
-    <string name="give_perms">In order to participate, you will have to grant the following permissions:</string>
+    <string name="give_perms">In order to participate, you will need to grant the following permissions:</string>
+    <string name="give_perms_after">After granting them, click on the back arrow at the top or bottom of the screen until you return to this app.</string>
 
     <!-- permission requests -->
     <string name="usage_perm">- Usage permission</string>
@@ -34,6 +34,7 @@
     <string name="title_log_request">What information will be collected?</string>
     <string name="title_send_email">Send email?</string>
     <string name="title_problem_qr">Issue Reading QR-Code</string>
+    <string name="title_pwd">Your password is:</string>
 
     <string name="title_usage_perm">Collect usage data?</string>
     <string name="title_perm_req">Required permissions</string>
