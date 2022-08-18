@@ -38,6 +38,8 @@ class CONSTANTS {
     CONTINUOUS_FILE = "continuous.pdf";
 
     static final int
+            //broadcastreceiver message IDs
+            INFORM_USER = 0,
             QR_CODE_ACTIVITY = 1,
             ALERT_DIALOG_CAMERA_PERMISSION = 2,
             ALERT_DIALOG_USAGE_PERMISSION = 3,
