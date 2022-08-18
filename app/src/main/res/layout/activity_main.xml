@@ -22,6 +22,7 @@
         android:layout_marginStart="8dp"
         android:text="@string/setup_status"
         android:textSize="20sp"
+        android:textAlignment="center"
         android:textColor="@color/primary_text"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="@+id/pb"

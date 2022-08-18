@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">Usage Logger 2</string>
-    <string name="context_data_collection">Status: Data is being collected about what you have installed on your device.</string>
-    <string name="usage_data_collection">Status: Data is being collected about what you have previously used your phone for.</string>
-    <string name="continuous_data_collection">Status: Phone usage monitoring ongoing.</string>
 
-    <string name="coll_active_phone_data">Collecting current phone usage data</string>
-    <string name="coll_past_data">Currently collecting past usage data</string>
-    <string name="coll_context_data">Currently collecting context data</string>
+    //status info about what app is doing
+    <string name="setup_status">Setting up app</string>
+
+    <string name="coll_context_data">Collecting data about what apps\nyou have installed etc.</string>
+    <string name="coll_continuous_data">Collecting data about what you\nare using the phone for now</string>
+    <string name="coll_past_usage_data">Collecting data about what you\npreviously used your phone for</string>
 
     <string name="study_fin">Study is complete</string>
 
@@ -70,7 +70,6 @@
 
     <string name="see_pwd">See Password</string>
     <string name="read_qr">Read QR-Code</string>
-    <string name="setup_status">Status: Setting up app</string>
     <string name="notification_text">Collecting data, excluding notifications</string>
     <string name="notification_text_notes">Collecting data, including notifications</string>
 </resources>
