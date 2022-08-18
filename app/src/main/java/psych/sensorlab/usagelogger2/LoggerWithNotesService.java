@@ -178,7 +178,7 @@ public class LoggerWithNotesService extends NotificationListenerService {
             password = securePreferences.getString("password", "not password");
         }
 
-        if(password.equals("not password")){
+        if (password.equals("not password")) {
             throw new Exception("Could not retrieve password");
         }
 
@@ -204,7 +204,7 @@ public class LoggerWithNotesService extends NotificationListenerService {
      * HANDLING BROADCAST RECEIVERS
      */
     private void initializeBroadcastReceivers() {
-        if(loggingDirection.screenLog || loggingDirection.appLog){
+        if (loggingDirection.screenLog || loggingDirection.appLog) {
             if(loggingDirection.appLog) {
                 screenReceiver = new BroadcastReceiver() {
                     @Override
@@ -381,10 +381,10 @@ public class LoggerWithNotesService extends NotificationListenerService {
         super.onDestroy();
         if (database!=null) database.close();
 
-        if(loggingDirection.screenLog){
+        if (loggingDirection.screenLog) {
             unregisterReceiver(screenReceiver);
         }
-        if(loggingDirection.appChanges){
+        if (loggingDirection.appChanges) {
             unregisterReceiver(appReceiver);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

@@ -9,7 +9,8 @@ class QRInput {
     final Set<String> contextualDataSources, continuousDataSource;
     final int daysToMonitor;
 
-    QRInput(HashMap<String, Integer> dataSources, Set<String> contextualDataSources, int daysToMonitor, Set<String> continuousDataSources) {
+    QRInput(HashMap<String, Integer> dataSources, Set<String> contextualDataSources,
+            int daysToMonitor, Set<String> continuousDataSources) {
         this.dataSources = dataSources;
         this.contextualDataSources = contextualDataSources;
         this.continuousDataSource = continuousDataSources;

@@ -37,7 +37,7 @@ class DealWithPermission {
                     final String permissionRequested = bundle.getString("permissionToRequest");
                     if (permissionRequested != null) {
                         if(bundle.getBoolean("positiveResponse")){
-                            Timber.i("Camera position now can be requested");
+                            Timber.i("Camera position can now be requested");
                             String permissionToRequest = bundle.getString("permissionToRequest");
                             if(permissionToRequest!= null){
                                 requestNextPermission(permissionToRequest);

@@ -253,19 +253,18 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
         final List<PackageInfo> appInstall= pm.getInstalledPackages(PackageManager.GET_PERMISSIONS|PackageManager.GET_RECEIVERS|
                 PackageManager.GET_SERVICES|PackageManager.GET_PROVIDERS);
 
-        for(PackageInfo pInfo:appInstall) {
+        for (PackageInfo pInfo:appInstall) {
             HashMap<String, Boolean> permissionsResponse = new HashMap<>();
             final String[] permissions = pInfo.requestedPermissions;
             final int[] reaction = pInfo.requestedPermissionsFlags;
             Timber.i("app being viewed:  %s", pInfo.applicationInfo.loadLabel(pm));
-            if(permissions != null){
+            if (permissions != null) {
                 Timber.i("size of permissions: %d, size of reaction: %d", permissions.length, reaction.length);
-
                 for(int i = 0; i <permissions.length; i++){
                     permissionsResponse.put(permissions[i], reaction[i] == 3);
                     permissionNumber++;
                 }
-            }else{
+            } else {
                 Timber.e("Permissions equal null");
             }
 
