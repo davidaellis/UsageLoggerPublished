@@ -4,12 +4,13 @@
 <head>
     <meta charset="utf-8" />
     <title>App Customisation - Usage Logger 2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
     <link rel="stylesheet" type="text/css" href="../assets/css/customise.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js" integrity="sha256-DI6NdAhhFRnO2k51mumYeDShet3I8AKCQf/tf7ARNhI=" crossorigin="anonymous"></script>
-
+    <noscript><div class="no-js">Please enable JavaScript in your browser to use this website.</div></noscript>
   </head>
 <body>
 
@@ -80,7 +81,7 @@
     <!-- data source selection -->
     <div id="left">
         <h2 class="title">Customise Data Collection</h2>
-        <small>(Select at least one data source)</small>
+        <small>(Select at least one data source and subtype)</small>
         <p class="spacer">&nbsp;</p>
         <p class="option"><span title="Provides a snapshot of information about software on a device">Contextual Data</span>
             <input type="checkbox" id="contextual" /></p>
@@ -113,7 +114,7 @@
                         <option value="two">two days ago</option>
                         <option value="three">three days ago</option>
                         <option value="four">four days ago</option>
-                        <option value="five">five days ago</option>
+                        <option value="five" selected="selected">five days ago</option>
                     </select>
                 </li>
             </ul>

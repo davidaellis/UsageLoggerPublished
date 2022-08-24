@@ -1,10 +1,18 @@
 body {
   background-color: #fff;
-  padding: 50px;
   font: 14px/1.5 "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #000;
+  margin: 0;
+  padding: 0;
   font-weight: 400;
   font-size: 100%;
+}
+
+.no-js {
+  background-color:yellow;
+  text-align:center;
+  padding:.9em;
+  margin:0 0 1.5em 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -54,6 +62,7 @@ a:hover small {
 }
 
 .wrapper {
+  padding:50px;
   width:860px;
   margin:0 auto;
 }
@@ -117,10 +126,10 @@ kbd {
 }
 
 header {
-  width:270px;
-  float:left;
-  position:fixed;
-  -webkit-font-smoothing:subpixel-antialiased;
+  width: 270px;
+  float: left;
+  position: fixed;
+  -webkit-font-smoothing: subpixel-antialiased;
 }
 
 ul.downloads {

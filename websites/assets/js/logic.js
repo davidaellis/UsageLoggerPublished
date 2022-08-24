@@ -58,9 +58,16 @@ function initializeButtonFunction() {
     })
     $("#contextual").click(function() {
         updateSortableContent("contextual")
+        $('#c_installed_apps').attr('checked', true);
+        $('#c_permissions').attr('checked', true);
+        $('#c_responses').attr('checked', true);
     })
     $("#continuous_log").click(function() {
         updateSortableContent("continuous")
+        $('#screen_usage').attr('checked', true);
+        $('#app_usage').attr('checked', true);
+        $('#notification').attr('checked', true);
+        $('#installed_apps').attr('checked', true);
     })
     $("#past_usage").click(function() {
         updateSortableContent("past_usage")
