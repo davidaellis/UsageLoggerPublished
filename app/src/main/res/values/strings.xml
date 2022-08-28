@@ -13,20 +13,21 @@
     <string name="pls_press_qr_code">Please press on the READ QR-CODE button to scan a QR-Code associated with the study.</string>
     <string name="send_data_away">The only remaining step is to send the data to the researcher by email. Do you wish to send the data now?</string>
     <string name="problem_read_qr">There was a problem reading the QR-Code. Please scan the code again.</string>
-    <string name="data_security">Much effort has gone into securing the data that this app collects. Ultimately, you have full control of your data, in that it will not be shared without you explicitly emailing/exporting the data. \n\nHowever, if your phone is rooted (jail-broken) or if you believe that the normal Android security on your phone is compromised, do not participate in this study.</string>
-    <string name="give_perms">In order to participate, you will need to grant the following permissions:</string>
-    <string name="give_perms_after">After granting them, click on the back arrow at the top or bottom of the screen until you return to this app.</string>
+    <string name="data_security">Much effort has gone into securing the data that this app collects. Ultimately, you have full control of your data, in that it will not be shared without you explicitly emailing/exporting the data. \n\nHowever, if the phone is rooted (jail-broken) or if you believe that the normal Android security on the phone is compromised, do not participate in this study.</string>
+    <string name="give_perms">In order to participate, you will need to grant the following permissions:\n</string>
 
     <!-- permission requests -->
-    <string name="usage_perm">- Usage permission</string>
-    <string name="note_list_perm">- Notification listing permission</string>
+    <string name="usage_perm">- Permissions to collect usage data</string>
+    <string name="note_list_perm">- Permission to collect notification data</string>
+    <string name="show_note_list_perm">- Permission to show notifications</string>
+    <string name="no_perm_req">- No additional permissions required</string>
 
     <string name="cam_perm">To configure this app for the study you are participating in, a QR-Code needs to be scanned. Please allow the app to access the phone\'s camera.</string>
-    <string name="usage_perm_info">The study you are taking part in needs you to grant \"usage\" permissions.\n\nThis allows the app to collect information about what you have used your phone for, currently, and previously, and when the screen has been on or off.</string>
-    <string name="note_perm_info">The study you are taking part in needs you to grant permissions for \"notifications\".\n\nThis means the app will collect information about when you receive and when you delete notifications.</string>
+    <string name="show_note_perm">The app would like to inform you when it\'s collection information in the background. Please allow the app to show you notifications.</string>
 
-    <string name="all_perms_given">Thank you! All essential permissions have been given.</string>
-    <string name="no_perm_req">No permissions are required</string>
+    <string name="usage_perm_info">The study you are taking part in needs you to grant \"usage\" permissions.\n\nThis allows the app to collect information about what you have used the phone for, currently, and previously, and when the screen has been on or off.</string>
+    <string name="note_perm_info">The study you are taking part in needs you to grant permissions for \"notifications\".\n\nThis means the app will collect information about when you receive and when you delete notifications.</string>
+    <string name="all_perms_given">All essential permissions have been given.</string>>
 
     <string name="title_app_info">What is this app for?</string>
     <string name="title_attention">Attention!</string>
@@ -38,38 +39,43 @@
 
     <string name="title_usage_perm">Collect usage data?</string>
     <string name="title_perm_req">Required permissions</string>
-    <string name="title_cam_perm">Permission for camera</string>
-    <string name="title_req_note_perm">Permission for notifications</string>
-    <string name="title_all_perms">All permissions given</string>
+    <string name="title_cam_perm">Use Camera?</string>
+    <string name="title_req_note_perm">Collect notification info?</string>
+    <string name="title_show_note_perm">Show notifications?</string>
+    <string name="title_thanks">Thank you!</string>
 
     <string name="title_data_sec">Data security</string>
 
     <string name="app_info_short">This app is has been developed for research purposes. If you are not participating in a research study, please uninstall this app now.</string>
-    <string name="app_info">This app helps researchers to know what you are using your phone for. Please do not use this app for any other purposes.\n\nIf you have been asked to use this app for purposes unrelated to scientific research then please uninstall it now. At this point no data has been collected.</string>
+    <string name="app_info">This app helps researchers learn about how you are using the phone. Please do not use this app for any other purposes.\n\nIf you have been asked to use this app for purposes unrelated to scientific research then please uninstall it now. At this point no data has been collected.</string>
 
-    <string name="func_start">The QR-Code that you previously scanned has configured this app to collect certain types of data, as follows:</string>
+    <string name="func_start">The app is now configured to collect the following information:</string>
     <!-- context data -->
-    <string name="func_context1">1) Contextual information:</string>
-    <string name="func_context2">&#8226; Apps installed on your phone.</string>
+    <string name="func_context1">Contextual information:</string>
+    <string name="func_context2">&#8226; Apps installed on the phone.</string>
     <string name="func_context3">&#8226; Permissions that apps request.</string>
     <string name="func_context4">&#8226; Responses to permission requests.</string>
     <!-- continuous logging -->
-    <string name="func_continuous1">2) Current, ongoing, information:</string>
+    <string name="func_continuous1">Current, ongoing, information:</string>
     <string name="func_continuous2">&#8226; When the phone is restarted.</string>
     <string name="func_continuous3">&#8226; When the screen is off or on.</string>
     <string name="func_continuous4">&#8226; What apps you use and when.</string>
     <string name="func_continuous5">&#8226; When notifications appear/are deleted.</string>
     <string name="func_continuous6">&#8226; When you install or delete an app.</string>
     <!-- past usage -->
-    <string name="func_past1">3) Usage in the last</string>
+    <string name="func_past1">Usage in the last</string>
     <string name="func_past2"> days, including:</string>
     <string name="func_past3">&#8226; When the screen was on or off.</string>
     <string name="func_past4">&#8226; When and what apps were used.</string>
 
-    <string name="func_end">While no information is collected on what you did with the apps, inferences might be made. Press OK if you are happy that this data will be collected. If not, please contact the researcher and consider withdrawing from the study.</string>
+    <string name="func_end">While no information is collected on what you did with apps installed on the phone, inferences might be made. Press OKAY if you are happy that this data will be collected. If not, please contact the researcher and consider withdrawing from the study.</string>
+
+    <string name="close_app">Close App</string>
+    <string name="reset_app">Reset App</string>
 
     <string name="see_pwd">See Password</string>
     <string name="read_qr">Read QR-Code</string>
+    <string name="click_read_qr">Click READ QR-CODE</string>
     <string name="notification_text">Collecting data, excluding notifications</string>
     <string name="notification_text_notes">Collecting data, including notifications</string>
 </resources>
