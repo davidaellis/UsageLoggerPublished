@@ -9,9 +9,9 @@ class StoreInSQL extends SQLiteOpenHelper {
 
     private final String SQL_CREATE_ENTRIES, SQL_DELETE_ENTRIES;
 
-    StoreInSQL(Context context, String name,  int version, String tableName, String SQL_CREATE_ENTRIES) {
+    StoreInSQL(Context context, String name, int version, String tableName) {
         super(context, name, null, version);
-        this.SQL_CREATE_ENTRIES =  "CREATE TABLE " +tableName + SQL_CREATE_ENTRIES;
+        this.SQL_CREATE_ENTRIES = "CREATE TABLE " + tableName + "(time INTEGER, event TEXT)";
         this.SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + tableName;
     }
 
