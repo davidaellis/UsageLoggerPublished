@@ -35,11 +35,12 @@ class DealWithPermission {
                 Bundle bundle = intent.getExtras();
                 if (bundle != null) {
                     final String permissionRequested = bundle.getString("permissionToRequest");
+                    Timber.v("permissions requested: %s", permissionRequested);
                     if (permissionRequested != null) {
-                        if(bundle.getBoolean("positiveResponse")){
+                        if (bundle.getBoolean("positiveResponse")) {
                             Timber.i("Camera position can now be requested");
                             String permissionToRequest = bundle.getString("permissionToRequest");
-                            if(permissionToRequest!= null){
+                            if (permissionToRequest != null) {
                                 requestNextPermission(permissionToRequest);
                             }
                         }
@@ -50,11 +51,10 @@ class DealWithPermission {
         };
         LocalBroadcastManager.getInstance(context).registerReceiver(localReceiver,
                 new IntentFilter("alertDialogPermissionResponse"));
-
     }
 
-    void determinePermissionThatAreEssential(String[] essentialPermissions){
-        for(String essentialPermission: essentialPermissions){
+    void determineEssentialPerms(String[] essentialPermissions){
+        for (String essentialPermission: essentialPermissions) {
             this.essentialPermissions.put(essentialPermission, CONSTANTS.PERMISSION_NOT_ASSESSED);
         }
         assessApprovalOfPermissions();
@@ -63,22 +63,36 @@ class DealWithPermission {
 
     private void requestNextPermission(){
         Timber.i("request next permission");
-        for(String permission: essentialPermissions.keySet()){
-
+        for (String permission: essentialPermissions.keySet()) {
             Integer stateOfPermission = essentialPermissions.get(permission);
-            Timber.i("Permissions being assessed: %s, state: %d ", permission, stateOfPermission);
-            if(stateOfPermission!=null && !permission.equals("NA")) {
+            Timber.i("Next permissions being assessed: %s, state: %d ", permission, stateOfPermission);
+            if(stateOfPermission != null && !permission.equals("NA")) {
                 if (stateOfPermission != PackageManager.PERMISSION_GRANTED) {
                     postRationaleForRequestingPermission(permission, context);
                     return;
                 }
             }
         }
-        confirmAllPermissionsGranted(context);
+
+        //only ask for notification permissions in Android 13 and above
+        if (Build.VERSION.SDK_INT >= 33) {
+            if (ContextCompat.checkSelfPermission(context,
+                    Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                    confirmAllPermissionsGranted(context);
+            } else {
+                postAlert.customiseMessage(123, Manifest.permission.POST_NOTIFICATIONS,
+                        context.getString(R.string.title_show_note_perm),
+                        context.getString(R.string.show_note_perm),
+                        "alertDialogPermissionResponse");
+            }
+        } else {
+                confirmAllPermissionsGranted(context);
+        }
+
     }
 
     private void postRationaleForRequestingPermission(String permission, Context context){
-        switch (permission){
+        switch (permission) {
             case Manifest.permission.CAMERA:
                 postAlert.customiseMessage(CONSTANTS.ALERT_DIALOG_CAMERA_PERMISSION, permission,
                         context.getString(R.string.title_cam_perm), context.getString(R.string.cam_perm),
@@ -98,27 +112,27 @@ class DealWithPermission {
     }
 
     private void assessApprovalOfPermissions() {
-        Timber.i("Assessing permission");
-        for(String essentialPermission: essentialPermissions.keySet()){
-            if(!essentialPermission.equals("usage") &&  !essentialPermission.equals("notification")){
+        Timber.i("Assessing permission%s", essentialPermissions.keySet());
+        for (String essentialPermission: essentialPermissions.keySet()) {
+            if (!essentialPermission.equals("usage")
+                    && !essentialPermission.equals("notification")) {
                 essentialPermissions.put(essentialPermission, permissionRequired(essentialPermission));
-
-            }else{
-                if(essentialPermission.equals("usage")){
-                    if(establishStateOfUsageStatisticsPermission()){
+            } else {
+                if (essentialPermission.equals("usage")) {
+                    if (establishStateOfUsageStatisticsPermission()) {
                         essentialPermissions.put(essentialPermission, PackageManager.PERMISSION_DENIED);
-                        Timber.i("Usage permission required");
-                    }else{
+                        Timber.i("essential: usage permission required");
+                    } else {
                         essentialPermissions.put(essentialPermission, PackageManager.PERMISSION_GRANTED);
-                        Timber.i("Usage permission not required");
+                        Timber.i("essential: usage permission not required");
                     }
                 }
-                if(essentialPermission.equals("notification")){
-                    if(establishStateOfNotificationListenerPermission()){
-                        Timber.i("Notification permission required");
+                if (essentialPermission.equals("notification")) {
+                    if (establishStateOfNotificationListenerPermission()) {
+                        Timber.i("essential: notification permission required");
                         essentialPermissions.put(essentialPermission, PackageManager.PERMISSION_DENIED);
-                    }else{
-                        Timber.i("Notification permission not required");
+                    } else {
+                        Timber.i("essential: notification permission not required");
                         essentialPermissions.put(essentialPermission, PackageManager.PERMISSION_GRANTED);
                     }
                 }
@@ -131,7 +145,8 @@ class DealWithPermission {
     }
 
     private void requestNextPermission(String permissionToRequest) {
-        ActivityCompat.requestPermissions((Activity) context, new String[]{permissionToRequest},1);
+        ActivityCompat.requestPermissions((Activity) context,
+                new String[]{permissionToRequest},1);
     }
 
     private Boolean establishStateOfUsageStatisticsPermission() {
@@ -150,14 +165,16 @@ class DealWithPermission {
     }
 
     private boolean establishStateOfNotificationListenerPermission() {
-        String notificationListenerString = Settings.Secure.getString(context.getContentResolver(),"enabled_notification_listeners");
-        return notificationListenerString != null && !notificationListenerString.contains(context.getPackageName());
+        String notificationListenerString = Settings.Secure.getString(
+                context.getContentResolver(),"enabled_notification_listeners");
+        Timber.v("establish_permissions_listener: %s", notificationListenerString);
+        return notificationListenerString != null && !notificationListenerString.contains(
+                context.getPackageName());
     }
 
     private void confirmAllPermissionsGranted(Context context) {
-        Timber.i("confirming all permission is granted");
-        postAlert.customiseMessage(CONSTANTS.ALL_PERMISSIONS_GRANTED, "NA",
-                context.getString(R.string.title_all_perms), context.getString(R.string.all_perms_given),
-                "alertDialogResponse");
+            postAlert.customiseMessage(CONSTANTS.ALL_PERMISSIONS_GRANTED, "NA",
+                    context.getString(R.string.title_thanks), context.getString(R.string.all_perms_given),
+                    "alertDialogResponse");
     }
 }

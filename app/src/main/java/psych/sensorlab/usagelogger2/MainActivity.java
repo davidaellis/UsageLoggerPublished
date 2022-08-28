@@ -1,8 +1,8 @@
 package psych.sensorlab.usagelogger2;
 
 import android.Manifest;
-import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -12,14 +12,19 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.Settings;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -36,22 +41,16 @@ import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AsyncResult {
 
-    /**
-     * GLOBAL VARIABLES
-     */
-    //CLASSES
     DealWithPermission dealWithPermission;
     QRInput qrInput;
     PostAlert postAlert;
-
-    //COMPONENTS
     SharedPreferences sharedPreferences, securePreferences;
     TextView reportScreen;
     ProgressBar progressBar;
+    ActivityResultLauncher<Intent> startUsageNotePermissionsIntent, qrCodeScannerIntent;
+    Intent chooserIntent;
 
-    /**
-     * DIRECTLY RELATED TO INITIALIZING APP
-     */
+    //initialize app
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,16 +62,72 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initializeClasses();
         initializeLocalReceiver();
 
-        if(!sharedPreferences.getBoolean("informed user", false)){
+        startUsageNotePermissionsIntent = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> dealWithPermission.determineEssentialPerms(permissionsToRequest()));
+
+        qrCodeScannerIntent = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    Intent data = result.getData();
+                    if (data != null) {
+                        String config_data = data.getStringExtra("result");
+                        try {
+                            commitKsonToFile(config_data);
+                        } catch (Exception e) {
+                            sendMessage(5); //show dialogue about problem reading QR-code
+                            Timber.e(e.getLocalizedMessage());
+                        }
+                        updateUI();
+                    }
+                });
+
+        if(!sharedPreferences.getBoolean("informed_user", false)){
             postAlert.customiseMessage(0, "NA", getString(R.string.title_app_info),
-                    getString(R.string.app_info_short), "alertDialogResponse");
+                    getString(R.string.app_info_short),
+                    "alertDialogResponse");
         }
 
+        //lets check if the background service should be running and restart if needed
+        if (QRCodeProvided() && sharedPreferences.getInt("current_status", 0) != CONSTANTS.FILE_SENT) {
+            if (qrInput == null) {
+                Gson gson = new Gson();
+                qrInput = gson.fromJson(sharedPreferences.getString("qrcode_info",
+                        "instructions not initialized"), QRInput.class);
+            }
+            startBackgroundLogging();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.close_app) {
+            finishAndRemoveTask();
+            return true;
+        } else if (item.getItemId() == R.id.reset_app) {
+            //delete configuration and restart app, perhaps show warning!
+            stopServices();
+            clearSharedPreferences();
+            clearFiles();
+            if (doesDatabaseExist(this, CONSTANTS.CONTINUOUS_DB_NAME)) {
+                deleteDatabase(CONSTANTS.CONTINUOUS_DB_NAME);
+            }
+            triggerRebirth(this);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void initializeSharedPreferences() {
         sharedPreferences = getSharedPreferences("QRInput", MODE_PRIVATE);
-        securePreferences = Armadillo.create(this, "Initialization secure")
+        securePreferences = Armadillo.create(this, "initialization_secure")
                 .enableKitKatSupport(true)
                 .encryptionFingerprint(this)
                 .build();
@@ -82,9 +137,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         progressBar = findViewById(R.id.pb);
         progressBar.setVisibility(View.INVISIBLE);
         reportScreen = findViewById(R.id.tvReport);
-        int current_status = sharedPreferences.getInt("data being collected", 0);
-        Timber.v("current status " + current_status);
-        switch (current_status){
+        int current_status = sharedPreferences.getInt("current_status", 0);
+        Timber.i("current status %s", current_status);
+
+        switch (current_status) {
             case CONSTANTS.COLLECTING_CONTEXTUAL_DATA:
                 reportScreen.setText(R.string.coll_context_data);
                 break;
@@ -98,39 +154,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 reportScreen.setText(R.string.study_fin);
                 break;
         }
+
         findViewById(R.id.btnReadQR).setOnClickListener(this);
         findViewById(R.id.btnSeePassword).setOnClickListener(this);
-        findViewById(R.id.btnEmail).setOnClickListener(this);
+        findViewById(R.id.btnNextStep).setOnClickListener(this);
         updateUI();
     }
 
     private void updateUI(){
         //controls if READ-QR Code button should be shown, or see password button
         Button passwordBtn = findViewById(R.id.btnSeePassword);
+        Button nextStep = findViewById(R.id.btnNextStep);
+        Button QRReadBtn = findViewById(R.id.btnReadQR);
+
         if (QRCodeProvided()) {
-            Button email = findViewById(R.id.btnEmail);
-            email.setVisibility(View.VISIBLE);
-            Button QRReadBtn = findViewById(R.id.btnReadQR);
+            nextStep.setVisibility(View.VISIBLE);
             QRReadBtn.setVisibility(View.GONE);
             passwordBtn.setVisibility(View.VISIBLE);
         } else {
+            reportScreen.setText(R.string.click_read_qr);
             passwordBtn.setVisibility(View.GONE);
         }
     }
 
+    private static boolean doesDatabaseExist(Context context, String dbName) {
+        File dbFile = context.getDatabasePath(dbName);
+        return dbFile.exists();
+    }
+
     @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.btnEmail) {
-            if (sharedPreferences.getBoolean("permissions provided", false)) {
+    public void onClick(@NonNull View view) {
+        if (view.getId() == R.id.btnNextStep) {
+            if (sharedPreferences.getBoolean("permissions_provided", false)) {
                 collectFromDataSource();
             } else {
                 if (QRCodeProvided()) {
                     Timber.i("QR code has already been scanned, continue with setup");
                     continueWithSetUp();
                 } else {
-                    if (this.checkCallingOrSelfPermission("android.permission.CAMERA")!=PackageManager.PERMISSION_GRANTED) {
+                    if (checkCallingOrSelfPermission("android.permission.CAMERA")!=PackageManager.PERMISSION_GRANTED) {
                         Timber.i("Camera permission has NOT been given, asking for it now");
-                        dealWithPermission.determinePermissionThatAreEssential(new String[]{Manifest.permission.CAMERA});
+                        dealWithPermission.determineEssentialPerms(new String[]{Manifest.permission.CAMERA});
                     } else {
                         Timber.i("Okay, camera permission already given");
                         postAlert.customiseMessage(99, "NA", getString(R.string.title_next),
@@ -139,28 +203,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         } else if (view.getId() == R.id.btnReadQR) {
-            startActivityForResult(new Intent(this,QRScanner.class),
-                    CONSTANTS.QR_CODE_ACTIVITY);
+            Intent chooserIntent = new Intent(this, QRScanner.class);
+            qrCodeScannerIntent.launch(chooserIntent);
         } else if (view.getId() == R.id.btnSeePassword) {
-            informUserOnPassword("noWhere");
+            informUserOnPassword();
         } else {
             throw new IllegalStateException("Unexpected value: " + view.getId());
         }
     }
 
     private void initializeError() {
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree(){
-                @NonNull
-                @Override
-                protected String createStackElementTag(@NotNull StackTraceElement element) {
-                    return String.format("C:%s:%s",super.createStackElementTag(element),
-                            element.getLineNumber());
-                }
-            });
-            Timber.i("check if phone restarted: ");
-            Timber.i("Phone restarted previously: %s",
-                    sharedPreferences.getBoolean("restarted", false));
+        if (Timber.treeCount() == 0) { //make sure its not already initialized
+            if (BuildConfig.DEBUG) {
+                Timber.plant(new Timber.DebugTree() {
+                    @NonNull
+                    @Override
+                    protected String createStackElementTag(@NotNull StackTraceElement element) {
+                        return String.format("C:%s:%s", super.createStackElementTag(element),
+                                element.getLineNumber());
+                    }
+                });
+                Timber.i("Phone restarted previously: %s",
+                        sharedPreferences.getBoolean("restarted", false));
+            } else {
+                //release mode
+                Timber.plant(new ReleaseTree());
+            }
         }
     }
 
@@ -170,30 +238,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initializeLocalReceiver() {
-        LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver, new IntentFilter("alertDialogResponse"));
-        LocalBroadcastManager.getInstance(this).registerReceiver(progressReceiver, new IntentFilter("progressUpdate"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(localReceiver,
+                new IntentFilter("alertDialogResponse"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(progressReceiver,
+                new IntentFilter("progressUpdate"));
     }
 
     private boolean QRCodeProvided(){
-        return !sharedPreferences.getString("instructions from QR", "instructions not initialized").equals("instructions not initialized");
+        return !sharedPreferences.getString("qrcode_info",
+                "instructions not initialized").equals("instructions not initialized");
     }
 
     private void continueWithSetUp() {
-        Timber.i("Continuing with setup");
-        if (this.checkCallingOrSelfPermission("android.permission.CAMERA") ==
+        if (checkCallingOrSelfPermission("android.permission.CAMERA") ==
                 PackageManager.PERMISSION_GRANTED){
-            Gson gson = new Gson();
-            qrInput = gson.fromJson(sharedPreferences.getString("instructions from QR",
-                    "instructions not initialized"), QRInput.class);
-            if(!securePreferences.getBoolean("password generated", false)){
+            if (QRCodeProvided()) {
+                Gson gson = new Gson();
+                qrInput = gson.fromJson(sharedPreferences.getString("qrcode_info",
+                        "instructions not initialized"), QRInput.class);
+                if (!securePreferences.getBoolean("password_generated", false)) {
                     sendMessage(1);
-            } else {
-                Timber.i("call to determine position");
-                dealWithPermission.determinePermissionThatAreEssential(establishPermissionsToRequest());
+                } else {
+                    dealWithPermission.determineEssentialPerms(permissionsToRequest());
+                }
             }
         } else {
-            Timber.i("requesting approval of camera permission");
-            dealWithPermission.determinePermissionThatAreEssential(new String[]{Manifest.permission.CAMERA});
+            dealWithPermission.determineEssentialPerms(new String[]{Manifest.permission.CAMERA});
         }
     }
 
@@ -201,8 +271,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(QRCodeProvided()){
-            dealWithPermission.determinePermissionThatAreEssential(establishPermissionsToRequest());
+        if (QRCodeProvided()) {
+            dealWithPermission.determineEssentialPerms(permissionsToRequest());
         } else {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 postAlert.customiseMessage(99, "NA", getString(R.string.title_next),
@@ -213,50 +283,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    /**
-     * DIRECTLY RELATED TO INTERPRETING QR-CODE FROM RESEARCHER
-     */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        String result;
-        resultCode = 0;
-        if(data!=null){
-            switch (resultCode){
-                case 0: //todo - check logic, as resultCode is always 0?
-                    result = data.getStringExtra("result");
-                    if(result!=null){
-                        try {
-                            commitKsonToFile(result);
-                        } catch (Exception e) {
-                            sendMessage(5);
-                        }
-                        updateUI();
-                    }else{
-                        Timber.i( "QR is Kson, but result returned is null");
-                    }
-                    break;
-                case 1:
-                    result = data.getStringExtra("result");
-                    if (result!=null) {
-                        Timber.i(" result is not Kson, string is: %s", result);
-                    }else{
-                        Timber.i(" result is not Kson, but result returned is null");
-                    }
-                    break;
-            }
-        } else {
-            if (requestCode == CONSTANTS.GENERAL_USAGE_PERMISSION_REQUEST){
-                Timber.i("requesting usage permission");
-                dealWithPermission.determinePermissionThatAreEssential(establishPermissionsToRequest());
-            }
-            Timber.i("QR result: %s", resultCode);
-        }
-    }
-
     private void commitKsonToFile(String input) throws Exception {
         new QRInputHandler(input,this);
-        final String messageToReport = sharedPreferences.getString("instructions from QR",
+        final String messageToReport = sharedPreferences.getString("qrcode_info",
                 "instructions not initialized");
         if (!messageToReport.equals("instructions not initialized")) {
             Timber.i("input from QR: %s", messageToReport);
@@ -269,45 +298,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void sendMessage(int message) {
-        Timber.v("showing message alert id: %s", message);
+        Timber.i("showing message alert id: %s", message);
         switch (message){
-            case 1:
-                //last warning before collecting data
+            case CONSTANTS.ALERT_ATTENTION: //1
+                // Attention!
                 postAlert.customiseMessage(1, "NA", getString(R.string.title_attention),
-                        getString(R.string.app_info), "alertDialogResponse");
+                        getString(R.string.app_info),
+                        "alertDialogResponse");
                 break;
-            case 2:
+            case CONSTANTS.ALERT_INFO_COLLECTED: //2
+                // What information will be collected?
                 StringBuilder whatTheAppDoes = new StringBuilder();
-                //list of types of data the app will collect "What info will be collected?"
-                if(qrInput.dataSources.containsKey("contextual")){
+                if (qrInput.dataSources.containsKey("contextual")) {
                     whatTheAppDoes.append("\n\n").append(getString(R.string.func_context1));
-                    if(qrInput.contextualDataSources.contains("installed")){
+                    if (qrInput.contextualDataSources.contains("installed")) {
                         whatTheAppDoes.append("\n").append(getString(R.string.func_context2));
                     }
-                    if(qrInput.contextualDataSources.contains("permission")){
+                    if (qrInput.contextualDataSources.contains("permission")) {
                         whatTheAppDoes.append("\n").append(getString(R.string.func_context3));
                     }
-                    if(qrInput.contextualDataSources.contains("response")){
+                    if (qrInput.contextualDataSources.contains("response")) {
                         whatTheAppDoes.append("\n").append(getString(R.string.func_context4));
                     }
                 }
-                if(qrInput.dataSources.containsKey("continuous")){
+                if (qrInput.dataSources.containsKey("continuous")) {
                     whatTheAppDoes.append("\n\n").append(getString(R.string.func_continuous1));
                     whatTheAppDoes.append("\n").append(getString(R.string.func_continuous2));
-                    if(qrInput.continuousDataSource.contains("screen")){
+                    if (qrInput.continuousDataSource.contains("screen")) {
                         whatTheAppDoes.append("\n").append(getString(R.string.func_continuous3));
                     }
-                    if(qrInput.continuousDataSource.contains("app")){
+                    if (qrInput.continuousDataSource.contains("app")) {
                         whatTheAppDoes.append("\n").append(getString(R.string.func_continuous4));
                     }
-                    if(qrInput.continuousDataSource.contains("notification")){
+                    if (qrInput.continuousDataSource.contains("notification")) {
                         whatTheAppDoes.append("\n").append(getString(R.string.func_continuous5));
                     }
-                    if(qrInput.continuousDataSource.contains("installed")){
+                    if (qrInput.continuousDataSource.contains("installed")) {
                         whatTheAppDoes.append("\n").append(getString(R.string.func_continuous6));
                     }
                 }
-                if(qrInput.dataSources.containsKey("usage")){
+                if (qrInput.dataSources.containsKey("usage")) {
                     whatTheAppDoes.append("\n\n").append(getString(R.string.func_past1)).
                             append(" ").append(qrInput.daysToMonitor).append(" ").
                             append(getString(R.string.func_past2)).append("\n").
@@ -315,24 +345,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             append(getString(R.string.func_past4));
                 }
                 postAlert.customiseMessage(2, "NA", getString(R.string.title_log_request),
-                        getString(R.string.func_start) + whatTheAppDoes + "\n" +  "\n"
-                                + getString(R.string.func_end), "alertDialogResponse");
+                        getString(R.string.func_start) + whatTheAppDoes + "\n\n"
+                                + getString(R.string.func_end),
+                        "alertDialogResponse");
                 break;
-            case 3:
-                //data security alert (e.g. if phone is rooted)
+            case CONSTANTS.ALERT_PHONE_ROOTED: //3
+                //Data security alert (e.g. if phone is rooted)
                 postAlert.customiseMessage(3, "NA", getString(R.string.title_data_sec),
-                        getString(R.string.data_security),  "alertDialogResponse");
+                        getString(R.string.data_security),
+                        "alertDialogResponse");
                 break;
-            case 4:
+            case CONSTANTS.ALERT_PERMISSIONS_NEEDED: //4
                 //list of required permissions
                 StringBuilder permissionsToBeRequested = new StringBuilder();
-                if(qrInput.dataSources.containsKey("usage") || qrInput.continuousDataSource.contains("app")){
-                    permissionsToBeRequested.append("\n\n").append(getString(R.string.usage_perm));
+                if (qrInput.dataSources.containsKey("usage") || qrInput.continuousDataSource.contains("app")) {
+                    permissionsToBeRequested.append("\n").append(getString(R.string.usage_perm));
                 }
-                if(qrInput.continuousDataSource.contains("notification")){
+                if (qrInput.continuousDataSource.contains("notification")) {
                     permissionsToBeRequested.append("\n").append(getString(R.string.note_list_perm));
                 }
-                if(permissionsToBeRequested.length() == 0){
+                if (Build.VERSION.SDK_INT >= 33) {
+                    permissionsToBeRequested.append("\n").append(getString(R.string.show_note_list_perm));
+                }
+                if (permissionsToBeRequested.length() == 0) {
                     permissionsToBeRequested.append("\n").append(getString(R.string.no_perm_req));
                 }
                 //show alert listing what permissions will be asked for
@@ -340,57 +375,59 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         getString(R.string.give_perms) + permissionsToBeRequested,
                         "alertDialogResponse");
                 break;
-            case 5:
+            case CONSTANTS.ALERT_PROBLEM_QRCODE: //5
                 postAlert.customiseMessage(5, "NA", getString(R.string.title_problem_qr),
-                        getString(R.string.problem_read_qr),""); //should this not also be alertDialogResponse?
+                        getString(R.string.problem_read_qr),"NA");
         }
     }
 
-    private String[] establishPermissionsToRequest() {
+    private String[] permissionsToRequest() {
         String[] permissionsNeeded = {"NA","NA"};
         if (qrInput.dataSources.containsKey("usage") || qrInput.continuousDataSource.contains("app")) {
-                permissionsNeeded[0] ="usage";
+            permissionsNeeded[0] ="usage";
         }
-
         if (qrInput.continuousDataSource.contains("notification")) {
             permissionsNeeded[1] = "notification";
         }
         return permissionsNeeded;
     }
 
-    private void requestUsagePermissions(String permission){
-        if(permission.equals("usage")){
-            startActivityForResult(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS),
-                    CONSTANTS.GENERAL_USAGE_PERMISSION_REQUEST);
+    private void requestUsageNotePermissions(String permission){
+        if (permission.equals("usage")) {
+            chooserIntent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+            startUsageNotePermissionsIntent.launch(chooserIntent);
         } else if (permission.equals("notification")) {
             //request notification permission
-            startActivityForResult(new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"),
-                   CONSTANTS.GENERAL_USAGE_PERMISSION_REQUEST);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                chooserIntent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
+            } else {
+                chooserIntent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
+            }
+            startUsageNotePermissionsIntent.launch(chooserIntent);
         } else {
             Timber.i("All permission granted");
         }
     }
 
     /**
-     * DIRECTLY RELATED TO HANDLING RESPONSE TO ALERT DIALOGS
+     * HANDLE RESPONSE TO ALERT DIALOGS
      */
     private final BroadcastReceiver localReceiver = new BroadcastReceiver() {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onReceive(Context context, @NonNull Intent intent) {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
                 int message = bundle.getInt("messageID", 100);
                 String permission = bundle.getString("permissionToRequest", "NA");
-                Timber.v("Broadcast receiver permission req.: %s", permission);
-                Timber.v("Broadcast receiver message id: %s", message);
+
                 if (permission.equals("NA")) {
-                    if (!securePreferences.getBoolean("password generated", false)) {
+                    if (!securePreferences.getBoolean("password_generated", false)) {
                         securePreferences.edit().putLong("message" + message,
                                 System.currentTimeMillis()).apply();
                     }
                     switch (message) {
                         case CONSTANTS.INFORM_USER: //0
-                            sharedPreferences.edit().putBoolean("informed user", true).apply();
+                            sharedPreferences.edit().putBoolean("informed_user",true).apply();
                             continueWithSetUp();
                             break;
                         case CONSTANTS.QR_CODE_ACTIVITY: //1
@@ -399,12 +436,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             sendMessage(++message);
                             break;
                         case CONSTANTS.ALERT_DIALOG_NOTIFICATION_PERMISSION: //4
-                            dealWithPermission.determinePermissionThatAreEssential(establishPermissionsToRequest());
+                            //lists which permissions are required, e.g. usage, notifications
+                            dealWithPermission.determineEssentialPerms(permissionsToRequest());
                             break;
                         case CONSTANTS.GENERAL_USAGE_PERMISSION_REQUEST: //5
                             break;
                         case CONSTANTS.ALL_PERMISSIONS_GRANTED: //6
-                            sharedPreferences.edit().putBoolean("permissions provided", true).apply();
+                            sharedPreferences.edit().putBoolean("permissions_provided", true).apply();
                             try {
                                 generate_password();
                             } catch (Exception e) {
@@ -419,7 +457,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
                 } else {
-                    requestUsagePermissions(permission);
+                    //request permissions
+                    Timber.i("permission request: %s", permission);
+                    requestUsageNotePermissions(permission);
                 }
             }
         }
@@ -430,29 +470,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Timber.i("generated password: %s", pass);
         securePreferences.edit()
                .putString("password", pass)
-               .putBoolean("password generated", true)
+               .putBoolean("password_generated", true)
                .apply();
     }
 
     final BroadcastReceiver progressReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-                Bundle bundle = intent.getExtras();
-                Timber.i("Progress update received");
-                if(bundle != null) {
-                    int update = bundle.getInt("progress");
-                    Timber.i("Progress update received: progress: %d", update);
-                    progressBar.setProgress(update);
-                }
+        Bundle bundle = intent.getExtras();
+        if(bundle != null) {
+            int update = bundle.getInt("progress");
+            progressBar.setProgress(update);
+        }
         }
     };
 
-    private void informUserOnPassword(String whereToSend) {
+    private void informUserOnPassword() {
         //show password info alert
         Button password = findViewById(R.id.btnSeePassword);
         password.setVisibility(View.VISIBLE);
         postAlert.customiseMessage(5, "NA", getString(R.string.title_pwd),
-                securePreferences.getString("password", "not generated yet"), whereToSend);
+                securePreferences.getString("password", "not generated yet"), "");
     }
 
     private void generatePlanForDataCollection() {
@@ -466,14 +504,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * INITIATE DATA COLLECTION
      */
     private void collectFromDataSource() {
+
         updateUI();
         String nextDataSource = "not established";
-        final int currentActivityTarget = sharedPreferences.getInt("currentActivity", 0);
+        StoreInPdf storeInPdf;
+        Resources resources = getResources();
+        final int currentActivityTarget = sharedPreferences.getInt("current_activity", 0);
+
         if (qrInput == null) {
             Gson gson = new Gson();
-            qrInput = gson.fromJson(sharedPreferences.getString("instructions from QR",
+            qrInput = gson.fromJson(sharedPreferences.getString("qrcode_info",
                     "instructions not initialized"), QRInput.class);
         }
+
         for (String dataSource: qrInput.dataSources.keySet()) {
             Integer currentDataSource = qrInput.dataSources.get(dataSource);
             Timber.i("data source: %s - currentDataSource: %d - currentActivityTarget: %d",
@@ -486,14 +529,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         }
-        StoreInPdf storeInPdf;
-        Resources resources = getResources();
+
         switch (nextDataSource){
             case "contextual":
                 progressBar.setVisibility(View.VISIBLE);
                 reportScreen.setText(resources.getString(R.string.coll_context_data));
-                Timber.i(resources.getString(R.string.coll_context_data));
-                sharedPreferences.edit().putInt("data being collected",
+                sharedPreferences.edit().putInt("current_status",
                         CONSTANTS.COLLECTING_CONTEXTUAL_DATA).apply();
                 storeInPdf = new StoreInPdf(this);
                 storeInPdf.execute(this, securePreferences.getString("password", "not real password"),
@@ -503,16 +544,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case "continuous":
                 progressBar.setVisibility(View.INVISIBLE);
                 reportScreen.setText(resources.getString(R.string.coll_continuous_data));
-                Timber.i(resources.getString(R.string.coll_continuous_data));
-                sharedPreferences.edit().putInt("data being collected",
+                sharedPreferences.edit().putInt("current_status",
                         CONSTANTS.COLLECTING_CONTINUOUS_DATA).apply();
-                if (sharedPreferences.getBoolean("background logging underway", false)){
-                    Timber.i("attempting to package continuous logger");
+                if (sharedPreferences.getBoolean("doing_background_logging", false)){
                     storeInPdf = new StoreInPdf(this);
                     storeInPdf.execute(this,
                             securePreferences.getString("password","not real password"),
-                            CONSTANTS.READY_FOR_EMAIL,
-                            CONSTANTS.COLLECTING_CONTINUOUS_DATA);
+                            CONSTANTS.READY_FOR_EMAIL, CONSTANTS.COLLECTING_CONTINUOUS_DATA);
                 } else {
                     startBackgroundLogging();
                 }
@@ -520,8 +558,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case "usage": //past
                 progressBar.setVisibility(View.VISIBLE);
                 reportScreen.setText(resources.getString(R.string.coll_past_usage_data));
-                Timber.i(resources.getString(R.string.coll_past_usage_data));
-                sharedPreferences.edit().putInt("data being collected",
+                sharedPreferences.edit().putInt("current_status",
                         CONSTANTS.COLLECTING_PAST_USAGE).apply();
                 storeInPdf = new StoreInPdf(this);
                 storeInPdf.execute(this, securePreferences.getString("password", "not real password"),
@@ -534,49 +571,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         "alertDialogResponse");
                 break;
             default:
-                Timber.i("next data source not established");
+                Timber.i("Next data source not established");
                 break;
         }
     }
 
-    private boolean isMyServiceRunning() {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (LoggerService.class.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private void startBackgroundLogging() {
-        Timber.i("continuous is the next data source");
-        sharedPreferences.edit().putInt("data being collected", CONSTANTS.COLLECTING_CONTINUOUS_DATA).putBoolean("background logging underway", true).apply();
+
         Intent toStartService;
+
+        if (qrInput == null) {
+            Gson gson = new Gson();
+            qrInput = gson.fromJson(sharedPreferences.getString("qrcode_info",
+                    "Instructions not initialized"), QRInput.class);
+        }
+
+        sharedPreferences.edit().putInt("current_status", CONSTANTS.COLLECTING_CONTINUOUS_DATA).
+                putBoolean("doing_background_logging", true).apply();
+
+        //start logging (either with or without notification logging)
+        if (!qrInput.continuousDataSource.contains("notification")) {
+            toStartService = new Intent(this, LoggerService.class);
+        } else {
+            //start logger with notification data collection (LoggerWithNotesService)
+            toStartService = new Intent(this, LoggerWithNotesService.class);
+        }
+
         Bundle bundle = new Bundle();
-        bundle.putString("password", securePreferences.getString("password", "not actual password"));
+        bundle.putString("password", securePreferences.getString("password", "not real password"));
         bundle.putBoolean("restart", false);
         bundle.putBoolean("screenLog", qrInput.continuousDataSource.contains("screen"));
         bundle.putBoolean("appLog", qrInput.continuousDataSource.contains("app"));
         bundle.putBoolean("appChanges", qrInput.continuousDataSource.contains("installed"));
-        if(!qrInput.continuousDataSource.contains("notification")){
-            toStartService = new Intent(this, LoggerService.class);
-            toStartService.putExtras(bundle);
-            if(!isMyServiceRunning()) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(toStartService);
-                } else {
-                    startService(toStartService);
-                }
-            }
+        toStartService.putExtras(bundle);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(toStartService);
         } else {
-            toStartService = new Intent(this, LoggerWithNotesService.class);
-            toStartService.putExtras(bundle);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(toStartService);
-            } else {
-                startService(toStartService);
-            }
+            startService(toStartService);
         }
     }
 
@@ -584,24 +616,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * RESPOND TO DATA COLLECTION INITIATIVES
      */
     @Override
-    public void processFinish(DataCollectionResult output) {
-        Timber.i("data collection result. DataRetrieved: %d - Success: %s", output.dataRetrieved, output.success);
+    public void processFinish(@NonNull DataCollectionResult output) {
+        Timber.i("data collection result. DataRetrieved: %d - Success: %s",
+                output.dataRetrieved, output.success);
         switch (output.dataSource){
             case CONSTANTS.COLLECTING_CONTEXTUAL_DATA:
                 if (output.task == CONSTANTS.PUTTING_CONTEXTUAL_DATA_IN_PDF){
-                    Timber.i("Completed storage of contextual data in Pdf");
-                    sharedPreferences.edit().putInt("currentActivity", (1+sharedPreferences.getInt("currentActivity", 0))).apply();
+                    sharedPreferences.edit().putInt("current_activity",
+                            (1+sharedPreferences.getInt("current_activity", 0))).apply();
                     collectFromDataSource();
                 }
                 break;
             case CONSTANTS.COLLECTING_PAST_USAGE:
-                Timber.i("Finished collecting past usage info");
-                sharedPreferences.edit().putInt("currentActivity", (1+sharedPreferences.getInt("currentActivity", 0))).apply();
-                collectFromDataSource();
-                break;
             case CONSTANTS.COLLECTING_CONTINUOUS_DATA:
-                Timber.i("Finished collecting continuous usage info");
-                sharedPreferences.edit().putInt("currentActivity", (1+sharedPreferences.getInt("currentActivity", 0))).apply();
+                sharedPreferences.edit().putInt("current_activity",
+                        (1+sharedPreferences.getInt("current_activity", 0))).apply();
                 collectFromDataSource();
                 break;
         }
@@ -611,48 +640,105 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
         intent.setType("text/plain");
 
-        //getting directory for internal files
-        String directory = (this.getFilesDir() + File.separator);
-
-        //initializing files reference
-        File
-                contextFile = new File(directory + File.separator + CONSTANTS.CONTEXT_FILE),
-                usageEvents = new File(directory + File.separator + CONSTANTS.USAGE_FILE),
-                continuous = new File(directory + File.separator + CONSTANTS.CONTINUOUS_FILE);
-
-        //list of files to be uploaded
+        String dir = (getFilesDir() + File.separator);
+        String authority = BuildConfig.APPLICATION_ID + ".fileprovider";
         ArrayList<Uri> files = new ArrayList<>();
 
-        //if target files are identified to exist then they are packages into the attachments of the email
+        File
+                contextFile = new File(dir + File.separator + CONSTANTS.CONTEXT_FILE),
+                usageEvents = new File(dir + File.separator + CONSTANTS.USAGE_FILE),
+                continuous = new File(dir + File.separator + CONSTANTS.CONTINUOUS_FILE);
+
         try {
             if (contextFile.exists()) {
-                files.add(FileProvider.getUriForFile(this,
-                        "psych.sensorlab.usagelogger2.fileprovider", contextFile));
+                files.add(FileProvider.getUriForFile(this, authority, contextFile));
             }
 
             if (usageEvents.exists()) {
-                files.add(FileProvider.getUriForFile(this,
-                        "psych.sensorlab.usagelogger2.fileprovider", usageEvents));
+                files.add(FileProvider.getUriForFile(this, authority, usageEvents));
             }
 
             if (continuous.exists()) {
-                files.add(FileProvider.getUriForFile(this,
-                        "psych.sensorlab.usagelogger2.fileprovider", continuous));
+                files.add(FileProvider.getUriForFile(this, authority, continuous));
             }
 
             if (files.size() > 0) {
                 intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
                 intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                //Todo check name of pref?
-                sharedPreferences.edit().putInt("data collected info", CONSTANTS.FILE_SENT).apply();
-                startActivity(intent);
 
+                sharedPreferences.edit().putInt("current_status", CONSTANTS.FILE_SENT).apply();
+                TextView view = findViewById(R.id.tvReport);
+                view.setText(R.string.study_fin);
+                stopServices();
+
+                startActivity(intent);
             } else {
                 Timber.e("No files to upload");
             }
         }
         catch (Exception e){
-            Timber.e(e);
+            Timber.e(e.getLocalizedMessage());
+        }
+    }
+
+    private void stopServices() {
+        Intent loggingService;
+        Timber.i("gee im here: %s", QRCodeProvided());
+        if (QRCodeProvided()) {
+            if (!qrInput.continuousDataSource.contains("notification")) {
+                loggingService = new Intent(MainActivity.this, LoggerService.class);
+            } else {
+                Timber.i("gee ime here 2");
+                loggingService = new Intent(MainActivity.this, LoggerWithNotesService.class);
+            }
+            stopService(loggingService);
+        }
+    }
+
+    public void clearSharedPreferences(){
+        File dir = new File(getApplicationInfo().dataDir, "shared_prefs");
+        Timber.i("files shared: %s", dir);
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            if (children != null) {
+                for (String child : children) {
+                    getSharedPreferences(child.replace(".xml", ""),
+                            Context.MODE_PRIVATE).edit().clear().apply();
+                    new File(dir, child).delete();
+                }
+            }
+        }
+    }
+
+    public void clearFiles(){
+        //File dir = new File(getFilesDir().getParent() + "/files/");
+        File dir = new File(getApplicationInfo().dataDir, "files");
+        Timber.i("files: %s", dir);
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            if (children != null) {
+                for (String child : children) {
+                    new File(dir, child).delete();
+                }
+            }
+        }
+    }
+
+    public static void triggerRebirth(Context context) {
+        PackageManager packageManager = context.getPackageManager();
+        Intent intent = packageManager.getLaunchIntentForPackage(context.getPackageName());
+        ComponentName componentName = intent.getComponent();
+        Intent mainIntent = Intent.makeRestartActivityTask(componentName);
+        context.startActivity(mainIntent);
+        Runtime.getRuntime().exit(0);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //close alert dialog if open when app is closed
+        if (postAlert.showingDialog()) {
+            postAlert.dismissDialog();
         }
     }
 }

@@ -8,39 +8,39 @@ import android.view.ContextThemeWrapper;
 import android.widget.TextView;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import timber.log.Timber;
 
-class PostAlert {
+public class PostAlert {
 
     private final Context context;
+    AlertDialog builder;
+    boolean isDialogShowing = false;
 
-    PostAlert( final Context context){
+    PostAlert(final Context context) {
         this.context = context;
     }
 
-    void customiseMessage(final int messageID, final String permission, final String title, final String content, final String whereToSend){
+    void customiseMessage(final int messageID, final String permission, final String title,
+                          final String content, final String whereToSend){
         final Intent resultOfAlert = new Intent(whereToSend);
-
-        AlertDialog builder = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AlertDialogCustom))
+        Timber.v("message ID: %s, whereToSend %s", messageID, whereToSend);
+        builder = new AlertDialog.Builder(
+                new ContextThemeWrapper(context, R.style.AlertDialogCustom))
                 .setTitle(title)
                 .setMessage(content)
-                .setPositiveButton("OK", (dialogInterface, i) -> {
-                    resultOfAlert.putExtra("messageID",messageID);
+                .setPositiveButton(android.R.string.ok, (dialogInterface, i) -> {
+                    resultOfAlert.putExtra("messageID", messageID);
                     resultOfAlert.putExtra("positiveResponse", true);
-                    resultOfAlert.putExtra("permissionToRequest",permission);
-                    if(!whereToSend.equals("nowhere")){
+                    resultOfAlert.putExtra("permissionToRequest", permission);
+                    if (!whereToSend.equals("nowhere")) {
                         LocalBroadcastManager.getInstance(context).sendBroadcast(resultOfAlert);
                     }
-
-                }).setNegativeButton("Cancel", (dialogInterface, i) -> {
-                    resultOfAlert.putExtra("messageID",messageID);
-                    resultOfAlert.putExtra("positiveResponse", false);
-                    if(!whereToSend.equals("nowhere")){
-                        LocalBroadcastManager.getInstance(context).sendBroadcast(resultOfAlert);
-                    }
-                }).create();
-
+                })
+                .setNegativeButton(android.R.string.cancel, (dialogInterface, i) ->
+                        builder.cancel()).create();
 
         builder.show();
+        isDialogShowing = true;
         if (messageID == 5) {
             //show the password with bigger text size and allow it to be selected
             TextView msgTxt = builder.findViewById(android.R.id.message);
@@ -51,4 +51,11 @@ class PostAlert {
         builder.getButton(builder.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#E91E63"));
     }
 
+    public void dismissDialog(){
+        builder.dismiss();
+    }
+
+    public boolean showingDialog(){
+        return isDialogShowing;
+    }
 }

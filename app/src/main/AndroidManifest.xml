@@ -4,11 +4,13 @@
     package="psych.sensorlab.usagelogger2">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera" android:required="true"/>
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
 
-    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- needed from Android 13 (skd 33) onwards -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <!-- needed to get information about installed apps -->
     <permission android:name="android.permission.QUERY_ALL_PACKAGES" />
@@ -20,13 +22,14 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launch"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launch"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="psych.sensorlab.usagelogger2.MainActivity"
             android:screenOrientation="fullSensor"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,10 +47,11 @@
             </intent-filter>
         </activity>
 
+        <!-- exported must be true or removed -->
         <service android:name="psych.sensorlab.usagelogger2.LoggerWithNotesService"
             android:label="LoggerWithNotes"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
@@ -55,8 +59,9 @@
 
         <service android:name="psych.sensorlab.usagelogger2.LoggerService"/>
 
+        <!-- exported must be true or removed -->
         <receiver android:name="psych.sensorlab.usagelogger2.startServiceAtBoot"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
