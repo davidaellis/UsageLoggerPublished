@@ -1,7 +1,6 @@
 package psych.sensorlab.usagelogger2;
 
 import android.annotation.SuppressLint;
-import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -19,42 +18,35 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 
-import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import net.sqlcipher.database.SQLiteDatabase;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import at.favre.lib.armadillo.Armadillo;
-import at.favre.lib.armadillo.BuildConfig;
 import timber.log.Timber;
 
 public class LoggerService extends Service {
 
-    //Classes
-    private static class ContinuousLoggingDirection {
-        final boolean screenLog, appLog, appChanges;
-        ContinuousLoggingDirection(boolean screenLog, boolean appLog, boolean appChanges){
-            this.screenLog = screenLog;
-            this.appLog = appLog;
-            this.appChanges = appChanges;
-        }
-    }
+    //Todo - Remove redundancy between LoggerServices
     private IdentifyAppInForeground identifyAppInForeground;
-
-    //receivers
     private BroadcastReceiver screenReceiver, appReceiver;
-
-    //Components
-    private ContinuousLoggingDirection continuousLoggingDirection;
+    private LoggingDirection loggingDirection;
     private Handler handler;
     private String currentlyRunningApp;
     private SQLiteDatabase database;
+
+    //Classes
+    private static class LoggingDirection {
+        final boolean screenLog, appChanges;
+        LoggingDirection(boolean screenLog, boolean appChanges){
+            this.screenLog = screenLog;
+            this.appChanges = appChanges;
+        }
+    }
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -63,44 +55,31 @@ public class LoggerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         startForeground(1087384, DeclareInForeground());
         Bundle bundle  = intent.getExtras();
 
         try {
             initializeComponents(bundle);
-            if(continuousLoggingDirection.screenLog || continuousLoggingDirection.appLog ||
-                    continuousLoggingDirection.appChanges){
-                initializeBroadcastReceivers();
-                if(bundle.getBoolean("restart")){
-                    Handler restartHandler = new Handler();
-                    Runnable documentRestart = () -> storeData("Phone restarted");
-                    restartHandler.postDelayed(documentRestart, 10*1000);
-                    storeData("Phone restarted");
-                }
+            initializeBroadcastReceivers();
+            if (bundle.getBoolean("restart")) {
+                Handler restartHandler = new Handler();
+                Runnable documentRestart = () -> storeData("Phone restarted");
+                restartHandler.postDelayed(documentRestart, 10 * CONSTANTS.LOGGING_INTERVAL_MS);
+                storeData("Phone restarted");
             }
         } catch (Exception e) {
             Timber.e(e);
         }
-        return START_STICKY;
-    }
 
-    private void initializeError() {
-        if(BuildConfig.DEBUG){
-            Timber.plant(new Timber.DebugTree(){
-                @NonNull
-                @Override
-                protected String createStackElementTag(@NotNull StackTraceElement element) {
-                    return String.format("C:%s:%s",super.createStackElementTag(element), element.getLineNumber());
-                }
-            });
-        }
+        return START_STICKY;
     }
 
     private Notification DeclareInForeground() {
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            NotificationChannel channel = new NotificationChannel("usage logger",
+            NotificationChannel channel = new NotificationChannel("ul2",
                     getString(R.string.app_name), NotificationManager.IMPORTANCE_DEFAULT);
             channel.enableLights(false);
             channel.enableVibration(false);
@@ -114,12 +93,12 @@ public class LoggerService extends Service {
         }
 
         NotificationCompat.Builder nfc = new NotificationCompat.Builder(
-                getApplicationContext(),"usage logger")
+                getApplicationContext(),"ul2")
                 .setSmallIcon(R.drawable.ic_stat_name)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_stat_name))
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setCategory(NotificationCompat.CATEGORY_SERVICE)
-                .setVisibility(NotificationCompat.VISIBILITY_SECRET) //This hides the notification from lock screen
+                .setVisibility(NotificationCompat.VISIBILITY_SECRET)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(getString(R.string.notification_text))
                 .setOngoing(true)
@@ -128,139 +107,112 @@ public class LoggerService extends Service {
     }
 
     private void initializeComponents(Bundle bundle) throws Exception {
-        if(bundle==null){
+
+        final String password;
+        StoreInSQL storeInSQL;
+
+        SharedPreferences securePreferences = Armadillo.create(this, "service_no_note")
+                .enableKitKatSupport(true).encryptionFingerprint(this).build();
+
+        if (bundle == null) {
             throw new Exception("Bundle is null");
         }
-        SharedPreferences securePreferences = Armadillo.create(this, "service without note")
-                .enableKitKatSupport(true)
-                .encryptionFingerprint(this)
-                .build();
-        final String password;
 
-        if (!bundle.getBoolean("restart")){
-            password = bundle.getString("password", "not password");
+        if (!bundle.getBoolean("restart")) {
+            password = bundle.getString("password", "no_pwd");
             securePreferences.edit().putString("password", password).apply();
-        }else{
-            initializeError();
-            password = securePreferences.getString("password", "not password");
+        } else {
+            password = securePreferences.getString("password", "no_pwd");
         }
 
-        if(password.equals("not password")){
-            throw new Exception("Could not retrieve password");
-        }
-        continuousLoggingDirection = new ContinuousLoggingDirection(
+        loggingDirection = new LoggingDirection(
                 bundle.getBoolean("screenLog"),
-                bundle.getBoolean("appLog"),
                 bundle.getBoolean("appChanges")
         );
 
-        StoreInSQL storeInSQL = new StoreInSQL(this, "continuous.db",1,
-                "continuous_table", "(time INTEGER, event TEXT)");
-        SQLiteDatabase.loadLibs(this);
-        database = storeInSQL.getWritableDatabase(password);
-        handler = new Handler();
-        currentlyRunningApp = this.getPackageName();
+        if (password == null || password.isEmpty() || password.equals("no_pwd")) {
+            throw new Exception("Could not retrieve password");
+        }
 
-        ActivityManager activityManager = (ActivityManager) this.getSystemService(ACTIVITY_SERVICE);
-        identifyAppInForeground = new IdentifyAppInForeground(activityManager);
+       storeInSQL = new StoreInSQL(this, CONSTANTS.CONTINUOUS_DB_TABLE, CONSTANTS.DB_VERSION,
+                CONSTANTS.CONTINUOUS_DB_TABLE);
+       SQLiteDatabase.loadLibs(this);
 
+       database = storeInSQL.getWritableDatabase(password);
+       handler = new Handler();
+       currentlyRunningApp = getPackageName();
+
+       identifyAppInForeground = new IdentifyAppInForeground();
     }
 
     /**
      * HANDLING BROADCAST RECEIVERS
      */
     private void initializeBroadcastReceivers() {
-        if(continuousLoggingDirection.screenLog || continuousLoggingDirection.appLog){
-            if(continuousLoggingDirection.appLog) {
-                screenReceiver = new BroadcastReceiver() {
-                    @Override
-                    public void onReceive(Context context, Intent intent) {
-                        if (intent.getAction() != null) {
-                            switch (intent.getAction()) {
-                                case Intent.ACTION_SCREEN_OFF:
-                                    storeData("screen off");
-                                    handler.removeCallbacks(callIdentifyAppInForegroundOld);
-                                    break;
-                                case Intent.ACTION_SCREEN_ON:
-                                    storeData("screen on");
-                                    handler.postDelayed(callIdentifyAppInForegroundOld, 100);
-                                    break;
-                                case Intent.ACTION_USER_PRESENT:
-                                    storeData("user present");
-                                    break;
-                                }
-                            }
-                        }
-                    };
-            } else {
-                    screenReceiver = new BroadcastReceiver() {
-                        @Override
-                        public void onReceive(Context context, Intent intent) {
-                            if (intent.getAction() != null) {
-                                switch (intent.getAction()) {
-                                    case Intent.ACTION_SCREEN_OFF:
-                                        storeData("screen off");
-                                        break;
-                                    case Intent.ACTION_SCREEN_ON:
-                                        storeData("screen on");
-                                        break;
-                                    case Intent.ACTION_USER_PRESENT:
-                                        storeData("user present");
-                                        break;
-                                }
-                            }
-                        }
-                    };
-            }
 
-        IntentFilter screenReceiverFilter = new IntentFilter();
-        screenReceiverFilter.addAction(Intent.ACTION_SCREEN_OFF);
-        screenReceiverFilter.addAction(Intent.ACTION_SCREEN_ON);
-        screenReceiverFilter.addAction(Intent.ACTION_USER_PRESENT);
+        if (loggingDirection.screenLog) {
+            screenReceiver = new BroadcastReceiver() {
+             @Override
+             public void onReceive(Context context, Intent intent) {
+                 if (intent.getAction() != null) {
+                     String action = intent.getAction();
+                     if (Intent.ACTION_SCREEN_OFF.equals(action)) {
+                            storeData("screen off");
+                        } else if (Intent.ACTION_SCREEN_ON.equals(action)) {
+                            storeData("screen on");
+                        }
+                    }
+                }
+            };
 
-        registerReceiver(screenReceiver, screenReceiverFilter);
+            IntentFilter screenReceiverFilter = new IntentFilter();
+            screenReceiverFilter.addAction(Intent.ACTION_SCREEN_OFF);
+            screenReceiverFilter.addAction(Intent.ACTION_SCREEN_ON);
+            registerReceiver(screenReceiver, screenReceiverFilter);
         }
 
-        if(continuousLoggingDirection.appChanges) {
+        if (loggingDirection.appChanges) {
             SharedPreferences sharedPreferences = getSharedPreferences("appPrefs", MODE_PRIVATE);
-            if(!sharedPreferences.getBoolean("initial app survey conducted", false)){
-                sharedPreferences.edit()
-                        .putStringSet("installed apps", getInstalledApps())
-                        .putBoolean("initial app survey conducted", true)
-                        .apply();
+            if (!sharedPreferences.getBoolean("initial_app_scan_done", false)) {
+                sharedPreferences.edit().putStringSet("installed_apps", getInstalledApps())
+                    .putBoolean("initial_app_scan_done", true).apply();
             }
 
             appReceiver = new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    if (intent.getAction() != null) {
-                        switch (intent.getAction()) {
-                            case Intent.ACTION_PACKAGE_ADDED:
-                                Set<String> oldAppListAdd = sharedPreferences.getStringSet("installed apps", new HashSet<>());
-                                Set<String> newAppListAdd = getInstalledApps();
-                                if(newAppListAdd.containsAll(oldAppListAdd)){
-                                    Set<String> newApps = identifyNewApp(oldAppListAdd, newAppListAdd);
-                                    for(String newApp: newApps){
-                                        storeData("installed: "+newApp);
-                                    }
-                                    sharedPreferences.edit().putStringSet("installed apps", newAppListAdd).apply();
-                                }else{
-                                    Timber.e("Issue with package added broadcast receiver");
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction() != null) {
+                    switch (intent.getAction()) {
+                        case Intent.ACTION_PACKAGE_ADDED:
+                            Set<String> oldAppListAdd = sharedPreferences.
+                                    getStringSet("installed_apps", new HashSet<>());
+                            Set<String> newAppListAdd = getInstalledApps();
+                            if (newAppListAdd.containsAll(oldAppListAdd)) {
+                                Set<String> newApps = identifyNewApp(oldAppListAdd, newAppListAdd);
+                                for(String newApp: newApps){
+                                    storeData("installed: " + newApp);
                                 }
-                                break;
-                            case Intent.ACTION_PACKAGE_REMOVED:
-                                Set<String> oldAppListRemoved = sharedPreferences.getStringSet("installed apps", new HashSet<>());
-                                Set<String> newAppListRemoved = getInstalledApps();
-                                if(oldAppListRemoved.containsAll(newAppListRemoved)){
-                                    Set<String> removedApps = identifyNewApp(newAppListRemoved, oldAppListRemoved);
-                                    for(String removedApp: removedApps){
-                                        storeData("uninstalled: "+removedApp);
-                                    }
-                                    sharedPreferences.edit().putStringSet("installed apps", newAppListRemoved).apply();
-                                }else{
-                                    Timber.e("Issue with package added broadcast receiver");
+                                sharedPreferences.edit().putStringSet("installed_apps",
+                                        newAppListAdd).apply();
+                            } else {
+                                Timber.e("Issue with package added broadcast receiver");
+                            }
+                            break;
+                        case Intent.ACTION_PACKAGE_REMOVED:
+                            Set<String> oldAppListRemoved = sharedPreferences.
+                                    getStringSet("installed_apps", new HashSet<>());
+                            Set<String> newAppListRemoved = getInstalledApps();
+                            if (oldAppListRemoved.containsAll(newAppListRemoved)) {
+                                Set<String> removedApps = identifyNewApp(newAppListRemoved, oldAppListRemoved);
+                                for(String removedApp: removedApps){
+                                    storeData("uninstalled: " + removedApp);
                                 }
-                                break;
+                                sharedPreferences.edit().putStringSet("installed_apps",
+                                        newAppListRemoved).apply();
+                            } else {
+                                Timber.e("Issue with package added broadcast receiver");
+                            }
+                            break;
                         }
                     }
                 }
@@ -270,16 +222,20 @@ public class LoggerService extends Service {
             appReceiverFilter.addAction(Intent.ACTION_PACKAGE_ADDED);
             appReceiverFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
             appReceiverFilter.addDataScheme("package");
-
             registerReceiver(appReceiver, appReceiverFilter);
         }
     }
 
     private Set<String> getInstalledApps() {
-        PackageManager pm = this.getPackageManager();
+        PackageManager pm = getPackageManager();
+        //getInstalledPackages no longer works for Android 11 and above. Extra permissions are
+        //required (QUERY_ALL_PACKAGES), which need approval from Google for Play Store listing
+        //see https://support.google.com/googleplay/android-developer/answer/10158779?hl=en and
+        //https://developer.android.com/training/package-visibility
         @SuppressLint("QueryPermissionsNeeded")
-        final List<PackageInfo> appInstall= pm.getInstalledPackages(PackageManager.GET_PERMISSIONS|PackageManager.GET_RECEIVERS|
-                PackageManager.GET_SERVICES|PackageManager.GET_PROVIDERS);
+        final List<PackageInfo> appInstall = pm.getInstalledPackages(
+                PackageManager.GET_PERMISSIONS | PackageManager.GET_RECEIVERS |
+                        PackageManager.GET_SERVICES|PackageManager.GET_PROVIDERS);
 
         Set<String> installedApps = new HashSet<>();
         for (PackageInfo packageInfo:appInstall){
@@ -290,7 +246,7 @@ public class LoggerService extends Service {
 
     private Set<String> identifyNewApp(Set<String> shorterAppList, Set<String> largerAppList) {
         Set<String> newApp = new HashSet<>();
-        for(String app: largerAppList){
+        for (String app: largerAppList) {
             if(!shorterAppList.contains(app)){
                 newApp.add(app);
             }
@@ -298,49 +254,40 @@ public class LoggerService extends Service {
         return newApp;
     }
 
-    final Runnable callIdentifyAppInForegroundNew = new Runnable() {
-      // @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    final Runnable callIdentifyAppInForeground = new Runnable() {
         @Override
         public void run() {
-            String appRunningInForeground = identifyAppInForeground.identifyForegroundTaskLollipop(getApplicationContext());
-            if (!appRunningInForeground.equals(currentlyRunningApp) && !appRunningInForeground.equals("THIS IS NOT A REAL APP")) {
+            String appRunningInForeground = identifyAppInForeground.
+                    identifyForegroundTask(getApplicationContext());
+            if (!appRunningInForeground.equals(currentlyRunningApp) &&
+                    !appRunningInForeground.equals("not_real_app")) {
                 storeData("App: " + appRunningInForeground);
                 currentlyRunningApp = appRunningInForeground;
+                Timber.i("App running in foreground: %s", appRunningInForeground);
             }
 
-            handler.postDelayed(callIdentifyAppInForegroundNew, 1000);
+            handler.postDelayed(callIdentifyAppInForeground, CONSTANTS.LOGGING_INTERVAL_MS);
         }
     };
-
-    final Runnable callIdentifyAppInForegroundOld = new Runnable() {
-        @Override
-        public void run() {
-            String appRunningInForeground = identifyAppInForeground.identifyForegroundTaskUnderLollipop();
-            if (!appRunningInForeground.equals(currentlyRunningApp) && !appRunningInForeground.equals("THIS IS NOT A REAL APP")) {
-                storeData("App: " + appRunningInForeground);
-                currentlyRunningApp = appRunningInForeground;
-            }
-            handler.postDelayed(callIdentifyAppInForegroundNew, 1000);
-        }
-    };
-
 
     void storeData(String data){
         ContentValues values = new ContentValues();
         values.put("time", System.currentTimeMillis());
         values.put("event", data);
         Timber.i("data: %d - %s", System.currentTimeMillis(), data);
-        database.insert("continuous_table",null, values);
+        if (database.isOpen()) {
+            database.insert(CONSTANTS.CONTINUOUS_DB_TABLE, null, values);
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        database.close();
-        if(continuousLoggingDirection.screenLog){
+        if (database!=null) database.close();
+        if (loggingDirection.screenLog) {
             unregisterReceiver(screenReceiver);
         }
-        if(continuousLoggingDirection.appChanges){
+        if (loggingDirection.appChanges) {
             unregisterReceiver(appReceiver);
         }
     }

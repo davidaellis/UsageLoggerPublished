@@ -1,7 +1,5 @@
 package psych.sensorlab.usagelogger2;
 
-import android.annotation.SuppressLint;
-import android.app.ActivityManager;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
@@ -11,29 +9,26 @@ import java.util.Objects;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import timber.log.Timber;
+
 class IdentifyAppInForeground {
 
-    final private ActivityManager activityManager;
+    String identifyForegroundTask(Context context) {
 
-    IdentifyAppInForeground(ActivityManager activityManager){
-        this.activityManager = activityManager;
-    }
-
-    @SuppressLint("WrongConstant")
-    String identifyForegroundTaskLollipop(Context context) {
-
-        String currentApp = "THIS IS NOT A REAL APP";
+        String currentApp = "not_real_app";
         long time = System.currentTimeMillis();
         final List<UsageStats> appList;
+         UsageStatsManager usm;
 
-        UsageStatsManager usm;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
             usm = (UsageStatsManager)context.getSystemService(Context.USAGE_STATS_SERVICE);
         } else {
+            //noinspection ResourceType
             usm = (UsageStatsManager)context.getSystemService("usagestats");
         }
 
-        appList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - 1000, time);
+        appList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY,
+                time - CONSTANTS.LOGGING_INTERVAL_MS, time);
 
         if (appList != null && appList.size() > 0) {
             SortedMap<Long, UsageStats> mySortedMap = new TreeMap<>();
@@ -50,17 +45,11 @@ class IdentifyAppInForeground {
                     currentApp = (String) packageManager.getApplicationLabel(packageManager.
                             getApplicationInfo(currentApp, PackageManager.GET_META_DATA));
                 } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
+                    Timber.e("Unable to get app name: %s", e.getLocalizedMessage());
                 }
 
             }
         }
         return currentApp;
-    }
-
-    String identifyForegroundTaskUnderLollipop() {
-        List<ActivityManager.RunningAppProcessInfo> tasks;
-        tasks = activityManager.getRunningAppProcesses();
-        return tasks.get(0).processName;
     }
 }
