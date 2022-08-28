@@ -21,8 +21,8 @@ public class QRScanner extends AppCompatActivity {
         setContentView(R.layout.scan_qr);
         final Activity activity = getActivity(this);
         CodeScannerView codeScannerView = findViewById(R.id.scanner_view);
-        this.mCodeScanner = new CodeScanner(this, codeScannerView);
-        this.mCodeScanner.setDecodeCallback(result -> activity.runOnUiThread(() -> {
+        mCodeScanner = new CodeScanner(this, codeScannerView);
+        mCodeScanner.setDecodeCallback(result -> activity.runOnUiThread(() -> {
             QRScanner.this.handleResult(result.getText());
             Timber.i("run message qr: %s", result.getText());
         }));
