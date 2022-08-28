@@ -5,9 +5,9 @@ Usage Logger 2 is an Android app that records or extracts data about how a perso
 
 ### Publications
 
-Geyer, K., Ellis, D.A., Shaw, H. and Davidson, B. I. (2022) Open-source smartphone app and tools for measuring, quantifying, and visualizing technology use. <em>Behavior Research Methods, 54</em>(1), 1-12, doi: [10.3758/s13428-021-01585-7](https://doi.org/10.3758/s13428-021-01585-7)
+Geyer, K., Ellis, D. A., Shaw, H. and Davidson, B. I. (2022) Open-source smartphone app and tools for measuring, quantifying, and visualizing technology use. <em>Behavior Research Methods, 54</em>(1), 1-12, doi: [10.3758/s13428-021-01585-7](https://doi.org/10.3758/s13428-021-01585-7)
 
-Geyer, K., Ellis, D. A., Shaw, H., & Davidson, B. I. (2020, July 21). *Open source smartphone app and tools for measuring, quantifying, and visualizing technology use.* PsyArXiv. doi: [10.31234/osf.io/eqhfa](https://doi.org/10.31234/osf.io/eqhfa)
+Geyer, K., Ellis, D. A., Shaw, H., & Davidson, B. I. (2020, July 21). *Open source smartphone app and tools for measuring, quantifying, and visualizing technology use.* PsyArXiv, doi: [10.31234/osf.io/eqhfa](https://doi.org/10.31234/osf.io/eqhfa)
 
 ### Other resources
 
@@ -47,7 +47,7 @@ Visit the [customisation website](https://usagelogger2.netlify.app/customise/) t
 *Events prior to app installation (max. 5 days), including:*
 
 - Screen on/off events
-- What apps are used and when
+- What apps were used and when
 
 ## FAQ
 
