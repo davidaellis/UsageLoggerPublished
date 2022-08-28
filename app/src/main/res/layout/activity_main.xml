@@ -7,6 +7,22 @@
     android:layout_margin="16dp"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/bg_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/bg_main"
+        android:maxWidth="300dp"
+        android:maxHeight="300dp"
+        android:alpha="0.5"
+        app:layout_constraintBottom_toTopOf="@+id/tvReport"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHeight_min="300dp"
+        app:layout_constraintWidth_min="300dp"
+        android:contentDescription="@string/app_name" />
+
     <ProgressBar
         android:id="@+id/pb"
         android:layout_width="match_parent"
@@ -20,10 +36,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:gravity="center"
         android:text="@string/setup_status"
-        android:textSize="20sp"
-        android:textAlignment="center"
         android:textColor="@color/primary_text"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="@+id/pb"
         app:layout_constraintStart_toStartOf="@+id/pb" />
@@ -41,34 +57,39 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:id="@+id/btnEmail"
+            android:id="@+id/btnNextStep"
+            style="@style/CustomButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            android:padding="30dp"
-            android:textSize="16sp"
+            android:layout_height="60dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/title_next"
             android:textColor="@color/button_text"
-            android:text="@string/title_next" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/btnReadQR"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            android:padding="30dp"
-            android:textSize="16sp"
+            android:layout_height="60dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/read_qr"
             android:textColor="@color/button_text"
-            android:text="@string/read_qr" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/btnSeePassword"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            android:textSize="16sp"
-            android:padding="30dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/see_pwd"
             android:textColor="@color/button_text"
-            android:text="@string/see_pwd" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 
