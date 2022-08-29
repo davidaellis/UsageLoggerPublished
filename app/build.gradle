@@ -8,7 +8,7 @@ android {
     }
     defaultConfig {
         applicationId "psych.sensorlab.usagelogger2"
-        minSdkVersion 21 //Android 5
+        minSdkVersion 21 //Android 5.0
         targetSdkVersion 33 //Android 13
         versionCode 4
         versionName "1.103"
@@ -16,9 +16,9 @@ android {
     }
     buildTypes {
         debug {
-            minifyEnabled true
-            shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            //minifyEnabled true
+            //shrinkResources true
+            //proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
             minifyEnabled true
