@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
 import android.provider.Settings;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -88,7 +89,6 @@ class DealWithPermission {
         } else {
                 confirmAllPermissionsGranted(context);
         }
-
     }
 
     private void postRationaleForRequestingPermission(String permission, Context context){
@@ -128,7 +128,7 @@ class DealWithPermission {
                     }
                 }
                 if (essentialPermission.equals("notification")) {
-                    if (establishStateOfNotificationListenerPermission()) {
+                    if(establishStateOfNotificationListenerPermission()) {
                         Timber.i("essential: notification permission required");
                         essentialPermissions.put(essentialPermission, PackageManager.PERMISSION_DENIED);
                     } else {
@@ -167,7 +167,6 @@ class DealWithPermission {
     private boolean establishStateOfNotificationListenerPermission() {
         String notificationListenerString = Settings.Secure.getString(
                 context.getContentResolver(),"enabled_notification_listeners");
-        Timber.v("establish_permissions_listener: %s", notificationListenerString);
         return notificationListenerString != null && !notificationListenerString.contains(
                 context.getPackageName());
     }
