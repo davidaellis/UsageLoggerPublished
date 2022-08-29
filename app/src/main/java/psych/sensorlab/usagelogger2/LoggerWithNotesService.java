@@ -23,6 +23,9 @@ import androidx.core.app.NotificationCompat;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -55,8 +58,8 @@ public class LoggerWithNotesService extends NotificationListenerService {
     }
 
     @Override
-    public void onNotificationRemoved(StatusBarNotification sbn, RankingMap rankingMap, int reason) {
-        super.onNotificationRemoved(sbn, rankingMap, reason);
+    public void onNotificationRemoved(StatusBarNotification sbn) {
+        super.onNotificationRemoved(sbn);
         try {
             if (sbn != null && packageManager != null) {
                 storeData(packageManager.getApplicationLabel(packageManager.
@@ -169,7 +172,9 @@ public class LoggerWithNotesService extends NotificationListenerService {
         storeInSQL = new StoreInSQL(this, CONSTANTS.CONTINUOUS_DB_NAME, CONSTANTS.DB_VERSION,
                 CONSTANTS.CONTINUOUS_DB_TABLE);
         SQLiteDatabase.loadLibs(this);
-        database = storeInSQL.getWritableDatabase(password);
+        if (database == null) { //only if its not already open
+            database = storeInSQL.getWritableDatabase(password);
+        }
 
         handler = new Handler();
         packageManager = getPackageManager();
@@ -210,11 +215,15 @@ public class LoggerWithNotesService extends NotificationListenerService {
         }
 
         if (loggingDirection.appChanges) {
-
             SharedPreferences sharedPreferences = getSharedPreferences("appPrefs", MODE_PRIVATE);
             if(!sharedPreferences.getBoolean("initial_app_scan_done",false)){
-                sharedPreferences.edit().putStringSet("installed_apps", getInstalledApps())
-                        .putBoolean("initial_app_scan_done",true).apply();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    sharedPreferences.edit().putStringSet("installed_apps", getInstalledApps())
+                    .putBoolean("initial_app_scan_done",true).apply();
+                } else {
+                    sharedPreferences.edit().putStringSet("installed_apps", getInstalledAppsWorkAround())
+                            .putBoolean("initial_app_scan_done",true).apply();
+                }
             }
 
             appReceiver = new BroadcastReceiver() {
@@ -224,7 +233,12 @@ public class LoggerWithNotesService extends NotificationListenerService {
                         String action = intent.getAction();
                         if (Intent.ACTION_PACKAGE_ADDED.equals(action)) {
                             Set<String> oldAppListAdd = sharedPreferences.getStringSet("installed_apps", new HashSet<>());
-                            Set<String> newAppListAdd = getInstalledApps();
+                            Set<String> newAppListAdd;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                newAppListAdd = getInstalledApps();
+                            } else {
+                                newAppListAdd = getInstalledAppsWorkAround();
+                            }
                             if (newAppListAdd.containsAll(oldAppListAdd)) {
                                 Set<String> newApps = identifyNewApp(oldAppListAdd, newAppListAdd);
                                 for (String newApp : newApps) {
@@ -237,7 +251,12 @@ public class LoggerWithNotesService extends NotificationListenerService {
                             }
                         } else if (Intent.ACTION_PACKAGE_REMOVED.equals(action)) {
                             Set<String> oldAppListRemoved = sharedPreferences.getStringSet("installed_apps", new HashSet<>());
-                            Set<String> newAppListRemoved = getInstalledApps();
+                            Set<String> newAppListRemoved;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                newAppListRemoved = getInstalledApps();
+                            } else {
+                                newAppListRemoved = getInstalledAppsWorkAround();
+                            }
                             if (oldAppListRemoved.containsAll(newAppListRemoved)) {
                                 Set<String> removedApps = identifyNewApp(newAppListRemoved, oldAppListRemoved);
                                 for (String removedApp : removedApps) {
@@ -267,12 +286,52 @@ public class LoggerWithNotesService extends NotificationListenerService {
         //see https://support.google.com/googleplay/android-developer/answer/10158779?hl=en and
         //https://developer.android.com/training/package-visibility
         @SuppressLint("QueryPermissionsNeeded")
-        final List<PackageInfo> appInstall= pm.getInstalledPackages(PackageManager.GET_PERMISSIONS|PackageManager.GET_RECEIVERS|
-                PackageManager.GET_SERVICES|PackageManager.GET_PROVIDERS);
+        final List<PackageInfo> appInstall = pm.getInstalledPackages(
+                PackageManager.GET_PERMISSIONS | PackageManager.GET_RECEIVERS |
+                PackageManager.GET_SERVICES | PackageManager.GET_PROVIDERS);
 
         Set<String> installedApps = new HashSet<>();
         for (PackageInfo packageInfo:appInstall){
             installedApps.add((String) packageInfo.applicationInfo.loadLabel(pm));
+        }
+        return installedApps;
+    }
+
+    //This is a workaround for the bug that exists in Android SDK 22 and lower that sometimes stops
+    //installed apps from being listed. Funnily it works in StoreInPDF but not here! Here, only some
+    //are listed before TransactionTooLarge exception is triggered.
+    //https://stackoverflow.com/questions/13235793/transactiontoolargeeception-when-trying-to-get-a-list-of-applications-installed
+    @SuppressLint("QueryPermissionsNeeded")
+    private Set<String> getInstalledAppsWorkAround() {
+        Process process;
+        String line;
+        PackageManager pm = getPackageManager();
+        Set<String> installedApps = new HashSet<>();
+        BufferedReader bufferedReader = null;
+        try {
+            process = Runtime.getRuntime().exec("pm list packages");
+            bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            while ((line=bufferedReader.readLine())!=null) {
+                final String packageName = line.substring(line.indexOf(':')+1);
+                final PackageInfo packageInfo = pm.getPackageInfo(packageName,
+                        PackageManager.GET_PERMISSIONS | PackageManager.GET_RECEIVERS |
+                        PackageManager.GET_SERVICES | PackageManager.GET_PROVIDERS);
+                String installedApp = String.valueOf(packageInfo);
+                String[] split = installedApp.split(" ");
+                String cleanAppString = split[1].substring(0, split[1].length() - 1);
+                installedApps.add(cleanAppString);
+            }
+            process.waitFor();
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (bufferedReader!=null)
+                try {
+                    bufferedReader.close();
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
         }
         return installedApps;
     }
@@ -299,7 +358,7 @@ public class LoggerWithNotesService extends NotificationListenerService {
                 Timber.i("App running in foreground: %s", appRunningInForeground);
             }
 
-            handler.postDelayed(callIdentifyAppInForeground, 1000);
+            handler.postDelayed(callIdentifyAppInForeground, CONSTANTS.LOGGING_INTERVAL_MS);
         }
     };
 

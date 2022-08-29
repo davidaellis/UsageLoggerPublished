@@ -14,6 +14,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -22,6 +23,9 @@ import androidx.core.app.NotificationCompat;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -174,8 +178,13 @@ public class LoggerService extends Service {
         if (loggingDirection.appChanges) {
             SharedPreferences sharedPreferences = getSharedPreferences("appPrefs", MODE_PRIVATE);
             if (!sharedPreferences.getBoolean("initial_app_scan_done", false)) {
-                sharedPreferences.edit().putStringSet("installed_apps", getInstalledApps())
-                    .putBoolean("initial_app_scan_done", true).apply();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    sharedPreferences.edit().putStringSet("installed_apps", getInstalledApps())
+                            .putBoolean("initial_app_scan_done",true).apply();
+                } else {
+                    sharedPreferences.edit().putStringSet("installed_apps", getInstalledAppsWorkAround())
+                            .putBoolean("initial_app_scan_done",true).apply();
+                }
             }
 
             appReceiver = new BroadcastReceiver() {
@@ -186,7 +195,12 @@ public class LoggerService extends Service {
                         case Intent.ACTION_PACKAGE_ADDED:
                             Set<String> oldAppListAdd = sharedPreferences.
                                     getStringSet("installed_apps", new HashSet<>());
-                            Set<String> newAppListAdd = getInstalledApps();
+                            Set<String> newAppListAdd;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                newAppListAdd = getInstalledApps();
+                            } else {
+                                newAppListAdd = getInstalledAppsWorkAround();
+                            }
                             if (newAppListAdd.containsAll(oldAppListAdd)) {
                                 Set<String> newApps = identifyNewApp(oldAppListAdd, newAppListAdd);
                                 for(String newApp: newApps){
@@ -201,7 +215,12 @@ public class LoggerService extends Service {
                         case Intent.ACTION_PACKAGE_REMOVED:
                             Set<String> oldAppListRemoved = sharedPreferences.
                                     getStringSet("installed_apps", new HashSet<>());
-                            Set<String> newAppListRemoved = getInstalledApps();
+                            Set<String> newAppListRemoved;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                newAppListRemoved = getInstalledApps();
+                            } else {
+                                newAppListRemoved = getInstalledAppsWorkAround();
+                            }
                             if (oldAppListRemoved.containsAll(newAppListRemoved)) {
                                 Set<String> removedApps = identifyNewApp(newAppListRemoved, oldAppListRemoved);
                                 for(String removedApp: removedApps){
@@ -240,6 +259,41 @@ public class LoggerService extends Service {
         Set<String> installedApps = new HashSet<>();
         for (PackageInfo packageInfo:appInstall){
             installedApps.add((String) packageInfo.applicationInfo.loadLabel(pm));
+        }
+        return installedApps;
+    }
+
+    //This is a workaround for the bug that exists in Android SDK 22 and lower that stop all
+    //installed apps from being listed. Only some are listed before TransactionTooLarge exception
+    //https://stackoverflow.com/questions/13235793/transactiontoolargeeception-when-trying-to-get-a-list-of-applications-installed
+    @SuppressLint("QueryPermissionsNeeded")
+    private Set<String> getInstalledAppsWorkAround() {
+        Process process;
+        String line;
+        PackageManager pm = getPackageManager();
+        Set<String> installedApps = new HashSet<>();
+        BufferedReader bufferedReader = null;
+        try {
+            process = Runtime.getRuntime().exec("pm list packages");
+            bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            while ((line=bufferedReader.readLine())!=null) {
+                final String packageName = line.substring(line.indexOf(':')+1);
+                final PackageInfo packageInfo = pm.getPackageInfo(packageName,
+                        PackageManager.GET_PERMISSIONS | PackageManager.GET_RECEIVERS |
+                                PackageManager.GET_SERVICES | PackageManager.GET_PROVIDERS);
+                installedApps.add(String.valueOf(packageInfo));
+            }
+            process.waitFor();
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (bufferedReader!=null)
+                try {
+                    bufferedReader.close();
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
         }
         return installedApps;
     }
