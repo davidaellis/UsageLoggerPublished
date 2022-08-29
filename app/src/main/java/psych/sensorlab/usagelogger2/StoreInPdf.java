@@ -257,23 +257,26 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
     }
 
     private CompleteContextData gatherContextualData(Context context) {
-        ArrayList<App_to_permission_to_response> allData = new ArrayList<>();
-        int permissionNumber = 0;
 
         PackageManager pm = context.getPackageManager();
+        ArrayList<App_to_permission_to_response> allData = new ArrayList<>();
+        HashMap<String, Boolean> permissionsResponse = new HashMap<>();
+        int permissionNumber = 0;
+
         @SuppressLint("QueryPermissionsNeeded")
-        final List<PackageInfo> appInstall= pm.getInstalledPackages(PackageManager.GET_PERMISSIONS|PackageManager.GET_RECEIVERS|
-                PackageManager.GET_SERVICES|PackageManager.GET_PROVIDERS);
+        final List<PackageInfo> appInstall= pm.getInstalledPackages(
+                PackageManager.GET_PERMISSIONS | PackageManager.GET_RECEIVERS |
+                PackageManager.GET_SERVICES | PackageManager.GET_PROVIDERS);
 
         for (PackageInfo pInfo:appInstall) {
-            HashMap<String, Boolean> permissionsResponse = new HashMap<>();
             final String[] permissions = pInfo.requestedPermissions;
             final int[] reaction = pInfo.requestedPermissionsFlags;
-            Timber.i("app being viewed:  %s", pInfo.applicationInfo.loadLabel(pm));
+            Timber.i("installed app:  %s", pInfo.applicationInfo.loadLabel(pm));
 
             if (permissions != null) {
-                Timber.i("size of permissions: %d, size of reaction: %d", permissions.length, reaction.length);
-                for(int i = 0; i <permissions.length; i++){
+                Timber.i("number of permissions: %d, size of reaction: %d",
+                        permissions.length, reaction.length);
+                for (int i = 0; i <permissions.length; i++) {
                     permissionsResponse.put(permissions[i], reaction[i] == 3);
                     permissionNumber++;
                 }
@@ -281,14 +284,12 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                 Timber.e("Permissions equal null");
             }
 
-
-            allData.add(new App_to_permission_to_response("" + pInfo.applicationInfo.loadLabel(pm), permissionsResponse));
-
+            allData.add(new App_to_permission_to_response("" +
+                    pInfo.applicationInfo.loadLabel(pm), permissionsResponse));
         }
 
         return new CompleteContextData(allData, permissionNumber);
     }
-
 
     /**
      * USAGE METHODS
