@@ -396,7 +396,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             chooserIntent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
             startUsageNotePermissionsIntent.launch(chooserIntent);
         } else if (permission.equals("notification")) {
-            //request notification permission
+            //request permission to collect notification data
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                 chooserIntent = new Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS);
             } else {
@@ -682,12 +682,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void stopServices() {
         Intent loggingService;
-        Timber.i("gee im here: %s", QRCodeProvided());
-        if (QRCodeProvided()) {
+        if (QRCodeProvided() && qrInput!=null) {
             if (!qrInput.continuousDataSource.contains("notification")) {
                 loggingService = new Intent(MainActivity.this, LoggerService.class);
             } else {
-                Timber.i("gee ime here 2");
                 loggingService = new Intent(MainActivity.this, LoggerWithNotesService.class);
             }
             stopService(loggingService);
