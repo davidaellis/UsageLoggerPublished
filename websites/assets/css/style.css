@@ -98,6 +98,44 @@ th, td {
   border-bottom:1px solid #e5e5e5;
 }
 
+#menu {
+    background-color: #93a6b0;
+    width: 100%;
+    margin: auto;
+    text-align: center;
+}
+
+#menu nav {
+    width:860px;
+    padding:30px;
+    display: inline-block;
+}
+
+nav a {
+    color: white;
+}
+
+nav a:hover {
+    color: black;
+    font-weight: bold;
+}
+
+#menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#menu li {
+    float: left;
+}
+
+#menu li + li:before{
+    color: white;
+    content: " | ";
+    padding: 0 10px;
+}
+
 dt {
   color:#444;
   font-weight:700;
