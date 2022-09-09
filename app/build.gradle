@@ -30,7 +30,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.5.0'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
 
@@ -39,7 +39,8 @@ dependencies {
     implementation 'at.favre.lib:armadillo:0.9.0'
     implementation 'com.itextpdf:itextg:5.5.10'
     implementation 'ch.dissem.jabit:jabit-cryptography-spongy:2.0.4'
-    implementation 'net.zetetic:android-database-sqlcipher:4.0.0@aar'
+    //new sqlcipher version 4 needs code changes, so stick to 3.5.7 for now
+    implementation 'net.zetetic:android-database-sqlcipher:3.5.7@aar'
     implementation 'com.github.yuriy-budiyev:code-scanner:2.1.2'
 
     testImplementation 'junit:junit:4.13.2'
