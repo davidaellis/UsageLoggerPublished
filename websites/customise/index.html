@@ -51,10 +51,12 @@
             <p>Continuous logging records smartphone interactions after installation of the app. These can include:</p>
             <ul>
                 <li>Screen usage: When the screen was on/off.</li>
-                <li>App usage: When and which apps were used (incl. phone restart events).</li>
-                <li>Notifications: Which and what apps sent notifications and when such were removed (incl. phone restart events).</li>
+                <li>App usage: When and which apps were used</li>
+                <li>Notifications: Which and what apps sent notifications and when such were removed</li>
                 <li>Changes in apps: What apps were installed/uninstalled.</li>
             </ul>
+
+            <p>Additionally to the above, continuous logging also records when the phone was restarted. This is a default setting and is not customisable.</p>
 
             <h3>3) Past Usage</h3>
             <p>This will provide information about the phone was used for during the last few days (max. 5 days ago).</p>
@@ -106,10 +108,11 @@
         <p class="option"><span title="Records activity after installation">Continuous Logging</span>
             <input type="checkbox" id="continuous_log" /></p>
         <div id="continuous_log_options">
+            <sup><em>Includes phone restart events by default</em></sup>
             <ul>
                 <li>Screen usage <input type="checkbox" name="option[]" id="screen_usage" /></li>
-                <li>App usage (incl. phone restart) <input type="checkbox" name="option[]" id="app_usage" /></li>
-                <li>Notifications (incl. phone restart) <input type="checkbox" name="option[]" id="notification" /></li>
+                <li>App usage<input type="checkbox" name="option[]" id="app_usage" /></li>
+                <li>Notifications<input type="checkbox" name="option[]" id="notification" /></li>
                 <li>Changes in installed apps <input type="checkbox" name="option[]" id="installed_apps" /></li>
             </ul>
         </div>
