@@ -126,7 +126,6 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
         if(document.isOpen()){
             switch (dataDirection){
                 case CONSTANTS.INSTALLED_AND_PERMISSION_AND_RESPONSE: //c123
-
                     table = new PdfPTable(3);
                     for (App_to_permission_to_response app_to_permission_to_response: contextualData.app_to_permission_to_responses){
                         Iterator<Map.Entry<String, Boolean>> it = app_to_permission_to_response.permissions_and_response.entrySet().iterator();
@@ -141,7 +140,19 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                     }
                     break;
                 case CONSTANTS.INSTALLED_AND_PERMISSION: //c12
-                case CONSTANTS.RESPONSE_AND_PERMISSION: //c32
+                    table = new PdfPTable(2);
+                    for (App_to_permission_to_response app_to_permission_to_response: contextualData.app_to_permission_to_responses){
+                        Iterator<Map.Entry<String, Boolean>> it = app_to_permission_to_response.permissions_and_response.entrySet().iterator();
+                        while (it.hasNext()) {
+                            publishProgress(allToEnter /count++);
+                            Map.Entry<String, Boolean> pair = it.next();
+                            table.addCell(app_to_permission_to_response.app);
+                            table.addCell(pair.getKey());
+                            it.remove();
+                        }
+                    }
+                    break;
+                case CONSTANTS.RESPONSE_AND_PERMISSION: //c23
                     table = new PdfPTable(2);
                     for (App_to_permission_to_response app_to_permission_to_response: contextualData.app_to_permission_to_responses){
                         Iterator<Map.Entry<String, Boolean>> it = app_to_permission_to_response.permissions_and_response.entrySet().iterator();
@@ -179,7 +190,6 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                     table = new PdfPTable(1);
                     for (App_to_permission_to_response app_to_permission_to_response: contextualData.app_to_permission_to_responses) {
                         Iterator<Map.Entry<String, Boolean>> it = app_to_permission_to_response.permissions_and_response.entrySet().iterator();
-
                         while (it.hasNext()) {
                             publishProgress(allToEnter /count++);
                             Map.Entry<String, Boolean> pair = it.next();
@@ -192,7 +202,6 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                     table = new PdfPTable(1);
                     for (App_to_permission_to_response app_to_permission_to_response: contextualData.app_to_permission_to_responses) {
                         Iterator<Map.Entry<String, Boolean>> it = app_to_permission_to_response.permissions_and_response.entrySet().iterator();
-
                         while (it.hasNext()) {
                             publishProgress(allToEnter /count++);
                             Map.Entry<String, Boolean> pair = it.next();
@@ -201,7 +210,6 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                         }
                     }
                     break;
-
                 default:
                     table = new PdfPTable(1);
                     table.addCell("No DATA");
@@ -217,7 +225,7 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                     Timber.i("Permissions number: %d - table size: %d", contextualData.permissionNumber, table.size());
                     return false;
                 }
-            }else {
+            } else {
                 if (contextualData.appNumber == table.size()) {
                     return true;
                 } else {
