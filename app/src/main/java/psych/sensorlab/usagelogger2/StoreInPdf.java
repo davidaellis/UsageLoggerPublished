@@ -48,65 +48,60 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
         final String password = (String) objects[1];
         final int dataDirection = (int) objects[2];
         final int generalData = (int) objects[3];
-        final File path = context.getFilesDir();
         File file;
-        try {
-        switch (generalData){
+
+        switch (generalData) {
             case CONSTANTS.COLLECTING_CONTEXTUAL_DATA:
-                file = new File(path, CONSTANTS.CONTEXT_FILE);
-                boolean appropriateLength;
-
-                appropriateLength = storeContextualData(file, context,dataDirection, password);
-
-                if (!appropriateLength) {
-                    Timber.i("File exists: %s, permissions detected", file.exists());
+                file = new File(context.getFilesDir(), CONSTANTS.CONTEXT_FILE);
+                boolean appropriateLength = false;
+                try {
+                    appropriateLength = storeContextualData(file, context, dataDirection, password);
+                } catch (Exception e) {
+                    Timber.e(e.getLocalizedMessage());
                 }
-
+                Timber.i("File exists: %s, permissions detected", file.exists());
                 return new DataCollectionResult(appropriateLength && file.exists(),
                         dataDirection, generalData, CONSTANTS.PUTTING_CONTEXTUAL_DATA_IN_PDF);
+
             case CONSTANTS.COLLECTING_PAST_USAGE:
-                file = new File(path, CONSTANTS.USAGE_FILE);
+                file = new File(context.getFilesDir(), CONSTANTS.USAGE_FILE);
                 boolean appropriateUsageLength = false;
                 try {
                     appropriateUsageLength = storeUsageData(file,
                             recordUsageEvent(dataDirection, context), password, context);
                 } catch (Exception e) {
-                    Timber.e(e);
+                    Timber.e(e.getLocalizedMessage());
                 }
                 Timber.i("File exists: %s - appropriateUsageLength: %s",
                         appropriateUsageLength, file.exists());
                 return new DataCollectionResult(appropriateUsageLength && file.exists(),
                         dataDirection, generalData, CONSTANTS.PUTTING_USAGE_DATA_IN_PDF);
+
             case CONSTANTS.COLLECTING_CONTINUOUS_DATA:
                 Timber.i("Begin of packaging of continuous data");
-                file = new File(path, CONSTANTS.CONTINUOUS_FILE);
+                file = new File(context.getFilesDir(), CONSTANTS.CONTINUOUS_FILE); //create PDF
                 boolean appropriateContinuousLength = false;
                 try {
                     appropriateContinuousLength = storeContinuousData(file, password, context);
-                } catch (Exception e){
-                    Timber.e(e);
+                } catch (Exception e) {
+                    Timber.e(e.getLocalizedMessage());
                 }
                 return new DataCollectionResult(appropriateContinuousLength && file.exists(),
                         dataDirection, generalData, CONSTANTS.PUTTING_CONTINUOUS_DATA_IN_PDF);
+
             default:
                 Timber.i("General data not detected");
-                return new DataCollectionResult(false,dataDirection,
+                return new DataCollectionResult(false, dataDirection,
                         CONSTANTS.COLLECTING_CONTEXTUAL_DATA,
                         CONSTANTS.PUTTING_CONTINUOUS_DATA_IN_PDF);
-            }
-        } catch (DocumentException | FileNotFoundException e) {
-            Timber.e(e);
         }
 
-        return new DataCollectionResult(false, dataDirection, generalData,
-                CONSTANTS.ERROR_EXPERIENCED_IN_ASYNC);
     }
 
     /**
      * CONTEXT METHODS
      */
-
-    private boolean storeContextualData(File file, Context context, int dataDirection,
+    private boolean storeContextualData (File file, Context context, int dataDirection,
         String password) throws DocumentException, FileNotFoundException {
 
         int versionSDK = android.os.Build.VERSION.SDK_INT;
@@ -115,7 +110,7 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
         Document document = new Document();
         PdfWriter writer;
         writer = PdfWriter.getInstance(document, new FileOutputStream(file));
-        writer.setEncryption(password.getBytes(), null, PdfWriter.ALLOW_COPY, PdfWriter.ENCRYPTION_AES_256);
+        writer.setEncryption(password.getBytes(),null, PdfWriter.ALLOW_COPY, PdfWriter.ENCRYPTION_AES_256);
         document.open();
         document.setPageSize(PageSize.A4);
         document.addTitle("Contextual Data");
@@ -130,7 +125,7 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
 
         if(document.isOpen()){
             switch (dataDirection){
-                case CONSTANTS.INSTALLED_AND_PERMISSION_AND_RESPONSE:
+                case CONSTANTS.INSTALLED_AND_PERMISSION_AND_RESPONSE: //c123
 
                     table = new PdfPTable(3);
                     for (App_to_permission_to_response app_to_permission_to_response: contextualData.app_to_permission_to_responses){
@@ -138,17 +133,17 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                         while (it.hasNext()) {
                             publishProgress(allToEnter / count++);
                             Map.Entry<String, Boolean> pair = it.next();
-                            table.addCell(app_to_permission_to_response.app);
-                            table.addCell(pair.getKey());
-                            table.addCell(String.valueOf(pair.getValue()));
+                            table.addCell(app_to_permission_to_response.app); //app installed
+                            table.addCell(pair.getKey()); //permission req. by app
+                            table.addCell(String.valueOf(pair.getValue())); //response by user
                             it.remove();
                         }
                     }
                     break;
-                case CONSTANTS.INSTALLED_AND_PERMISSION:
-                case CONSTANTS.RESPONSE_AND_PERMISSION:
+                case CONSTANTS.INSTALLED_AND_PERMISSION: //c12
+                case CONSTANTS.RESPONSE_AND_PERMISSION: //c32
                     table = new PdfPTable(2);
-                    for(App_to_permission_to_response app_to_permission_to_response: contextualData.app_to_permission_to_responses){
+                    for (App_to_permission_to_response app_to_permission_to_response: contextualData.app_to_permission_to_responses){
                         Iterator<Map.Entry<String, Boolean>> it = app_to_permission_to_response.permissions_and_response.entrySet().iterator();
                         while (it.hasNext()) {
                             publishProgress(allToEnter /count++);
@@ -159,7 +154,7 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                         }
                     }
                     break;
-                case CONSTANTS.INSTALLED_AND_RESPONSE:
+                case CONSTANTS.INSTALLED_AND_RESPONSE: //c13
                     table = new PdfPTable(2);
                     for(App_to_permission_to_response app_to_permission_to_response: contextualData.app_to_permission_to_responses){
                         Iterator<Map.Entry<String, Boolean>> it = app_to_permission_to_response.permissions_and_response.entrySet().iterator();
@@ -172,7 +167,7 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                         }
                     }
                     break;
-                case CONSTANTS.ONLY_INSTALLED:
+                case CONSTANTS.ONLY_INSTALLED: //c1
                     table = new PdfPTable(1);
                     allToEnter = contextualData.appNumber;
                     for(App_to_permission_to_response app_to_permission_to_response: contextualData.app_to_permission_to_responses){
@@ -180,9 +175,9 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                         table.addCell(app_to_permission_to_response.app);
                     }
                     break;
-                case CONSTANTS.ONLY_PERMISSION:
+                case CONSTANTS.ONLY_PERMISSION: //c2
                     table = new PdfPTable(1);
-                    for(App_to_permission_to_response app_to_permission_to_response: contextualData.app_to_permission_to_responses){
+                    for (App_to_permission_to_response app_to_permission_to_response: contextualData.app_to_permission_to_responses) {
                         Iterator<Map.Entry<String, Boolean>> it = app_to_permission_to_response.permissions_and_response.entrySet().iterator();
 
                         while (it.hasNext()) {
@@ -193,9 +188,9 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                         }
                     }
                     break;
-                case CONSTANTS.ONLY_RESPONSE:
+                case CONSTANTS.ONLY_RESPONSE: //c3
                     table = new PdfPTable(1);
-                    for(App_to_permission_to_response app_to_permission_to_response: contextualData.app_to_permission_to_responses){
+                    for (App_to_permission_to_response app_to_permission_to_response: contextualData.app_to_permission_to_responses) {
                         Iterator<Map.Entry<String, Boolean>> it = app_to_permission_to_response.permissions_and_response.entrySet().iterator();
 
                         while (it.hasNext()) {
@@ -216,14 +211,14 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
             document.close();
 
             if (dataDirection != CONSTANTS.ONLY_INSTALLED){
-                if(contextualData.permissionNumber == table.size()){
+                if (contextualData.permissionNumber == table.size()) {
                     return true;
                 } else {
                     Timber.i("Permissions number: %d - table size: %d", contextualData.permissionNumber, table.size());
                     return false;
                 }
             }else {
-                if(contextualData.appNumber == table.size()){
+                if (contextualData.appNumber == table.size()) {
                     return true;
                 } else {
                     Timber.i("App number: %d - table size: %d", contextualData.appNumber, table.size());
@@ -260,7 +255,6 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
 
         PackageManager pm = context.getPackageManager();
         ArrayList<App_to_permission_to_response> allData = new ArrayList<>();
-        HashMap<String, Boolean> permissionsResponse = new HashMap<>();
         int permissionNumber = 0;
 
         @SuppressLint("QueryPermissionsNeeded")
@@ -269,6 +263,7 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                 PackageManager.GET_SERVICES | PackageManager.GET_PROVIDERS);
 
         for (PackageInfo pInfo:appInstall) {
+            HashMap<String, Boolean> permissionsResponse = new HashMap<>(); //don't move
             final String[] permissions = pInfo.requestedPermissions;
             final int[] reaction = pInfo.requestedPermissionsFlags;
             Timber.i("installed app:  %s", pInfo.applicationInfo.loadLabel(pm));
@@ -295,7 +290,7 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
      * USAGE METHODS
      */
     @SuppressLint("WrongConstant")
-    private  ArrayList<UsageRecord> recordUsageEvent(int daysToGoBack, Context context) throws Exception {
+    private ArrayList<UsageRecord> recordUsageEvent(int daysToGoBack, Context context) throws Exception {
         ArrayList<UsageRecord> allData = new ArrayList<>();
 
         UsageStatsManager usageStatsManager = (UsageStatsManager) context.getSystemService("usagestats");
@@ -314,14 +309,15 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
             throw new Exception("UsageEvents is null");
         }
 
-        while(usageEvents.hasNextEvent()){
+        while (usageEvents.hasNextEvent()) {
             UsageEvents.Event e = new UsageEvents.Event();
             usageEvents.getNextEvent(e);
 
             String appName;
-            try{
-                appName = (String) packageManager.getApplicationLabel(packageManager.getApplicationInfo(e.getPackageName(), PackageManager.GET_META_DATA));
-            }catch (PackageManager.NameNotFoundException nameNotFound){
+            try {
+                appName = (String) packageManager.getApplicationLabel(packageManager.
+                        getApplicationInfo(e.getPackageName(), PackageManager.GET_META_DATA));
+            } catch (PackageManager.NameNotFoundException nameNotFound){
                 appName = e.getPackageName();
             }
 
@@ -330,13 +326,13 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                     appName,
                     e.getEventType()
             )) ;
-
         }
         return allData;
     }
 
     private boolean storeUsageData(File file, ArrayList<UsageRecord> recordedUsageEvent,
         String password, Context context) throws FileNotFoundException, DocumentException {
+
         Timber.i("Collecting past usage records");
         boolean appropriateSize = false;
         int versionSDK = android.os.Build.VERSION.SDK_INT;
@@ -355,7 +351,6 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
         PdfPTable table;
 
         if(document.isOpen()){
-            Timber.i("Document is open, usage");
             table = new PdfPTable(3);
             int count = 1;
 
@@ -367,10 +362,10 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
             }
             document.add(table);
             Timber.i("table size: %d - recordedUsageEvent size %d", table.size(), recordedUsageEvent.size());
-            if(table.size() == recordedUsageEvent.size()){
+            if (table.size() == recordedUsageEvent.size()) {
                 appropriateSize = true;
             }
-        }else{
+        } else {
             Timber.e("Document would not open");
         }
         document.close();
@@ -380,8 +375,8 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
     /**
      * CONTINUOUS DATA METHODS
      */
-    private boolean storeContinuousData(File file, String password,
-        Context context) throws FileNotFoundException, DocumentException {
+    private boolean storeContinuousData (File file, String password, Context context) throws
+            FileNotFoundException, DocumentException {
 
         Timber.i("Collecting continuous records");
 
@@ -394,6 +389,7 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                 CONSTANTS.CONTINUOUS_DB_TABLE);
         SQLiteDatabase.loadLibs(context);
         SQLiteDatabase database = storeInSQL.getReadableDatabase(password);
+
         Cursor cursor = database.rawQuery("SELECT * FROM continuous_table",null);
         int event = cursor.getColumnIndex("event");
         int time = cursor.getColumnIndex("time");
