@@ -50,11 +50,10 @@
             <h3>2) Continuous Logging</h3>
             <p>Continuous logging records smartphone interactions after installation of the app. These can include:</p>
             <ul>
-                <li>Screen usage: Record when the screen was on/off.</li>
-                <li>App usage: Record at what point apps were used and store the identity of the apps.</li>
-                <li>Notifications: Record which apps sent notifications.</li>
-                <li>Changes in installed apps: Record if any apps were installed/uninstalled.</li>
-                <li style="color: #666;"><em>Phone usage: Record when the phone was on/off (default setting, not customisable</em>).</li>
+                <li>Screen usage: Log when the screen was on/off.</li>
+                <li>App usage: Log when and which apps were used (incl. phone restart events).</li>
+                <li>Notifications: Log which and what apps sent notifications and when such were removed (incl. phone restart events).</li>
+                <li>Changes in apps: Log if any apps were installed/uninstalled.</li>
             </ul>
 
             <h3>3) Past Usage</h3>
@@ -109,8 +108,8 @@
         <div id="continuous_log_options">
             <ul>
                 <li>Screen usage <input type="checkbox" name="option[]" id="screen_usage" /></li>
-                <li>App usage &amp; phone restart <input type="checkbox" name="option[]" id="app_usage" /></li>
-                <li>Notifications <input type="checkbox" name="option[]" id="notification" /></li>
+                <li>App usage (incl. phone restart) <input type="checkbox" name="option[]" id="app_usage" /></li>
+                <li>Notifications & phone restart <input type="checkbox" name="option[]" id="notification" /></li>
                 <li>Changes in installed apps <input type="checkbox" name="option[]" id="installed_apps" /></li>
             </ul>
         </div>
