@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions" />
@@ -47,17 +48,19 @@
             </intent-filter>
         </activity>
 
-        <!-- exported must be true or removed -->
         <service android:name="psych.sensorlab.usagelogger2.LoggerWithNotesService"
-            android:label="LoggerWithNotes"
+            android:label="@string/app_name"
+            android:description="@string/service_desc1"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
-            android:exported="true">
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
 
-        <service android:name="psych.sensorlab.usagelogger2.LoggerService"/>
+        <service android:name="psych.sensorlab.usagelogger2.LoggerService"
+            android:label="@string/app_name"
+            android:description="@string/service_desc2" />
 
         <!-- exported must be true or removed -->
         <receiver android:name="psych.sensorlab.usagelogger2.startServiceAtBoot"
