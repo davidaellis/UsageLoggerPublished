@@ -192,8 +192,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         } else if (view.getId() == R.id.btnReadQR) {
-            Intent chooserIntent = new Intent(this, QRScanner.class);
-            qrCodeScannerIntent.launch(chooserIntent);
+            //check again in case Next button has been canceled and Read-QR button pressed instead
+            if (checkCallingOrSelfPermission("android.permission.CAMERA")!=PackageManager.PERMISSION_GRANTED) {
+                Timber.i("Camera permission has NOT been given, asking for it now");
+                dealWithPermission.determineEssentialPerms(new String[]{Manifest.permission.CAMERA});
+            } else {
+                Intent chooserIntent = new Intent(this, QRScanner.class);
+                qrCodeScannerIntent.launch(chooserIntent);
+            }
         } else if (view.getId() == R.id.btnSeePassword) {
             informUserOnPassword();
         } else {
