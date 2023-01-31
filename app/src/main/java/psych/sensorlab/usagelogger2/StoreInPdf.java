@@ -112,15 +112,8 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
 
         Document document = new Document();
         PdfWriter writer;
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //SDK 26 or higher
-                writer = PdfWriter.getInstance(document, Files.newOutputStream(file.toPath()));
-            } else {
-                writer = PdfWriter.getInstance(document, new FileOutputStream(file));
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        //noinspection IOStreamConstructor
+        writer = PdfWriter.getInstance(document, new FileOutputStream(file));
         writer.setEncryption(password.getBytes(),null, PdfWriter.ALLOW_COPY, PdfWriter.ENCRYPTION_AES_256);
         document.open();
         document.setPageSize(PageSize.A4);
@@ -359,6 +352,7 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
 
         Document document = new Document();
         PdfWriter writer;
+        //noinspection IOStreamConstructor
         writer = PdfWriter.getInstance(document, new FileOutputStream(file));
         writer.setEncryption(password.getBytes(),null, PdfWriter.ALLOW_COPY, PdfWriter.ENCRYPTION_AES_256);
         document.open();
@@ -415,10 +409,9 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
 
         Document document = new Document();
         PdfWriter writer;
+        //noinspection IOStreamConstructor
         writer = PdfWriter.getInstance(document, new FileOutputStream(file));
-        writer.setEncryption(password.getBytes(), null, PdfWriter.ALLOW_COPY,
-                PdfWriter.ENCRYPTION_AES_256);
-
+        writer.setEncryption(password.getBytes(), null, PdfWriter.ALLOW_COPY, PdfWriter.ENCRYPTION_AES_256);
         document.open();
         document.setPageSize(PageSize.A4);
         document.addTitle("Continuous Data");
