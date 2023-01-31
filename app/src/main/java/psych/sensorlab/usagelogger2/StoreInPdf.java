@@ -9,6 +9,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
 import android.os.AsyncTask;
+import android.os.Build;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -25,6 +26,8 @@ import net.sqlcipher.database.SQLiteDatabase;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -104,12 +107,20 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
     private boolean storeContextualData (File file, Context context, int dataDirection,
         String password) throws DocumentException, FileNotFoundException {
 
-        int versionSDK = android.os.Build.VERSION.SDK_INT;
-        String versionRelease = android.os.Build.VERSION.RELEASE;
+        int versionSDK = Build.VERSION.SDK_INT;
+        String versionRelease = Build.VERSION.RELEASE;
 
         Document document = new Document();
         PdfWriter writer;
-        writer = PdfWriter.getInstance(document, new FileOutputStream(file));
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //SDK 26 or higher
+                writer = PdfWriter.getInstance(document, Files.newOutputStream(file.toPath()));
+            } else {
+                writer = PdfWriter.getInstance(document, new FileOutputStream(file));
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         writer.setEncryption(password.getBytes(),null, PdfWriter.ALLOW_COPY, PdfWriter.ENCRYPTION_AES_256);
         document.open();
         document.setPageSize(PageSize.A4);
@@ -349,7 +360,7 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
         Document document = new Document();
         PdfWriter writer;
         writer = PdfWriter.getInstance(document, new FileOutputStream(file));
-        writer.setEncryption(password.getBytes(), null, PdfWriter.ALLOW_COPY, PdfWriter.ENCRYPTION_AES_256);
+        writer.setEncryption(password.getBytes(),null, PdfWriter.ALLOW_COPY, PdfWriter.ENCRYPTION_AES_256);
         document.open();
         document.setPageSize(PageSize.A4);
         document.addTitle("Usage Data");

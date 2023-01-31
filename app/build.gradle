@@ -1,4 +1,7 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+}
 
 android {
     compileSdkVersion 33
@@ -39,9 +42,10 @@ dependencies {
     implementation 'at.favre.lib:armadillo:0.9.0'
     implementation 'com.itextpdf:itextg:5.5.10'
     implementation 'ch.dissem.jabit:jabit-cryptography-spongy:2.0.4'
-    //new sqlcipher version 4 needs code changes, so stick to 3.5.7 for now
-    implementation 'net.zetetic:android-database-sqlcipher:3.5.7@aar'
+    implementation 'net.zetetic:android-database-sqlcipher:4.5.3'
+    implementation 'androidx.sqlite:sqlite:2.3.0'
     implementation 'com.github.yuriy-budiyev:code-scanner:2.1.2'
+    implementation 'io.sentry:sentry-android:6.13.0' //for error reporting
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

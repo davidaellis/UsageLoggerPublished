@@ -36,6 +36,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import at.favre.lib.armadillo.Armadillo;
+import io.sentry.Sentry;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AsyncResult {
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //Sentry.captureMessage("testing SDK setup 2"); //only for testing
 
         initializeSharedPreferences();
         initializeUI();
@@ -164,11 +166,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             reportScreen.setText(R.string.click_read_qr);
             passwordBtn.setVisibility(View.GONE);
         }
-    }
-
-    private static boolean doesDatabaseExist(Context context, String dbName) {
-        File dbFile = context.getDatabasePath(dbName);
-        return dbFile.exists();
     }
 
     @Override
