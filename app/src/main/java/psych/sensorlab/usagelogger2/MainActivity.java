@@ -691,6 +691,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 for (String child : children) {
                     getSharedPreferences(child.replace(".xml", ""),
                             Context.MODE_PRIVATE).edit().clear().apply();
+                    //noinspection ResultOfMethodCallIgnored
                     new File(dir, child).delete();
                 }
             }
@@ -705,6 +706,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String[] children = dir.list();
             if (children != null) {
                 for (String child : children) {
+                    //noinspection ResultOfMethodCallIgnored
                     new File(dir, child).delete();
                 }
             }
