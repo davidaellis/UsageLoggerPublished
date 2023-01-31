@@ -682,47 +682,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void clearSharedPreferences(){
-        File dir = new File(getApplicationInfo().dataDir, "shared_prefs");
-        Timber.i("files shared: %s", dir);
-        if (dir.isDirectory()) {
-            String[] children = dir.list();
-            if (children != null) {
-                for (String child : children) {
-                    getSharedPreferences(child.replace(".xml", ""),
-                            Context.MODE_PRIVATE).edit().clear().apply();
-                    //noinspection ResultOfMethodCallIgnored
-                    new File(dir, child).delete();
-                }
-            }
-        }
-    }
-
-    public void clearFiles(){
-        //File dir = new File(getFilesDir().getParent() + "/files/");
-        File dir = new File(getApplicationInfo().dataDir, "files");
-        Timber.i("files: %s", dir);
-        if (dir.isDirectory()) {
-            String[] children = dir.list();
-            if (children != null) {
-                for (String child : children) {
-                    //noinspection ResultOfMethodCallIgnored
-                    new File(dir, child).delete();
-                }
-            }
-        }
-    }
-
-    //delete at some point - was used for reset, but that's problematic
-    public static void triggerRebirth(Context context) {
-        PackageManager packageManager = context.getPackageManager();
-        Intent intent = packageManager.getLaunchIntentForPackage(context.getPackageName());
-        ComponentName componentName = intent.getComponent();
-        Intent mainIntent = Intent.makeRestartActivityTask(componentName);
-        context.startActivity(mainIntent);
-        Runtime.getRuntime().exit(0);
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
