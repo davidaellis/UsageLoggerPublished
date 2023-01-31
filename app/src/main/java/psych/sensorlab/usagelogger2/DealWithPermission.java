@@ -173,7 +173,7 @@ class DealWithPermission {
 
     private void confirmAllPermissionsGranted(Context context) {
             postAlert.customiseMessage(CONSTANTS.ALL_PERMISSIONS_GRANTED, "NA",
-                    context.getString(R.string.title_thanks), context.getString(R.string.all_perms_given),
+                    context.getString(R.string.title_setup_fin), context.getString(R.string.all_perms_given),
                     "alertDialogResponse");
     }
 }

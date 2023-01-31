@@ -110,16 +110,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (item.getItemId() == R.id.close_app) {
             finishAndRemoveTask();
             return true;
-        } else if (item.getItemId() == R.id.reset_app) {
-            //delete configuration and restart app, perhaps show warning!
-            stopServices();
-            clearSharedPreferences();
-            clearFiles();
-            if (doesDatabaseExist(this, CONSTANTS.CONTINUOUS_DB_NAME)) {
-                deleteDatabase(CONSTANTS.CONTINUOUS_DB_NAME);
-            }
-            triggerRebirth(this);
-            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -721,6 +711,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //delete at some point - was used for reset, but that's problematic
     public static void triggerRebirth(Context context) {
         PackageManager packageManager = context.getPackageManager();
         Intent intent = packageManager.getLaunchIntentForPackage(context.getPackageName());
