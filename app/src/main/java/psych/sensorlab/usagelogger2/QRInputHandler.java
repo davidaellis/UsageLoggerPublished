@@ -83,6 +83,6 @@ class QRInputHandler {
     }
 
     private boolean onlyDigits (final String toTest){
-        return toTest.matches("[0-9]+");
+        return toTest.matches("\\d+");
     }
 }

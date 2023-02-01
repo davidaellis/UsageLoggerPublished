@@ -372,6 +372,7 @@ public class LoggerWithNotesService extends NotificationListenerService {
         }
     }
 
+
     @Override
     public void onDestroy() {
         super.onDestroy();

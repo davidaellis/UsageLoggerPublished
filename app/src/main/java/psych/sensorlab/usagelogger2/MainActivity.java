@@ -1,6 +1,7 @@
 package psych.sensorlab.usagelogger2;
 
 import android.Manifest;
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -13,6 +14,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.service.notification.NotificationListenerService;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -629,8 +632,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void sendEmail() {
-        Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);
-        intent.setType("text/plain");
+        Intent sendMail = new Intent(Intent.ACTION_SEND_MULTIPLE);
+        sendMail.setType("text/plain");
+        sendMail.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.email_subject));
+        if (BuildConfig.DEBUG) {
+            sendMail.putExtra(android.content.Intent.EXTRA_TEXT,
+                    securePreferences.getString("password", "not generated yet"));
+        }
 
         String dir = (getFilesDir() + File.separator);
         String authority = BuildConfig.APPLICATION_ID + ".fileprovider";
@@ -645,43 +653,39 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (contextFile.exists()) {
                 files.add(FileProvider.getUriForFile(this, authority, contextFile));
             }
-
             if (usageEvents.exists()) {
                 files.add(FileProvider.getUriForFile(this, authority, usageEvents));
             }
-
             if (continuous.exists()) {
                 files.add(FileProvider.getUriForFile(this, authority, continuous));
             }
 
             if (files.size() > 0) {
-                intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
-                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                sendMail.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
+                sendMail.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
                 sharedPreferences.edit().putInt("current_status", CONSTANTS.FILE_SENT).apply();
                 TextView view = findViewById(R.id.tvReport);
                 view.setText(R.string.study_fin);
-                stopServices();
 
-                startActivity(intent);
+                //at this point you'd normally stop the logging service, but this only works for a
+                //normal service. Because LoggerWithNotes implements the
+                //notificationlistenerservice it can't be stopped. Thus we can only stop the
+                //LoggerService here.
+                if (QRCodeProvided() && qrInput!=null) {
+                    if (!qrInput.continuousDataSource.contains("notification")) {
+                        stopService(new Intent(MainActivity.this, LoggerService.class));
+                    }
+                }
+                //start email intent
+                startActivity(sendMail);
+
             } else {
                 Timber.e("No files to upload");
             }
         }
         catch (Exception e){
             Timber.e(e.getLocalizedMessage());
-        }
-    }
-
-    private void stopServices() {
-        Intent loggingService;
-        if (QRCodeProvided() && qrInput!=null) {
-            if (!qrInput.continuousDataSource.contains("notification")) {
-                loggingService = new Intent(MainActivity.this, LoggerService.class);
-            } else {
-                loggingService = new Intent(MainActivity.this, LoggerWithNotesService.class);
-            }
-            stopService(loggingService);
         }
     }
 

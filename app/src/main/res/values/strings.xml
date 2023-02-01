@@ -6,7 +6,6 @@
     <string name="coll_context_data">Collecting data about what apps\nyou have installed etc.</string>
     <string name="coll_continuous_data">Collecting data about what you\nare using your phone for now</string>
     <string name="coll_past_usage_data">Collecting data about what you\npreviously used your phone for</string>
-    <string name="coll_end_no_email">Data collection has ended\nClick on NEXT STEP</string>
 
     <string name="study_fin">Study is complete</string>
     <string name="setup_status">Setup in progress…</string>
@@ -74,8 +73,6 @@
     <string name="close_app">Close App</string>
     <string name="see_pwd">See Password</string>
     <string name="read_qr">Read QR-Code</string>
-    <string name="finish_log">Finish logging</string>
-    <string name="send_email">Send Email</string>
     <string name="email_subject">Usage Logger 2 - Research data</string>
     <string name="click_read_qr">Click READ QR-CODE</string>
     <string name="notification_text">Collecting data, excluding notifications</string>

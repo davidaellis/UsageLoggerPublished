@@ -14,7 +14,8 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <!-- needed to get information about installed apps -->
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
     <queries>
         <intent>
             <action android:name="android.intent.action.MAIN" />
@@ -34,7 +35,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -43,7 +43,6 @@
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.QRScanner" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -84,7 +83,7 @@
         <!-- Sentry.io: replace with your own sentry account or remove here and sentry library in build.gradle -->
         <meta-data android:name="io.sentry.dsn" android:value="${SENTRY_IO_DSN_URL}" />
         <!-- Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring. Adjust value in production. -->
-        <meta-data android:name="io.sentry.traces.sample-rate" android:value="1.0" />
+        <meta-data android:name="io.sentry.traces.sample-rate" android:value="10.0" />
         <!-- Enable user interaction tracing to capture transactions for various UI events (such as clicks or scrolls). -->
         <meta-data android:name="io.sentry.traces.user-interaction.enable" android:value="true" />
 
