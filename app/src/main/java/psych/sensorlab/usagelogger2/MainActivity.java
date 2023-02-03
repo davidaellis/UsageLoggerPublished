@@ -670,8 +670,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 //at this point you'd normally stop the logging service, but this only works for a
                 //normal service. Because LoggerWithNotes implements the
-                //notificationlistenerservice it can't be stopped. Thus we can only stop the
-                //LoggerService here.
+                //notificationlistenerservice, it can't be stopped. Thus we can only stop the
+                //LoggerService, which is a normal service here.
                 if (QRCodeProvided() && qrInput!=null) {
                     if (!qrInput.continuousDataSource.contains("notification")) {
                         stopService(new Intent(MainActivity.this, LoggerService.class));
