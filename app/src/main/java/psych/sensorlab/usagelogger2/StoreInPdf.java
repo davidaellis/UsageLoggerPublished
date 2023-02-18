@@ -39,7 +39,7 @@ import timber.log.Timber;
 
 public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
 
-    StoreInPdf(MainActivity delegate) { this.delegate = delegate;}
+    StoreInPdf(MainActivity delegate) { this.delegate = delegate; }
 
     private final AsyncResult delegate;
     private LocalBroadcastManager localBroadcastManager;
@@ -93,7 +93,7 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                         dataDirection, generalData, CONSTANTS.PUTTING_CONTINUOUS_DATA_IN_PDF);
 
             default:
-                Timber.i("General data not detected");
+                Timber.d("General data not detected");
                 return new DataCollectionResult(false, dataDirection,
                         CONSTANTS.COLLECTING_CONTEXTUAL_DATA,
                         CONSTANTS.PUTTING_CONTINUOUS_DATA_IN_PDF);
@@ -391,7 +391,7 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
     private boolean storeContinuousData (File file, String password, Context context) throws
             FileNotFoundException, DocumentException {
 
-        Timber.i("Collecting continuous records");
+        Timber.d("Collecting continuous records");
 
         boolean appropriateSize = false;
         StoreInSQL storeInSQL;
