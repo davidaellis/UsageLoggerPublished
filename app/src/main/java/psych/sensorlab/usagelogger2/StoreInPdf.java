@@ -62,7 +62,7 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                 } catch (Exception e) {
                     Timber.e(e.getLocalizedMessage());
                 }
-                Timber.i("File exists: %s, permissions detected", file.exists());
+                Timber.d("File exists: %s, permissions detected", file.exists());
                 return new DataCollectionResult(appropriateLength && file.exists(),
                         dataDirection, generalData, CONSTANTS.PUTTING_CONTEXTUAL_DATA_IN_PDF);
 
@@ -75,13 +75,13 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                 } catch (Exception e) {
                     Timber.e(e.getLocalizedMessage());
                 }
-                Timber.i("File exists: %s - appropriateUsageLength: %s",
+                Timber.d("File exists: %s - appropriateUsageLength: %s",
                         appropriateUsageLength, file.exists());
                 return new DataCollectionResult(appropriateUsageLength && file.exists(),
                         dataDirection, generalData, CONSTANTS.PUTTING_USAGE_DATA_IN_PDF);
 
             case CONSTANTS.COLLECTING_CONTINUOUS_DATA:
-                Timber.i("Begin of packaging of continuous data");
+                Timber.d("Begin of packaging of continuous data");
                 file = new File(context.getFilesDir(), CONSTANTS.CONTINUOUS_FILE); //create PDF
                 boolean appropriateContinuousLength = false;
                 try {
@@ -107,8 +107,8 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
     private boolean storeContextualData (File file, Context context, int dataDirection,
         String password) throws DocumentException, FileNotFoundException {
 
-        int versionSDK = Build.VERSION.SDK_INT;
         String versionRelease = Build.VERSION.RELEASE;
+        String versionSDK = String.valueOf(android.os.Build.VERSION.SDK_INT);
 
         Document document = new Document();
         PdfWriter writer;
@@ -117,9 +117,9 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
         writer.setEncryption(password.getBytes(),null, PdfWriter.ALLOW_COPY, PdfWriter.ENCRYPTION_AES_256);
         document.open();
         document.setPageSize(PageSize.A4);
-        document.addTitle("Contextual Data");
+        document.addTitle(context.getString(R.string.contextual_data));
         document.addAuthor(context.getString(R.string.app_name));
-        document.addSubject("Android SDK: " + versionSDK + ", Version: " + versionRelease);
+        document.addSubject(context.getString(R.string.pdf_subject, versionSDK, versionRelease));
         document.add(new Chunk("")); //in case pdf is empty
         PdfPTable table;
 
@@ -226,19 +226,19 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                 if (contextualData.permissionNumber == table.size()) {
                     return true;
                 } else {
-                    Timber.i("Permissions number: %d - table size: %d", contextualData.permissionNumber, table.size());
+                    Timber.d("Permissions number: %d - table size: %d", contextualData.permissionNumber, table.size());
                     return false;
                 }
             } else {
                 if (contextualData.appNumber == table.size()) {
                     return true;
                 } else {
-                    Timber.i("App number: %d - table size: %d", contextualData.appNumber, table.size());
+                    Timber.d("App number: %d - table size: %d", contextualData.appNumber, table.size());
                     return false;
                 }
             }
         } else {
-            Timber.e("Document was not open when it came to querying the database");
+            Timber.e("Document not open when querying database");
             return false;
         }
     }
@@ -269,7 +269,7 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
         ArrayList<App_to_permission_to_response> allData = new ArrayList<>();
         int permissionNumber = 0;
 
-        @SuppressLint("QueryPermissionsNeeded")
+        //@SuppressLint("QueryPermissionsNeeded")
         final List<PackageInfo> appInstall= pm.getInstalledPackages(
                 PackageManager.GET_PERMISSIONS | PackageManager.GET_RECEIVERS |
                 PackageManager.GET_SERVICES | PackageManager.GET_PROVIDERS);
@@ -278,10 +278,10 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
             HashMap<String, Boolean> permissionsResponse = new HashMap<>(); //don't move
             final String[] permissions = pInfo.requestedPermissions;
             final int[] reaction = pInfo.requestedPermissionsFlags;
-            Timber.i("installed app:  %s", pInfo.applicationInfo.loadLabel(pm));
+            Timber.d("installed app:  %s", pInfo.applicationInfo.loadLabel(pm));
 
             if (permissions != null) {
-                Timber.i("number of permissions: %d, size of reaction: %d",
+                Timber.d("number of permissions: %d, size of reaction: %d",
                         permissions.length, reaction.length);
                 for (int i = 0; i <permissions.length; i++) {
                     permissionsResponse.put(permissions[i], reaction[i] == 3);
@@ -345,10 +345,10 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
     private boolean storeUsageData(File file, ArrayList<UsageRecord> recordedUsageEvent,
         String password, Context context) throws FileNotFoundException, DocumentException {
 
-        Timber.i("Collecting past usage records");
+        Timber.d("Collecting past usage records");
         boolean appropriateSize = false;
-        int versionSDK = android.os.Build.VERSION.SDK_INT;
         String versionRelease = android.os.Build.VERSION.RELEASE;
+        String versionSDK = String.valueOf(android.os.Build.VERSION.SDK_INT);
 
         Document document = new Document();
         PdfWriter writer;
@@ -357,9 +357,9 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
         writer.setEncryption(password.getBytes(),null, PdfWriter.ALLOW_COPY, PdfWriter.ENCRYPTION_AES_256);
         document.open();
         document.setPageSize(PageSize.A4);
-        document.addTitle("Usage Data");
+        document.addTitle(context.getString(R.string.usage_data));
         document.addAuthor(context.getString(R.string.app_name));
-        document.addSubject("Android SDK: " + versionSDK + ", Version: " + versionRelease);
+        document.addSubject(context.getString(R.string.pdf_subject, versionSDK, versionRelease));
         document.add(new Chunk("")); //in case pdf is empty
         PdfPTable table;
 
@@ -374,7 +374,7 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
                 table.addCell(String.valueOf(usageRecord.event));
             }
             document.add(table);
-            Timber.i("table size: %d - recordedUsageEvent size %d", table.size(), recordedUsageEvent.size());
+            Timber.d("table size: %d - recordedUsageEvent size %d", table.size(), recordedUsageEvent.size());
             if (table.size() == recordedUsageEvent.size()) {
                 appropriateSize = true;
             }
@@ -396,7 +396,7 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
         boolean appropriateSize = false;
         StoreInSQL storeInSQL;
         String versionRelease = android.os.Build.VERSION.RELEASE;
-        int versionSDK = android.os.Build.VERSION.SDK_INT;
+        String versionSDK = String.valueOf(android.os.Build.VERSION.SDK_INT);
 
         storeInSQL = new StoreInSQL(context, CONSTANTS.CONTINUOUS_DB_NAME, CONSTANTS.DB_VERSION,
                 CONSTANTS.CONTINUOUS_DB_TABLE);
@@ -414,9 +414,9 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
         writer.setEncryption(password.getBytes(), null, PdfWriter.ALLOW_COPY, PdfWriter.ENCRYPTION_AES_256);
         document.open();
         document.setPageSize(PageSize.A4);
-        document.addTitle("Continuous Data");
+        document.addTitle(context.getString(R.string.continuous_data));
         document.addAuthor(context.getString(R.string.app_name));
-        document.addSubject("Android SDK: " + versionSDK + ", Version: " + versionRelease);
+        document.addSubject(context.getString(R.string.pdf_subject, versionSDK, versionRelease));
         document.add(new Chunk("")); //in case pdf is empty
         PdfPTable table = new PdfPTable(2);
 
@@ -424,9 +424,10 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
             for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
                 table.addCell(String.valueOf(cursor.getLong(time)));
                 table.addCell(cursor.getString(event));
+                Timber.d("dbinsert: %s", cursor.getString(event));
             }
             document.add(table);
-            Timber.i("Size of table: %d - Size of SQLTable: %d", table.size(), cursor.getCount());
+            Timber.d("Size of table: %d - Size of SQLTable: %d", table.size(), cursor.getCount());
             if (table.size() == cursor.getCount()) {
                 appropriateSize = true;
             }

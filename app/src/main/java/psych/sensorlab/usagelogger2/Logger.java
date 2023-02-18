@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -33,7 +34,7 @@ import java.util.Set;
 import at.favre.lib.armadillo.Armadillo;
 import timber.log.Timber;
 
-public class LoggerWithNotesService extends NotificationListenerService {
+public class Logger extends NotificationListenerService {
 
     private BroadcastReceiver screenReceiver, appReceiver;
     private IdentifyAppInForeground identifyAppInForeground;
@@ -42,6 +43,9 @@ public class LoggerWithNotesService extends NotificationListenerService {
     private Handler handler;
     private String currentlyRunningApp;
     private SQLiteDatabase database;
+    int serviceType;
+    boolean restart;
+    String notificationText;
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
@@ -84,8 +88,11 @@ public class LoggerWithNotesService extends NotificationListenerService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        startForeground(1087384, DeclareInForeground());
         Bundle bundle = intent.getExtras();
+        serviceType = bundle.getInt("serviceType");
+        restart = bundle.getBoolean("restart");
+
+        startForeground(1087384, DeclareInForeground(serviceType));
 
         if (intent.getExtras() == null) {
             return START_STICKY;
@@ -95,12 +102,15 @@ public class LoggerWithNotesService extends NotificationListenerService {
             initializeComponents(bundle);
             initializeBroadcastReceivers();
 
-            onListenerConnected();
-            if (bundle.getBoolean("restart")) {
+            if (serviceType == 1) {
+                onListenerConnected();
+            }
+
+            if (restart) {
                 Handler restartHandler = new Handler();
-                Runnable documentRestart = () -> storeData("Phone restarted");
+                Runnable documentRestart = () -> storeData(getString(R.string.phone_restart));
                 restartHandler.postDelayed(documentRestart, 10 * CONSTANTS.LOGGING_INTERVAL_MS);
-                storeData("Phone restarted");
+                storeData(getString(R.string.phone_restart));
             }
         } catch (Exception e) {
             Timber.e(e);
@@ -108,12 +118,13 @@ public class LoggerWithNotesService extends NotificationListenerService {
         return START_STICKY;
     }
 
-    private Notification DeclareInForeground() {
+    @SuppressLint("UnspecifiedImmutableFlag")
+    private Notification DeclareInForeground(int serviceType) {
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            NotificationChannel channel = new NotificationChannel("ul2", getString(R.string.app_name),
-                    NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channel = new NotificationChannel("ul2",
+                    getString(R.string.app_name), NotificationManager.IMPORTANCE_DEFAULT);
             channel.enableLights(false);
             channel.enableVibration(false);
             channel.setSound(null, null);
@@ -125,17 +136,36 @@ public class LoggerWithNotesService extends NotificationListenerService {
             }
         }
 
-        NotificationCompat.Builder nfc = new NotificationCompat.Builder(getApplicationContext(),
-                "ul2")
+        if (serviceType == 1) {
+            notificationText = getString(R.string.notification_text_notes);
+        } else {
+            notificationText = getString(R.string.notification_text);
+        }
+
+        NotificationCompat.Builder nfc = new NotificationCompat.Builder(
+                getApplicationContext(),"ul2")
                 .setSmallIcon(R.drawable.ic_stat_name)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .setVisibility(NotificationCompat.VISIBILITY_SECRET)
                 .setContentTitle(getString(R.string.app_name))
-                .setContentText(getString(R.string.notification_text_notes))
+                .setContentText(notificationText)
                 .setOngoing(true)
                 .setWhen(System.currentTimeMillis());
+
+        //link back to app when user clicks on notification
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingIntent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        } else {
+            pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        }
+        nfc.setContentIntent(pendingIntent);
+        nfc.setDefaults(Notification.DEFAULT_ALL);
+
         return nfc.build();
     }
 
@@ -159,11 +189,17 @@ public class LoggerWithNotesService extends NotificationListenerService {
             password = securePreferences.getString("password", "no_pwd");
         }
 
+        for (String key: bundle.keySet()) {
+            Timber.d("bundle logger: %s", key);
+        }
+
         loggingDirection = new LoggingDirection(
                 bundle.getBoolean("screenLog"),
                 bundle.getBoolean("appLog"),
                 bundle.getBoolean("appChanges")
         );
+
+        Timber.d("loggingDirection: %s", loggingDirection);
 
         if (password == null || password.isEmpty() || password.equals("no_pwd")) {
             throw new Exception("Could not retrieve password");
@@ -177,7 +213,9 @@ public class LoggerWithNotesService extends NotificationListenerService {
         }
 
         handler = new Handler();
-        packageManager = getPackageManager();
+        if (serviceType == 1) {
+            packageManager = getPackageManager();
+        }
         currentlyRunningApp = getPackageName();
 
         identifyAppInForeground = new IdentifyAppInForeground();
@@ -200,9 +238,11 @@ public class LoggerWithNotesService extends NotificationListenerService {
                     if (intent.getAction() != null) {
                         String action = intent.getAction();
                         if (Intent.ACTION_SCREEN_OFF.equals(action)) {
-                            storeData("screen off");
+                            storeData(getString(R.string.screen_off));
                         } else if (Intent.ACTION_SCREEN_ON.equals(action)) {
-                            storeData("screen on");
+                            storeData(getString(R.string.screen_on));
+                        } else if (Intent.ACTION_USER_PRESENT.equals(action)) {
+                            storeData(getString(R.string.user_present));
                         }
                     }
                 }
@@ -211,15 +251,16 @@ public class LoggerWithNotesService extends NotificationListenerService {
             IntentFilter screenReceiverFilter = new IntentFilter();
             screenReceiverFilter.addAction(Intent.ACTION_SCREEN_OFF);
             screenReceiverFilter.addAction(Intent.ACTION_SCREEN_ON);
+            screenReceiverFilter.addAction(Intent.ACTION_USER_PRESENT);
             registerReceiver(screenReceiver, screenReceiverFilter);
         }
 
         if (loggingDirection.appChanges) {
             SharedPreferences sharedPreferences = getSharedPreferences("appPrefs", MODE_PRIVATE);
-            if(!sharedPreferences.getBoolean("initial_app_scan_done",false)){
+            if (!sharedPreferences.getBoolean("initial_app_scan_done", false)) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     sharedPreferences.edit().putStringSet("installed_apps", getInstalledApps())
-                    .putBoolean("initial_app_scan_done",true).apply();
+                            .putBoolean("initial_app_scan_done",true).apply();
                 } else {
                     sharedPreferences.edit().putStringSet("installed_apps", getInstalledAppsWorkAround())
                             .putBoolean("initial_app_scan_done",true).apply();
@@ -242,8 +283,8 @@ public class LoggerWithNotesService extends NotificationListenerService {
                             if (newAppListAdd.containsAll(oldAppListAdd)) {
                                 Set<String> newApps = identifyNewApp(oldAppListAdd, newAppListAdd);
                                 for (String newApp : newApps) {
-                                    Timber.i("New installed app: %s", newApp);
-                                    storeData("installed: " + newApp);
+                                    Timber.d("New installed app: %s", newApp);
+                                    storeData(getString(R.string.app_installed, newApp));
                                 }
                                 sharedPreferences.edit().putStringSet("installed_apps", newAppListAdd).apply();
                             } else {
@@ -260,7 +301,7 @@ public class LoggerWithNotesService extends NotificationListenerService {
                             if (oldAppListRemoved.containsAll(newAppListRemoved)) {
                                 Set<String> removedApps = identifyNewApp(newAppListRemoved, oldAppListRemoved);
                                 for (String removedApp : removedApps) {
-                                    storeData("uninstalled: " + removedApp);
+                                    storeData(getString(R.string.app_removed, removedApp));
                                 }
                                 sharedPreferences.edit().putStringSet("installed_apps", newAppListRemoved).apply();
                             } else {
@@ -338,7 +379,7 @@ public class LoggerWithNotesService extends NotificationListenerService {
 
     private Set<String> identifyNewApp(Set<String> shorterAppList, Set<String> largerAppList) {
         Set<String> newApp = new HashSet<>();
-        for(String app: largerAppList){
+        for (String app: largerAppList) {
             if(!shorterAppList.contains(app)){
                 newApp.add(app);
             }
@@ -353,9 +394,9 @@ public class LoggerWithNotesService extends NotificationListenerService {
 
             if (!appRunningInForeground.equals(currentlyRunningApp) &&
                     !appRunningInForeground.equals("not_real_app")) {
-                storeData("App: " + appRunningInForeground);
+                storeData(getString(R.string.app, appRunningInForeground));
                 currentlyRunningApp = appRunningInForeground;
-                Timber.i("App running in foreground: %s", appRunningInForeground);
+                Timber.d("App running in foreground: %s", appRunningInForeground);
             }
 
             handler.postDelayed(callIdentifyAppInForeground, CONSTANTS.LOGGING_INTERVAL_MS);
@@ -366,25 +407,17 @@ public class LoggerWithNotesService extends NotificationListenerService {
         ContentValues values = new ContentValues();
         values.put("time", System.currentTimeMillis());
         values.put("event", data);
-        Timber.i("notification data: %d - %s", System.currentTimeMillis(), data);
         if (database.isOpen()) {
+            Timber.d("inserting into db: %s in %s", values, CONSTANTS.CONTINUOUS_DB_TABLE);
             database.insert(CONSTANTS.CONTINUOUS_DB_TABLE,null, values);
         }
     }
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (database!=null) database.close();
-        if (screenReceiver!=null && loggingDirection.screenLog) {
-            unregisterReceiver(screenReceiver);
-        }
-        if (appReceiver!=null && loggingDirection.appChanges) {
-            unregisterReceiver(appReceiver);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            onListenerDisconnected();
-        }
+        if (database.isOpen()) database.close();
+        if (screenReceiver != null && loggingDirection.screenLog) unregisterReceiver(screenReceiver);
+        if (appReceiver != null && loggingDirection.appChanges) unregisterReceiver(appReceiver);
     }
 }

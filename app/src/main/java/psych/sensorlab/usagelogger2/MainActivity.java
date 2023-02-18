@@ -1,9 +1,7 @@
 package psych.sensorlab.usagelogger2;
 
 import android.Manifest;
-import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -14,8 +12,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.service.notification.NotificationListenerService;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -39,7 +35,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import at.favre.lib.armadillo.Armadillo;
-import io.sentry.Sentry;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AsyncResult {
@@ -525,6 +520,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
+        Timber.i("next data source: %s", nextDataSource);
         switch (nextDataSource){
             case "contextual":
                 progressBar.setVisibility(View.VISIBLE);
@@ -574,8 +570,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void startBackgroundLogging() {
 
         Intent toStartService;
+        int serviceType = 0;
 
-        if (qrInput == null) {
+        if (!sharedPreferences.getString("qrcode_info", "").isEmpty()) {
             Gson gson = new Gson();
             qrInput = gson.fromJson(sharedPreferences.getString("qrcode_info",
                     "Instructions not initialized"), QRInput.class);
@@ -585,20 +582,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 putBoolean("doing_background_logging", true).apply();
 
         //start logging (either with or without notification logging)
-        if (!qrInput.continuousDataSource.contains("notification")) {
-            toStartService = new Intent(this, LoggerService.class);
-        } else {
-            //start logger with notification data collection (LoggerWithNotesService)
-            toStartService = new Intent(this, LoggerWithNotesService.class);
+        if (qrInput.continuousDataSource.contains("notification")) {
+            //start logger with notification data collection
+            serviceType = 1;
         }
 
+        toStartService = new Intent(this, Logger.class);
         Bundle bundle = new Bundle();
         bundle.putString("password", securePreferences.getString("password", "not real password"));
         bundle.putBoolean("restart", false);
         bundle.putBoolean("screenLog", qrInput.continuousDataSource.contains("screen"));
         bundle.putBoolean("appLog", qrInput.continuousDataSource.contains("app"));
         bundle.putBoolean("appChanges", qrInput.continuousDataSource.contains("installed"));
+        bundle.putInt("serviceType", serviceType);
         toStartService.putExtras(bundle);
+
+        Timber.d("bundle: %s", bundle);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(toStartService);
@@ -612,8 +611,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     @Override
     public void processFinish(@NonNull DataCollectionResult output) {
-        Timber.i("data collection result. DataRetrieved: %d - Success: %s",
-                output.dataRetrieved, output.success);
+        Timber.i("data collection result. DataRetrieved: %d - Success: %s - source: %s",
+                output.dataRetrieved, output.success, output.dataSource);
         switch (output.dataSource){
             case CONSTANTS.COLLECTING_CONTEXTUAL_DATA:
                 if (output.task == CONSTANTS.PUTTING_CONTEXTUAL_DATA_IN_PDF){
@@ -636,6 +635,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sendMail.setType("text/plain");
         sendMail.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.email_subject));
         if (BuildConfig.DEBUG) {
+            //creates a warning, but can be ignored
             sendMail.putExtra(android.content.Intent.EXTRA_TEXT,
                     securePreferences.getString("password", "not generated yet"));
         }
@@ -668,14 +668,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 TextView view = findViewById(R.id.tvReport);
                 view.setText(R.string.study_fin);
 
-                //at this point you'd normally stop the logging service, but this only works for a
-                //normal service. Because LoggerWithNotes implements the
-                //notificationlistenerservice, it can't be stopped. Thus we can only stop the
-                //LoggerService, which is a normal service here.
                 if (QRCodeProvided() && qrInput!=null) {
-                    if (!qrInput.continuousDataSource.contains("notification")) {
-                        stopService(new Intent(MainActivity.this, LoggerService.class));
-                    }
+                    stopService(new Intent(MainActivity.this, Logger.class));
                 }
                 //start email intent
                 startActivity(sendMail);

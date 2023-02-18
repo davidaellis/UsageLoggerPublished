@@ -1,7 +1,17 @@
 <resources>
     <string name="app_name">Usage Logger 2</string>
-    <string name="service_desc1">Logging Service with Notifications</string>
-    <string name="service_desc2">Logging Service</string>
+    <string name="service_desc">Logging Service</string>
+    <string name="phone_restart">Phone restarted</string>
+    <string name="screen_off">Screen off</string>
+    <string name="screen_on">Screen on</string>
+    <string name="user_present">User present</string>
+    <string name="app_installed">App installed: %s</string>
+    <string name="app_removed">App uninstalled: %s</string>
+    <string name="app">App: %s</string>
+    <string name="continuous_data">Continuous Data</string>
+    <string name="usage_data">Usage Data</string>
+    <string name="contextual_data">Contextual Data</string>
+    <string name="pdf_subject">Android SDK: %s, Version: %s</string>
 
     <string name="coll_context_data">Collecting data about what apps\nyou have installed etc.</string>
     <string name="coll_continuous_data">Collecting data about what you\nare using your phone for now</string>
