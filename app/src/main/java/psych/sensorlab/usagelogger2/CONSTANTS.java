@@ -79,8 +79,7 @@ class CONSTANTS {
 
             PUTTING_CONTEXTUAL_DATA_IN_PDF = 1,
             PUTTING_USAGE_DATA_IN_PDF = 2,
-            ERROR_EXPERIENCED_IN_ASYNC = 3,
-            PUTTING_CONTINUOUS_DATA_IN_PDF = 4,
+            PUTTING_CONTINUOUS_DATA_IN_PDF = 3,
 
             LOGGING_INTERVAL_MS = 1000,
             DB_VERSION = 1;
