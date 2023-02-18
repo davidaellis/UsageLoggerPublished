@@ -5,6 +5,7 @@ import android.content.Context;
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteOpenHelper;
 
+@SuppressWarnings("SameParameterValue")
 class StoreInSQL extends SQLiteOpenHelper {
 
     private final String SQL_CREATE_ENTRIES, SQL_DELETE_ENTRIES;

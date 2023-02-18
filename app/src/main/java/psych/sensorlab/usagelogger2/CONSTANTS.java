@@ -34,8 +34,8 @@ class CONSTANTS {
         }
     }
 
-    public static String STARTFOREGROUND_ACTION = "psych.sensorlab.usagelogger2.action.startforeground";
-    public static String STOPFOREGROUND_ACTION = "psych.sensorlab.usagelogger2.action.stopforeground";
+    public static final String STARTFOREGROUND_ACTION = "psych.sensorlab.usagelogger2.action.startforeground";
+    public static final String STOPFOREGROUND_ACTION = "psych.sensorlab.usagelogger2.action.stopforeground";
 
     static final String
             CONTEXT_FILE = "context.pdf",
