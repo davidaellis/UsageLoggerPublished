@@ -88,33 +88,41 @@ public class Logger extends NotificationListenerService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        Bundle bundle = intent.getExtras();
-        serviceType = bundle.getInt("serviceType");
-        restart = bundle.getBoolean("restart");
+        if (intent.getAction() != null && intent.getAction().equals(CONSTANTS.STARTFOREGROUND_ACTION)) {
 
-        startForeground(1087384, DeclareInForeground(serviceType));
+            Bundle bundle = intent.getExtras();
+            serviceType = bundle.getInt("serviceType");
+            restart = bundle.getBoolean("restart");
+            startForeground(1087384, DeclareInForeground(serviceType));
 
-        if (intent.getExtras() == null) {
-            return START_STICKY;
-        }
-
-        try {
-            initializeComponents(bundle);
-            initializeBroadcastReceivers();
-
-            if (serviceType == 1) {
-                onListenerConnected();
+            if (intent.getExtras() == null) {
+                return START_STICKY;
             }
 
-            if (restart) {
-                Handler restartHandler = new Handler();
-                Runnable documentRestart = () -> storeData(getString(R.string.phone_restart));
-                restartHandler.postDelayed(documentRestart, 10 * CONSTANTS.LOGGING_INTERVAL_MS);
-                storeData(getString(R.string.phone_restart));
+            try {
+                initializeComponents(bundle);
+                initializeBroadcastReceivers();
+
+                if (serviceType == 1) {
+                    onListenerConnected();
+                }
+
+                if (restart) {
+                    Handler restartHandler = new Handler();
+                    Runnable documentRestart = () -> storeData(getString(R.string.phone_restart));
+                    restartHandler.postDelayed(documentRestart, 10 * CONSTANTS.LOGGING_INTERVAL_MS);
+                    storeData(getString(R.string.phone_restart));
+                }
+            } catch (Exception e) {
+                Timber.e(e);
             }
-        } catch (Exception e) {
-            Timber.e(e);
         }
+
+        if (intent.getAction() != null && intent.getAction().equals(CONSTANTS.STOPFOREGROUND_ACTION)) {
+            stopForeground(true);
+            stopSelf();
+        }
+
         return START_STICKY;
     }
 

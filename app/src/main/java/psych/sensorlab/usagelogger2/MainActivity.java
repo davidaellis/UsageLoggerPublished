@@ -587,7 +587,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             serviceType = 1;
         }
 
-        toStartService = new Intent(this, Logger.class);
+        Intent startIntent = new Intent(MainActivity.this, Logger.class);
+        startIntent.setAction(CONSTANTS.STARTFOREGROUND_ACTION);
+
         Bundle bundle = new Bundle();
         bundle.putString("password", securePreferences.getString("password", "not real password"));
         bundle.putBoolean("restart", false);
@@ -595,14 +597,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bundle.putBoolean("appLog", qrInput.continuousDataSource.contains("app"));
         bundle.putBoolean("appChanges", qrInput.continuousDataSource.contains("installed"));
         bundle.putInt("serviceType", serviceType);
-        toStartService.putExtras(bundle);
+        startIntent.putExtras(bundle);
 
         Timber.d("bundle: %s", bundle);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(toStartService);
+            startForegroundService(startIntent);
         } else {
-            startService(toStartService);
+            startService(startIntent);
         }
     }
 
@@ -669,7 +671,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 view.setText(R.string.study_fin);
 
                 if (QRCodeProvided() && qrInput!=null) {
-                    stopService(new Intent(MainActivity.this, Logger.class));
+
+                   // stopService(new Intent(MainActivity.this, Logger.class));
+                    Intent stopIntent = new Intent(MainActivity.this, Logger.class);
+                    stopIntent.setAction(CONSTANTS.STOPFOREGROUND_ACTION);
+                    startService(stopIntent);
                 }
                 //start email intent
                 startActivity(sendMail);
