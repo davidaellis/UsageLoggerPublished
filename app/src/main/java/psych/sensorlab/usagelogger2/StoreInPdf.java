@@ -267,7 +267,6 @@ public class StoreInPdf extends AsyncTask<Object, Integer, Object> {
         ArrayList<App_to_permission_to_response> allData = new ArrayList<>();
         int permissionNumber = 0;
 
-        //@SuppressLint("QueryPermissionsNeeded")
         final List<PackageInfo> appInstall= pm.getInstalledPackages(
                 PackageManager.GET_PERMISSIONS | PackageManager.GET_RECEIVERS |
                 PackageManager.GET_SERVICES | PackageManager.GET_PROVIDERS);

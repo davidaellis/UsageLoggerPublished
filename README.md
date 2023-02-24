@@ -11,13 +11,11 @@ Geyer, K., Ellis, D. A., Shaw, H., & Davidson, B. I. (2020, July 21). *Open sour
 
 ### Other resources
 
-<!-- - Android App on [Google Play Store](https://play.google.com/store/apps/details?id=psych.sensorlab.useagelogger2).-->
-- Android App on [Google Play Store](https://play.google.com/store/apps/details?id=geyerk.sensorlab.suselogger). *Currently only previous version!*
+- Android App on [Google Play Store](https://play.google.com/store/apps/details?id=psych.sensorlab.usagelogger2). 
 - [Walkthrough](https://usagelogger2.netlify.app/walkthrough) how the app works.
 - [Customise](https://usagelogger2.netlify.app/customise/) what data the app collects.
 - [Decrypt & Convert](https://usagelogger2.netlify.app/decrypt/) collected data.
 - [Sample data and scripts](https://github.com/davidaellis/UsageLoggerPublished/tree/master/sample%20data%20and%20scripts) for analysis.
-- Watch a [video](https://www.youtube.com/watch?v=VET3PkaNayo&amp;feature=youtu.be) about the **initial development** of the app (Version 1).
 - [Privacy Policy](https://usagelogger2.netlify.app/privacy/)
 
 ## Customisation
