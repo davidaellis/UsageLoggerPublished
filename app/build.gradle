@@ -9,8 +9,8 @@ android {
         applicationId "psych.sensorlab.usagelogger2"
         minSdkVersion 21 //Android 5.0
         targetSdkVersion 33 //Android 13
-        versionCode 5
-        versionName "1.104"
+        versionCode 6
+        versionName "1.105"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
