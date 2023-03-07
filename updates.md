@@ -1,5 +1,6 @@
 Last updated 07/03/2023
 
+Updates to App
 - added back missing QR Scanner activity
 - added additional permission and hardware requirements to comply with Android 12+
 - added sqlcipher rules
@@ -21,7 +22,7 @@ Last updated 07/03/2023
 - fixed continuous logging for minimal configurations
 - fixed service stop after study completion
 
-Changes to supporting websites
+Updates to supporting websites 
 - setup new netlify account and moved sites accordingly
 - updated instructions
 - updated app screenshots
