@@ -36,16 +36,14 @@
 
     <div class="new_section">
         <h2>Introduction</h2>
-        <p>Usage Logger 2 is an Android app that records or extracts data about how a person uses their smartphone. Primarily developed to assist with psychological research and behavioural science more generally, the app can be customised to perform a number of different functions. This includes the ability to extract historical data about previous (retrospective) usage from the previous 5 days.</p>
+        <p>Usage Logger 2 is an Android app that records or extracts data about how a person uses their smartphone. Primarily developed to assist with psychological research and behavioural science more generally, the app can be customised to perform a number of different functions. This includes the ability to extract historical data about previous (retrospective) usage from the previous 1-5 days.</p>
 
         <h3>Publications</h3>
+        <p>Geyer, K., Ellis, D. A., Shaw, H., Davidson, B. I., & Keil, T. F. (2023, March 7). <em>Open source smartphone app and tools for measuring, quantifying, and visualizing technology use</em>. PsyArXiv. doi: <a href="https://doi.org/10.31234/osf.io/eqhfa">10.31234/osf.io/eqhfa</a></p>
         <p>Geyer, K., Ellis, D.A., Shaw, H. and Davidson, B. I. (2022) Open-source smartphone app and tools for measuring, quantifying, and visualizing technology use. <em>Behavior Research Methods</em>, 54(1), 1-12. doi: <a href="https://link.springer.com/article/10.3758/s13428-021-01585-7">10.3758/s13428-021-01585-7</a></p>
-        <p>Geyer, K., Ellis, D. A., Shaw, H., & Davidson, B. I. (2020, July 21). <em>Open source smartphone app and tools for measuring, quantifying, and visualizing technology use</em>. PsyArXiv. doi: <a href="https://doi.org/10.31234/osf.io/eqhfa">10.31234/osf.io/eqhfa</a></p>
-
         <h3>Other resources</h3>
         <ul>
             <li>Android App on <a href="https://play.google.com/store/apps/details?id=psych.sensorlab.usagelogger2">Google Play Store</a>.</li>
-            <li>Developer <a href="https://www.youtube.com/watch?v=VET3PkaNayo&amp;feature=youtu.be">video</a> about the app.</li>
             <li><a href="../customise/">Customise</a> what data the app collects.</li>
             <li><a href="../decrypt/">Decrypt</a> collected data.</li>
             <li><a href="https://github.com/daviaellis/UsageLoggerPublished/tree/master/Data">Sample data and scripts</a>  for analysis.</li>
@@ -65,9 +63,9 @@
         <h4>1) Contextual Data</h4>
         <p>Contextual data provides a researcher with a snapshot of what software is installed on the smartphone. Data captured can include:</p>
         <ul>
-            <li>Apps installed: What apps are installed on the device.</li>
-            <li>Permissions requested: What permissions have been requested by which apps. Permissions provide access to particular restricted data like phone call logs or location. See <a href="https://developer.android.com/guide/topics/permissions/overview" target="_blank">here</a> for more information.</li>
-            <li>Response to permission request: Has the user provided the permission or not.</li>
+            <li>Apps installed: What apps are installed on the device?</li>
+            <li>Permissions requested: What permissions have been requested by which apps? Permissions provide access to particular restricted data like phone call logs or location. See <a href="https://developer.android.com/guide/topics/permissions/overview" target="_blank">here</a> for more information.</li>
+            <li>Response to permission request: Has the user provided the permission or not?</li>
         </ul>
 
         <h4>2) Continuous Logging</h4>
@@ -85,11 +83,11 @@
 
         <h3>Customise Order</h3>
         <p>Customise the order in which the data is collected by dragging and dropping the text on the right hand of the screen that appears after you have demonstrated that you want a piece of data collected.</p>
-        <p>If you have fully populated the forms in the website, it might look something like this.</p>
+        <p>If you have checked all the options on the website, it may look something like this.</p>
         <p><a data-fslightbox="gallery" href="../assets/img/walkthrough/custom_options.png"><img src="../assets/img/walkthrough/custom_options.png" alt="custom_options" class="app_img_large"></a></p>
 
         <h3>Create QR-Code</h3>
-        <p>Clicking the 'Create QR-Code' button will generate a QR-code image. This is required to customise the app. Users must scan the QR-code from within the app, which will then start the data collection process. The QR-code can also be downloaded, which is useful if you want to reuse the same configuration settings in the future.</p>
+        <p>Clicking the 'Create QR-Code' button will generate a QR-Code image. This is required to customise the app. Users must scan the QR-Code from within the app, which will then start the data collection process. The QR-Code can also be downloaded, which is helpful if you want to reuse the same configuration settings in the future.</p>
     </div>
 
     <div class="new_section" id="app">
@@ -98,55 +96,77 @@
         <h2>Android App</h2>
         <p>The app can be found on Google Play Store:<br>
         <a href='https://play.google.com/store/apps/details?id=psych.sensorlab.usagelogger2'><img alt='Get it on Google Play' src='../assets/img/walkthrough/google-play-badge.png' width="220" /></a></p>
-        <p>All participants will need to install this app by going to page in the google play store pressing install. When opening the app it should look like this.</p>
+        <p>Users can install the app by visiting the google play store listing. When opening the app it will first display a message informing the user that the app is only intended for scientific research.</p>
         <p><a data-fslightbox="gallery" href="../assets/img/walkthrough/home.png"><img src="../assets/img/walkthrough/home.png" alt="home" class="app_img"></a></p>
-        <p>The participant will be informed that this app is only intended for scientific research.</p>
-        <p>Then the phone will request access to the camera permission. This is essential to scan the QR-Code. </p>
-        <p><a data-fslightbox="gallery" href="../assets/img/walkthrough/camera_perm.png"><img src="../assets/img/walkthrough/camera_perm.png" alt="camera_perm" class="app_img"></a></p>
-        <p>What appears next will be dependent on the type of phone that the participant has, newer phones will ask if permission should only be granted this time or every time when using this app; either is acceptable. Afterwards participants will be asked to press the read QR-Code button to scan the QR-Code required (produced by the customisation website; see above).</p>
-        <p>After the QR-Code is scanned, it will inform the participant again that this is only intended for use for scientific research</p>
-        <p>Then the participant will receive a message about what data will be collected by the app</p>
-        <p><a data-fslightbox="gallery" href="../assets/img/walkthrough/instructions.png"><img src="../assets/img/walkthrough/instructions.png" alt="instructions" class="app_img"></a></p>
-        <p>Another message will appear describing the data security to the participant. For a detailed guide of the security please see the preprint.</p>
-        <p><a data-fslightbox="gallery" href="../assets/img/walkthrough/data_security.png"><img src="../assets/img/walkthrough/data_security.png" alt="data_security" class="app_img"></a></p>
-        <p>The participant will be informed about all the permission that is required to carry out the data collection. This will be either Usage permission or notification listing permission or both. </p>
-        <p>A password will then appear. This can be seen again at any point when the participant presses on the "See password" button.</p>
-        <p><a data-fslightbox="gallery" href="../assets/img/walkthrough/password.png"><img src="../assets/img/walkthrough/password.png" alt="password" class="app_img"></a></p>
+        <p>The user is then informed that the app would like to use the device's built-in camera. For this, permission to access the device's camera is required. This permission is essential in order to scan the QR-Code.</p>
+        <p>
+            <a data-fslightbox="gallery" href="../assets/img/walkthrough/camera_perm.png"><img src="../assets/img/walkthrough/camera_perm.png" alt="camera_perm" class="app_img"></a>
+            <a data-fslightbox="gallery" href="../assets/img/walkthrough/camera_perm2.png"><img src="../assets/img/walkthrough/camera_perm2.png" alt="camera_perm2" class="app_img"></a>
+        </p>
+        <p>Users will then be asked to press the "READ QR-CODE" button to scan the QR-Code provided by the researcher (produced by the customisation website; see above).</p>
+        <p>
+            <a data-fslightbox="gallery" href="../assets/img/walkthrough/next_qrcode.png"><img src="../assets/img/walkthrough/next_qrcode.png" alt="read_qrcode" class="app_img"></a>
+            <a data-fslightbox="gallery" href="../assets/img/walkthrough/qr_code.png"><img src="../assets/img/walkthrough/qr_code.png" alt="qr_code" class="app_img"></a>
+        </p>
+        <p>After the QR-Code is scanned, the user will again be informed that data collection is only intended for scientific research. They will also be informed about what data is going to be collected by the app (which depends on how the QR-Code was previously configured). The image below shows a message that would be displayed for a configuration that collects all three data types.</p>
+        <p>
+            <a data-fslightbox="gallery" href="../assets/img/walkthrough/attention.png"><img src="../assets/img/walkthrough/attention.png" alt="attention" class="app_img"></a>
+            <a data-fslightbox="gallery" href="../assets/img/walkthrough/instructions.png"><img src="../assets/img/walkthrough/instructions.png" alt="instructions" class="app_img"></a>
+        </p>
 
-        <h3>Permissions</h3>
-        <p>We will then have to accept all the permissions involved:</p>
+        <h3>Data Security and Permissions</h3>
+        <p>Next, the user will be informed about data security. For a detailed guide of the security features implemented by the app, please consult the preprint and/or publication.</p>
+        <p>
+            <a data-fslightbox="gallery" href="../assets/img/walkthrough/data_security.png"><img src="../assets/img/walkthrough/data_security.png" alt="data_security" class="app_img"></a>
+            <a data-fslightbox="gallery" href="../assets/img/walkthrough/req_perms.png"><img src="../assets/img/walkthrough/req_perms.png" alt="req_permissions" class="app_img"></a>
+        </p>
+
+        <p>Then, information about which permissions are required to carry out the data collection is shown. This may include the collection of usage and notification data and permission to show notifications (* "show notification" permissions are only requested from Android 13 and above).</p>
+        <p>The user is forwarded to the settings that allow them to permit the required permissions. The look and feel of the permission settings may vary slightly depending on the Android version installed.</p>
 
         <h3>Notification permission</h3>
-        <p>For the notification permission, the participant will initially informed what is involved.</p>
-        <p><a data-fslightbox="gallery" href="../assets/img/walkthrough/req_note_perm.png"><img src="../assets/img/walkthrough/req_note_perm.png" alt="req_note_perm" class="app_img"></a></p>
-        <p>Then they will have to select from the apps that request the permission notification logger</p>
-        <p><a data-fslightbox="gallery" href="../assets/img/walkthrough/notification_access.png"><img src="../assets/img/walkthrough/notification_access.png" alt="notification_access" class="app_img"></a></p>
-        <p>On selecting usage logger, a screen like this or something similar should appear</p>
-        <p><a data-fslightbox="gallery" href="../assets/img/walkthrough/notification_access2.png"><img src="../assets/img/walkthrough/notification_access2.png" alt="notification_access2" class="app_img"></a></p>
-        <p>The participant will then come into a screen where they only see a checkbox that say "Allow notification access". </p>
-        <p><a data-fslightbox="gallery" href="../assets/img/walkthrough/notification_access3.png"><img src="../assets/img/walkthrough/notification_access3.png" alt="notification_access3" class="app_img"></a></p>
-        <p>A warning message will appear from Android informing of all the potential security problems that emerge as a result. While, this permission provides wide ranging capabilities, this app only record which app is providing notifications and when.</p>
-        <p>After the participant enables this permission they will return to the app, if they press back.<b> Please do not exit the app to the home screen</b> this may interfere with the running of the app. Instead, just press back after you have accepted this permission</p>
+        <p>For the notification permission, the user will is informed of what this involves. They will then have to select enable "notification access" for the Usage Logger app.</p>
+        <p>
+            <a data-fslightbox="gallery" href="../assets/img/walkthrough/req_note_perm.png"><img src="../assets/img/walkthrough/req_note_perm.png" alt="req_note_perm" class="app_img"></a>
+            <a data-fslightbox="gallery" href="../assets/img/walkthrough/notification_access.png"><img src="../assets/img/walkthrough/notification_access.png" alt="notification_access" class="app_img"></a
+        ></p>
+        <p>On enabling "notification access" for the Usage Logger app, a warning message may appear informing the user of all potential security problems that emerge as a result. While this permission provides wide-ranging capabilities, this app only records when and which app is providing notifications. Here, the user will have to confirm the permission request by selecting "Allow".</p>
+        <p>
+            <a data-fslightbox="gallery" href="../assets/img/walkthrough/notification_access3.png"><img src="../assets/img/walkthrough/notification_access3.png" alt="notification_access3" class="app_img"></a>
+            <a data-fslightbox="gallery" href="../assets/img/walkthrough/notification_access2.png"><img src="../assets/img/walkthrough/notification_access2.png" alt="notification_access2" class="app_img"></a>
+        </p>
+        <p>After the user enables this permission, they need to return to the app. This can be achieved by pressing the back arrow at the bottom of the screen (depending on the Android OS, in some cases the back button may be at the top of the screen). <b>Important:</b> The user should not exit the app to the home screen, as this may interfere with the running of the app. Instead, they should just press back after having accepted this permission.</p>
 
         <h3>Usage permission</h3>
-        <p>When back at the app, if the participant is required to give the usage permission (which allows for monitoring of the app usage) they will see a pop up (like below) asking them to provide usage permission. If usage permission usage is not required then the app will simply start working (described below).</p>
-        <p>The usage access permission works in a very similar fashion as notification permission. The participants will initially given a message about what permission is required and what it is used for. </p>
-        <p><a data-fslightbox="gallery" href="../assets/img/walkthrough/req_use_perm.png"><img src="../assets/img/walkthrough/req_use_perm.png" alt="req_usage_perm" class="app_img"></a></p>
-        <p>Then the participant will have to click on Usage Logger from the list of apps that want this permission. And then click on permit usage access. No message will appear on doing this.</p>
-        <p><a data-fslightbox="gallery" href="../assets/img/walkthrough/usage_perm2.png"><img src="../assets/img/walkthrough/usage_perm2.png" alt="usage_perm2" class="app_img"></a></p>
-        <p>After the participant enables this permission they will return to the app, if they press back.<b> Please do not exit the app to the home screen</b> this may interfere with the running of the app. Instead, just press back after you have accepted this permission</p>
+        <p>Upon returning to the app, the user may be requested to allow usage access. If usage permission is not requested, then the app will simply start working (as described below). Similar to the notification permission, the users will initially be shown a message about what permission is required and what it is used for. After confirming the message, the user must select the Usage Logger listing in order to grant usage permission for this app.</p>
+        <p>
+            <a data-fslightbox="gallery" href="../assets/img/walkthrough/usage_perm.png"><img src="../assets/img/walkthrough/usage_perm.png" alt="usage_perm2" class="app_img"></a>
+            <a data-fslightbox="gallery" href="../assets/img/walkthrough/usage_perm2.png"><img src="../assets/img/walkthrough/usage_perm2.png" alt="usage_perm2" class="app_img"></a>
+        </p>
+
+        <p>Then the user will need to enable "Permit usage access" and return to the app as before. This can be achieved by pressing the back arrow twice at the bottom of the screen (depending on the Android OS, in some cases, the back button may be at the top of the screen).</p>
+        <p>
+            <a data-fslightbox="gallery" href="../assets/img/walkthrough/usage_perm3.png"><img src="../assets/img/walkthrough/usage_perm3.png" alt="usage_perm3" class="app_img"></a>
+            <a data-fslightbox="gallery" href="../assets/img/walkthrough/usage_perm4.png"><img src="../assets/img/walkthrough/usage_perm4.png" alt="usage_perm4" class="app_img"></a>
+        </p>
+        <p>Upon returning to the app, the user should now see a confirmation message informing them that the setup is now complete.</p>
+        <p>
+            <a data-fslightbox="gallery" href="../assets/img/walkthrough/setup_complete.png"><img src="../assets/img/walkthrough/setup_complete.png" alt="setup_complete" class="app_img"></a>
+        </p>
 
         <h3>Running of the app</h3>
-        <p>Because of the customisation website output (see above), the app will collect contextual data, then usage data and finally initiate contextual logging. As a result, the app very quickly recorded the context and past usage. Messages may quickly appear in the background about what is being recorded but this will only last for a second or so. </p>
-        <p><a data-fslightbox="gallery" href="../assets/img/walkthrough/contextual_data.png"><img src="../assets/img/walkthrough/contextual_data.png" alt="contextual_data" class="app_img"></a></p>
-        <p>If the app had been customised to perform the continual logging of smartphone usage then the app would start doing this. When the participant presses next steps, continual recording stops and the rest of the data is collected. </p>
-        <p>When the participant sees a screen denoting that "Status: Phone usage monitoring ongoing". Then the data is being collected in the background. There is also a notification in the status bar which informs the participant that data is being collected in the background. </p>
-        <p><a data-fslightbox="gallery" href="../assets/img/walkthrough/continuous_usage.png"><img src="../assets/img/walkthrough/continuous_usage.png" alt="continuous_usage" class="app_img"></a></p>
-        <p>When the data collecting is finished, the participant should press the "next step" button and a popup will inform them the final stage is to send the email to the researcher and do they wish to proceed? If they click OK, they will be asked to select an app to supply the encrypted pdf to. We recommend Gmail.</p>
-        <p><a data-fslightbox="gallery" href="../assets/img/walkthrough/send_email.png"><img src="../assets/img/walkthrough/send_email.png" alt="send_email" class="app_img"></a></p>
-        <p><a data-fslightbox="gallery" href="../assets/img/walkthrough/send_data_to.png"><img src="../assets/img/walkthrough/send_data_to.png" alt="send_data_to" class="app_img"></a></p>
-        <p>These are various apps that can be shared with but we have only tested with gmail.</p>
-        <p>The participant needs to communicate the password with the researcher. This should not be done via gmail or some other platform that is also used to send the data. If that method of communication is comprised then the participant's data is quite possibly reported. We recommend using Qualtrics, MTurk or some other platform used to securely record the response for questionnaires. </p>
+        <p>Depending on how the app was customised (see above), the app may collect contextual and past usage data and continiously monitor and log current use. As a result, the app quickly scans the phone to collect contextual and past usage data. Therefore, messages to show which data is being collected may only be shown very briefly. </p>
+        <p>
+            <a data-fslightbox="gallery" href="../assets/img/walkthrough/contextual_data.png"><img src="../assets/img/walkthrough/contextual_data.png" alt="contextual_data" class="app_img"></a>
+            <a data-fslightbox="gallery" href="../assets/img/walkthrough/continuous_usage.png"><img src="../assets/img/walkthrough/continuous_usage.png" alt="continuous_usage" class="app_img"></a>
+        </p>
+        <p>The app will continue to show that it is currently collecting data, if continuous logging is configured. This data is collected in the background, even if the user closes the app. The user is informed of this through a notification in the status bar.</p>
+        <p>When the user presses "NEXT STEP," logging stops, and the rest of the data is collected. A popup will then ask the user to confirm that they wish to end data collection and send the data to the researcher. Upon confirmation, they will be asked to select an appropriate app (which apps are shown depends on which apps are installed on the device) to send the encrypted data files (PDFs) to the researcher.</p>
+        <p>
+            <a data-fslightbox="gallery" href="../assets/img/walkthrough/send_email.png"><img src="../assets/img/walkthrough/send_email.png" alt="send_email" class="app_img"></a>
+            <a data-fslightbox="gallery" href="../assets/img/walkthrough/send_data_to.png"><img src="../assets/img/walkthrough/send_data_to.png" alt="send_data_to" class="app_img"></a>
+        </p>
+        <p>After sending the data, the user needs to communicate the password to the researcher in order for them to be able to decrypt the data. The password is shown to the user by pressing the button "SEE PASSWORD." The password should not be sent via Email or any other platform that was also used to send the data. Qualtrics or some other secure platform can be used to record this information.</p>
     </div>
 
     <div class="new_section" id="decryption">
@@ -154,17 +174,17 @@
         <div style="float:right"><a href="#intro">top</a></div>
         <h2>Decryption and Conversion</h2>
         <p>The decrypt and convert webpage can be found <a href="https://usagelogger2.netlify.com/decrypt/">here</a>.</p>
-        <p>At this point, the data has been collected and sent to the researcher. However it still needs to be decrypted and converted to a suitable file format. While, you can open the file then enter the password and have access to the pdf table. The pdf table format of the data is not easy to analyse, it needs to be converted into a csv or other format. Various R and python packages that are employed can be used. But the packages don't seem to function well with the usage logger output. This is because those packages typically do not pay attention to the cell division and instead focus on what is on the same line. Therefore, if a long app name requires two lines then half of the name may be entered into a different row and therefore, it can be double-counted. </p>
-        <p>This website, handles the decryption process specifically for the output of usage logger to avoid such errors. We strongly advise that you use it to decrypt your data</p>
+        <p>At this point, the data has been collected and sent to the researcher. However, it still needs to be decrypted and converted to a suitable file format. While you can open the file by entering the password, the table format of the data is not easy to analyse. It is best converted to a CSV or other format. Various R and python packages can be used, but most packages don't seem to function well with the Usage Logger output. This is because these packages typically do not support two-column or multi-line data. Therefore, if a long app name requires two lines, half the text may be listed on a new line and may thus be counted twice.</p>
+        <p>This website handles the decryption process specifically for the output of the Usage Logger.</p>
         <p><a data-fslightbox="gallery" href="../assets/img/walkthrough/decrypt_website.png"><img src="../assets/img/walkthrough/decrypt_website.png" alt="decrpyt_website" class="app_img_large"></a></p>
-        <p>To decrypt the data that you have collected from usage logger simply click on 'select PDF' button, if you have chosen a pdf file then you will be transported to a screen where you will be asked to insert a password. Please supply the associated password, after this process is complete you should automatically have a csv file dropped into your folder with the cleaned data. It will have the same name as the file which you have supplied it. </p>
+        <p>To decrypt the Usage Logger data, simply click on the 'Select PDF' button. Once you have selected a PDF file from your computer, you will be prompted to insert a password. Upon entering the correct password, the PDF is automatically converted to a CSV file and downloaded to your standard browser download folder.</p>
     </div>
 
     <div class="new_section" id="analysis">
 
         <div style="float:right"><a href="#intro">top</a></div>
         <h2>Analysis</h2>
-        <p>The analysis can be carried out in python and R. For python there are notebooks that are in github which are analyse either the :</p>
+        <p>The analysis can be carried out in python and R. For Python, there are <a href="https://jupyter.org/">Jupyter</a> Notebooks available in the Github repository. These can be used to analyse:</p>
         <ul>
             <li><a href="https://github.com/davidaellis/UsageLoggerPublished/tree/master/sample%20data%20and%20scripts/Python/context_analysis.ipynb">Contextual Data Analysis</a></li>
             <li><a href="https://github.com/davidaellis/UsageLoggerPublished/tree/master/sample%20data%20and%20scripts/Python/continuous_analysis.ipynb">Continuous Logging Analysis</a></li>
@@ -176,7 +196,7 @@
     <div class="new_section" id="contact">
         <div style="float:right"><a href="#intro">top</a></div>
         <h2>Contact</h2>
-        <p>In case of problems or questions, please contact Dr. Heather Shaw, <a href="mailto:h.shaw5@lancaster.ac.uk">h.shaw5@lancaster.ac.uk</a>.</p>
+        <p>In case of problems or questions, please contact Dr. Heather Shaw at <a href="mailto:h.shaw5@lancaster.ac.uk">h.shaw5@lancaster.ac.uk</a>.</p>
     </div>
 
 </div>

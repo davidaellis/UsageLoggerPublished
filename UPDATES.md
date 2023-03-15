@@ -1,4 +1,4 @@
-### Last updated 07/03/2023
+### Last updated 15/03/2023
 
 ## Updates to App
 - added back missing QR Scanner activity
