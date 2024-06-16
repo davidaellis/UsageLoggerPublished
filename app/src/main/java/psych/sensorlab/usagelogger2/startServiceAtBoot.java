@@ -2,6 +2,8 @@ package psych.sensorlab.usagelogger2;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import static timber.log.Timber.*;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -36,7 +38,7 @@ public class startServiceAtBoot extends BroadcastReceiver {
                         "instructions not initialized"), QRInput.class);
             }
 
-            Timber.d("Restarted service after booting");
+            d("Restarted service after booting");
 
             //check if anything needs to be restarted
             if (qrInput.dataSources.containsKey("continuous")) {
@@ -70,10 +72,10 @@ public class startServiceAtBoot extends BroadcastReceiver {
     private void initializeError() {
         if (Timber.treeCount() == 0) {
             if (BuildConfig.DEBUG) {
-                Timber.plant(new Timber.DebugTree() {
+                Timber.plant(new DebugTree() {
                     @NonNull
                     @Override
-                    protected String createStackElementTag(@NotNull StackTraceElement element) {
+                    public String createStackElementTag(@NotNull StackTraceElement element) {
                         return String.format("C:%s:%s", super.createStackElementTag(element),
                                 element.getLineNumber());
                     }

@@ -30,7 +30,7 @@ class IdentifyAppInForeground {
         appList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY,
                 time - CONSTANTS.LOGGING_INTERVAL_MS, time);
 
-        if (appList != null && appList.size() > 0) {
+        if (appList != null && !appList.isEmpty()) {
             SortedMap<Long, UsageStats> mySortedMap = new TreeMap<>();
             for (UsageStats usageStats : appList) {
                 mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);

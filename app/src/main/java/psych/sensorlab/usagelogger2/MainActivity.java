@@ -661,7 +661,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 files.add(FileProvider.getUriForFile(this, authority, continuous));
             }
 
-            if (files.size() > 0) {
+            if (!files.isEmpty()) {
                 sendMail.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
                 sendMail.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 

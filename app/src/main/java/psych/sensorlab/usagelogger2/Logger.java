@@ -13,6 +13,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ServiceInfo;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ import timber.log.Timber;
 
 public class Logger extends NotificationListenerService {
 
+    private static final String TAG = NotificationListenerService.class.getSimpleName();
     private BroadcastReceiver screenReceiver, appReceiver;
     private IdentifyAppInForeground identifyAppInForeground;
     private LoggingDirection loggingDirection;
@@ -57,7 +59,7 @@ public class Logger extends NotificationListenerService {
                         + " notification posted");
             }
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+            Timber.e(TAG, "Couldn't find package name: %s", e.getMessage());
         }
     }
 
@@ -71,7 +73,7 @@ public class Logger extends NotificationListenerService {
                         + " notification removed");
             }
         } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
+            Timber.e(TAG, "Couldn't find package name: %s", e.getMessage());
         }
     }
 
@@ -91,9 +93,17 @@ public class Logger extends NotificationListenerService {
         if (intent.getAction() != null && intent.getAction().equals(CONSTANTS.STARTFOREGROUND_ACTION)) {
 
             Bundle bundle = intent.getExtras();
-            serviceType = bundle.getInt("serviceType");
-            restart = bundle.getBoolean("restart");
-            startForeground(1087384, DeclareInForeground(serviceType));
+            if (bundle != null) {
+                serviceType = bundle.getInt("serviceType");
+                restart = bundle.getBoolean("restart");
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                startForeground(1087384, DeclareInForeground(serviceType),
+                        ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE);
+            } else {
+                startForeground(1087384, DeclareInForeground(serviceType));
+            }
 
             if (intent.getExtras() == null) {
                 return START_STICKY;
@@ -114,7 +124,7 @@ public class Logger extends NotificationListenerService {
                     storeData(getString(R.string.phone_restart));
                 }
             } catch (Exception e) {
-                Timber.e(e);
+                Timber.e(TAG, "Could not initialize components: %s", e.getMessage());
             }
         }
 
@@ -198,7 +208,7 @@ public class Logger extends NotificationListenerService {
         }
 
         for (String key: bundle.keySet()) {
-            Timber.d("bundle logger: %s", key);
+            Timber.d(TAG,"Bundle logger: %s", key);
         }
 
         loggingDirection = new LoggingDirection(
@@ -207,7 +217,7 @@ public class Logger extends NotificationListenerService {
                 bundle.getBoolean("appChanges")
         );
 
-        Timber.d("loggingDirection: %s", loggingDirection);
+        Timber.d(TAG,"LoggingDirection: %s", loggingDirection);
 
         if (password == null || password.isEmpty() || password.equals("no_pwd")) {
             throw new Exception("Could not retrieve password");
@@ -291,12 +301,12 @@ public class Logger extends NotificationListenerService {
                             if (newAppListAdd.containsAll(oldAppListAdd)) {
                                 Set<String> newApps = identifyNewApp(oldAppListAdd, newAppListAdd);
                                 for (String newApp : newApps) {
-                                    Timber.d("New installed app: %s", newApp);
+                                    Timber.d(TAG,"New installed app: %s", newApp);
                                     storeData(getString(R.string.app_installed, newApp));
                                 }
                                 sharedPreferences.edit().putStringSet("installed_apps", newAppListAdd).apply();
                             } else {
-                                Timber.e("Issue with package added broadcast receiver");
+                                Timber.e(TAG,"Issue with package added broadcast receiver");
                             }
                         } else if (Intent.ACTION_PACKAGE_REMOVED.equals(action)) {
                             Set<String> oldAppListRemoved = sharedPreferences.getStringSet("installed_apps", new HashSet<>());
@@ -313,7 +323,7 @@ public class Logger extends NotificationListenerService {
                                 }
                                 sharedPreferences.edit().putStringSet("installed_apps", newAppListRemoved).apply();
                             } else {
-                                Timber.e("Issue with package added broadcast receiver");
+                                Timber.e(TAG, "Issue with package added broadcast receiver");
                             }
                         }
                     }
@@ -373,13 +383,13 @@ public class Logger extends NotificationListenerService {
             process.waitFor();
         }
         catch(Exception e) {
-            e.printStackTrace();
+            Timber.e(TAG, "Could not get installed apps: %s", e.getMessage());
         } finally {
             if (bufferedReader!=null)
                 try {
                     bufferedReader.close();
                 } catch(IOException e) {
-                    e.printStackTrace();
+                    Timber.e(TAG, "Could not close bufferedReader: %s", e.getMessage());
                 }
         }
         return installedApps;
@@ -404,7 +414,7 @@ public class Logger extends NotificationListenerService {
                     !appRunningInForeground.equals("not_real_app")) {
                 storeData(getString(R.string.app, appRunningInForeground));
                 currentlyRunningApp = appRunningInForeground;
-                Timber.d("App running in foreground: %s", appRunningInForeground);
+                Timber.d(TAG,"App running in foreground: %s", appRunningInForeground);
             }
 
             handler.postDelayed(callIdentifyAppInForeground, CONSTANTS.LOGGING_INTERVAL_MS);
@@ -416,7 +426,7 @@ public class Logger extends NotificationListenerService {
         values.put("time", System.currentTimeMillis());
         values.put("event", data);
         if (database.isOpen()) {
-            Timber.d("inserting into db: %s in %s", values, CONSTANTS.CONTINUOUS_DB_TABLE);
+            Timber.d(TAG,"inserting into db: %s in %s", values, CONSTANTS.CONTINUOUS_DB_TABLE);
             database.insert(CONSTANTS.CONTINUOUS_DB_TABLE,null, values);
         }
     }

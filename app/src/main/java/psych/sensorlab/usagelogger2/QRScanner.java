@@ -13,6 +13,7 @@ import timber.log.Timber;
 
 public class QRScanner extends AppCompatActivity {
     /* access modifiers changed from: private */
+    private static final String TAG = QRScanner.class.getSimpleName();
     public CodeScanner mCodeScanner;
 
     /* access modifiers changed from: protected */
@@ -55,22 +56,22 @@ public class QRScanner extends AppCompatActivity {
     public boolean assessIfKsonFormat(String str) {
         String[] split = str.split("\n");
         if (split.length != 5) {
-            Timber.i("not json as instructions are not 5 elements in length");
+            Timber.i(TAG,"not json as instructions are not 5 elements in length");
             return false;
         } else if (split[0].charAt(0) != '{') {
-            Timber.i("not json as first character is not {");
+            Timber.i(TAG,"not json as first character is not {");
             return false;
         } else if (split[1].charAt(0) != '{' || split[1].charAt(1) != 'C') {
-            Timber.i("not json as first character is not { and second is not C");
+            Timber.i(TAG,"not json as first character is not { and second is not C");
             return false;
         } else if (split[2].charAt(0) != '{' || split[2].charAt(1) != 'U') {
-            Timber.i("not json as first character is not { and second is not U");
+            Timber.i(TAG,"not json as first character is not { and second is not U");
             return false;
         } else if (split[3].charAt(0) == '{' && split[3].charAt(1) == 'P') {
-            Timber.i("last character assessment");
+            Timber.i(TAG,"last character assessment");
             return split[4].charAt(0) == '}';
         } else {
-            Timber.i("not json as first character is not { and second is not P");
+            Timber.i(TAG,"not json as first character is not { and second is not P");
             return false;
         }
     }
